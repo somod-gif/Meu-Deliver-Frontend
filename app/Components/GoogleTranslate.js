@@ -1,7 +1,8 @@
+"use clients"
 import { useEffect, useState } from 'react'
 import { Globe, ChevronDown } from 'lucide-react'
 
-export default function GoogleTranslate() {
+export default function GoogleTranslate({ isMobile = false }) {
   const [isOpen, setIsOpen] = useState(false)
   const [currentLang, setCurrentLang] = useState('EN')
 
@@ -23,7 +24,7 @@ export default function GoogleTranslate() {
     window.googleTranslateElementInit = () => {
       new window.google.translate.TranslateElement({
         pageLanguage: 'en',
-        includedLanguages: 'en,pt,fr,es,de,it,ja,ko,zh',
+        includedLanguages: 'en,pt,fr',
         layout: window.google.translate.TranslateElement.InlineLayout.SIMPLE,
         autoDisplay: false,
         multilanguagePage: true,
@@ -48,33 +49,45 @@ export default function GoogleTranslate() {
       }, 1000)
     }
 
-    // Enhanced Google branding cleanup
+    // Enhanced Google branding cleanup with functionality preservation
     const cleanGoogleBranding = () => {
-      // Hide Google branding
+      // Hide Google branding but keep functionality
       const branding = document.querySelectorAll('.goog-logo-link, .goog-te-gadget span, .goog-te-banner-frame, .goog-te-ftab')
       branding.forEach(el => {
         if (el) el.style.display = 'none'
       })
 
-      // Hide the original Google translate element but keep it functional
+      // Keep the select element functional but invisible
       const googleElement = document.getElementById('google_translate_element')
       if (googleElement) {
+        // Make invisible but keep in DOM for functionality
         googleElement.style.opacity = '0'
         googleElement.style.position = 'absolute'
         googleElement.style.left = '-9999px'
-        googleElement.style.pointerEvents = 'none'
+        googleElement.style.width = '1px'
+        googleElement.style.height = '1px'
+        googleElement.style.overflow = 'hidden'
+        
+        // Keep select element accessible
+        const selectElement = googleElement.querySelector('select')
+        if (selectElement) {
+          selectElement.style.opacity = '0'
+          selectElement.style.position = 'absolute'
+          selectElement.tabIndex = -1
+        }
       }
 
-      // Remove Google's top banner
-      const banner = document.querySelector('.goog-te-banner-frame')
-      if (banner) banner.remove()
-
-      // Clean up body modifications by Google
+      // Clean up Google's body modifications
       document.body.style.top = '0px'
       
-      // Remove the notification bar
-      const notifBar = document.querySelector('.goog-te-banner-frame.skiptranslate')
-      if (notifBar) notifBar.remove()
+      // Remove notification bars
+      const notifications = document.querySelectorAll('.goog-te-banner-frame, .goog-te-banner-frame.skiptranslate')
+      notifications.forEach(notif => notif.remove())
+      
+      // Ensure body positioning is not affected
+      if (document.body.style.position === 'relative') {
+        document.body.style.position = 'static'
+      }
     }
 
     // Run cleanup multiple times to ensure it works
@@ -89,55 +102,69 @@ export default function GoogleTranslate() {
   }, [])
 
   const handleLanguageChange = (langCode, langShort) => {
-    // Find the Google Translate select element
-    const selectElement = document.querySelector('#google_translate_element select')
-    if (selectElement) {
-      // Set the value
-      selectElement.value = langCode
+    setCurrentLang(langShort)
+    setIsOpen(false)
+    
+    // Wait for Google Translate to be ready
+    const triggerTranslation = () => {
+      const selectElement = document.querySelector('#google_translate_element select')
       
-      // Fire the change event that Google Translate listens for
-      const event = new Event('change', { bubbles: true })
-      selectElement.dispatchEvent(event)
-      
-      // Also try triggering with mouse events as backup
-      selectElement.click()
-      
-      setCurrentLang(langShort)
-      setIsOpen(false)
-    } else {
-      // Fallback: directly trigger Google Translate if select not found
-      if (window.google && window.google.translate) {
-        const translateElement = new window.google.translate.TranslateElement({
-          pageLanguage: 'en',
-          includedLanguages: 'en,pt,fr'
-        })
+      if (selectElement) {
+        // Method 1: Direct select manipulation
+        selectElement.value = langCode
         
-        // Force page translation
-        if (langCode !== 'en') {
-          setTimeout(() => {
-            const frames = document.querySelectorAll('iframe')
-            frames.forEach(frame => {
-              try {
-                if (frame.src.includes('translate.google')) {
-                  const frameDoc = frame.contentDocument || frame.contentWindow.document
-                  const option = frameDoc.querySelector(`option[value="${langCode}"]`)
-                  if (option) {
-                    option.selected = true
-                    const selectInFrame = option.parentElement
-                    selectInFrame.dispatchEvent(new Event('change'))
-                  }
-                }
-              } catch (e) {
-                // Cross-origin iframe access blocked
+        // Create and dispatch change event
+        const changeEvent = new Event('change', { 
+          bubbles: true, 
+          cancelable: true 
+        })
+        selectElement.dispatchEvent(changeEvent)
+        
+        // Method 2: Simulate user interaction
+        setTimeout(() => {
+          const clickEvent = new MouseEvent('click', {
+            bubbles: true,
+            cancelable: true,
+            view: window
+          })
+          selectElement.dispatchEvent(clickEvent)
+          
+          // Set value again after click
+          selectElement.value = langCode
+          selectElement.dispatchEvent(new Event('change', { bubbles: true }))
+        }, 100)
+        
+      } else {
+        // Method 3: Direct Google Translate API call
+        if (window.google?.translate?.TranslateElement) {
+          // Force re-initialization with target language
+          const container = document.getElementById('google_translate_element')
+          if (container) {
+            container.innerHTML = ''
+            new window.google.translate.TranslateElement({
+              pageLanguage: 'en',
+              includedLanguages: 'en,pt,fr',
+              layout: window.google.translate.TranslateElement.InlineLayout.SIMPLE,
+              autoDisplay: false,
+              multilanguagePage: true
+            }, 'google_translate_element')
+            
+            // Set the language after re-initialization
+            setTimeout(() => {
+              const newSelect = document.querySelector('#google_translate_element select')
+              if (newSelect) {
+                newSelect.value = langCode
+                newSelect.dispatchEvent(new Event('change', { bubbles: true }))
               }
-            })
-          }, 100)
+            }, 500)
+          }
         }
       }
-      
-      setCurrentLang(langShort)
-      setIsOpen(false)
     }
+    
+    // Try immediate translation, then retry if needed
+    triggerTranslation()
+    setTimeout(triggerTranslation, 1000)
   }
 
   return (
@@ -149,31 +176,45 @@ export default function GoogleTranslate() {
       <div className="relative">
         <button
           onClick={() => setIsOpen(!isOpen)}
-          className="flex items-center space-x-2 px-3 py-2 rounded-lg border border-gray-200 hover:border-[#00b1a5] hover:bg-[#00b1a5]/5 transition-all duration-300 bg-white/80 backdrop-blur-sm group"
+          className={`
+            flex items-center space-x-2 rounded-lg border border-gray-200 hover:border-[#00b1a5] hover:bg-[#00b1a5]/5 transition-all duration-300 bg-white/80 backdrop-blur-sm group
+            ${isMobile 
+              ? 'px-4 py-3 w-full justify-center' 
+              : 'px-3 py-2'
+            }
+          `}
           aria-label="Select language"
         >
-          <Globe className="w-4 h-4 text-gray-600 group-hover:text-[#00b1a5] transition-colors" />
-          <span className="text-sm font-medium text-gray-700 group-hover:text-[#00b1a5] transition-colors">
-            {currentLang}
+          <Globe className={`text-gray-600 group-hover:text-[#00b1a5] transition-colors ${isMobile ? 'w-5 h-5' : 'w-4 h-4'}`} />
+          <span className={`font-medium text-gray-700 group-hover:text-[#00b1a5] transition-colors ${isMobile ? 'text-base' : 'text-sm'}`}>
+            {isMobile ? languages.find(lang => lang.short === currentLang)?.name || 'English' : currentLang}
           </span>
-          <ChevronDown className={`w-3 h-3 text-gray-500 group-hover:text-[#00b1a5] transition-all duration-300 ${isOpen ? 'rotate-180' : ''}`} />
+          <ChevronDown className={`text-gray-500 group-hover:text-[#00b1a5] transition-all duration-300 ${isOpen ? 'rotate-180' : ''} ${isMobile ? 'w-4 h-4' : 'w-3 h-3'}`} />
         </button>
 
         {/* Dropdown Menu */}
         {isOpen && (
-          <div className="absolute right-0 top-full mt-2 w-44 bg-white/95 backdrop-blur-md rounded-xl shadow-xl border border-gray-100 py-2 z-50 animate-in fade-in slide-in-from-top-2 duration-200">
+          <div className={`
+            absolute top-full z-50 bg-white/95 backdrop-blur-md rounded-xl shadow-xl border border-gray-100 py-2 animate-in fade-in slide-in-from-top-2 duration-200
+            ${isMobile 
+              ? 'left-0 right-0 mt-3 mx-4' 
+              : 'right-0 mt-2 w-44'
+            }
+          `}>
             {languages.map((lang) => (
               <button
                 key={lang.code}
                 onClick={() => handleLanguageChange(lang.code, lang.short)}
-                className={`w-full flex items-center space-x-3 px-4 py-3 text-left hover:bg-[#00b1a5]/10 transition-colors duration-200 ${
-                  currentLang === lang.short ? 'bg-[#00b1a5]/5 text-[#00b1a5]' : 'text-gray-700'
-                }`}
+                className={`
+                  w-full flex items-center space-x-3 text-left hover:bg-[#00b1a5]/10 transition-colors duration-200
+                  ${isMobile ? 'px-4 py-4' : 'px-4 py-3'}
+                  ${currentLang === lang.short ? 'bg-[#00b1a5]/5 text-[#00b1a5]' : 'text-gray-700'}
+                `}
               >
                 <span className="text-lg">{lang.flag}</span>
                 <div className="flex-1">
-                  <div className="font-medium text-sm">{lang.name}</div>
-                  <div className="text-xs text-gray-500">{lang.short}</div>
+                  <div className={`font-medium ${isMobile ? 'text-base' : 'text-sm'}`}>{lang.name}</div>
+                  <div className={`text-gray-500 ${isMobile ? 'text-sm' : 'text-xs'}`}>{lang.short}</div>
                 </div>
                 {currentLang === lang.short && (
                   <div className="w-2 h-2 bg-[#00b1a5] rounded-full"></div>
@@ -193,33 +234,44 @@ export default function GoogleTranslate() {
       )}
 
       <style jsx global>{`
-        /* Hide Google Translate branding completely */
+        /* Hide Google Translate branding completely while preserving functionality */
         .goog-te-banner-frame,
         .goog-te-ftab,
         .goog-logo-link,
-        .goog-te-gadget span,
+        .goog-te-gadget span:first-child,
         .goog-te-combo {
           display: none !important;
         }
         
-        /* Hide the original Google translate dropdown */
+        /* Keep the select functional but invisible */
+        #google_translate_element {
+          opacity: 0 !important;
+          position: absolute !important;
+          left: -9999px !important;
+          width: 1px !important;
+          height: 1px !important;
+          overflow: hidden !important;
+        }
+        
         #google_translate_element select {
+          opacity: 0 !important;
+          position: absolute !important;
+        }
+        
+        /* Prevent Google from modifying body positioning */
+        body {
+          top: 0 !important;
+          position: static !important;
+        }
+        
+        /* Hide Google notification bars */
+        .goog-te-banner-frame.skiptranslate {
           display: none !important;
         }
         
-        /* Remove Google's top notification bar */
-        body {
-          top: 0 !important;
-        }
-        
-        /* Style any remaining Google elements */
+        /* Remove any Google translate styling that affects layout */
         .goog-te-menu-value {
           color: transparent !important;
-        }
-        
-        /* Remove Google branding text */
-        .goog-te-gadget-simple .goog-te-menu-value span:first-child {
-          display: none;
         }
         
         /* Animation classes for dropdown */
