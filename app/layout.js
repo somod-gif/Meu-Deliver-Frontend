@@ -2,6 +2,7 @@
 import './globals.css'
 import Navbar from './Components/Navbar'
 import Footer from './Components/Footer'
+import GoogleTranslate from './Components/GoogleTranslate'
 
 export const metadata = {
   title: 'MeuDeliver - Angola’s All-in-One Delivery',
@@ -13,7 +14,9 @@ export default function RootLayout({ children }) {
     <html lang="en">
       <body className="font-sans bg-white text-gray-900">
         <Navbar />
-        <main className="min-h-screen">{children}</main>
+        <main className="min-h-screen">{children}
+          <GoogleTranslate />
+        </main>
         <Footer />
       </body>
     </html>
