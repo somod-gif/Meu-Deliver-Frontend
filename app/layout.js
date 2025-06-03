@@ -14,8 +14,9 @@ export default function RootLayout({ children }) {
     <html lang="en">
       <body className="font-sans bg-white text-gray-900">
         <Navbar />
-        <main className="min-h-screen">{children}
+        <main className="min-h-screen">
           <GoogleTranslate />
+          {children}
         </main>
         <Footer />
       </body>
