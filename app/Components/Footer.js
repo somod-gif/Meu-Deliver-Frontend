@@ -1,16 +1,34 @@
 // components/Footer.js
+import Link from "next/link"
 export default function Footer() {
   return (
     <footer className="bg-gray-100 text-sm text-gray-700 py-8 px-6 mt-12">
       <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-4 gap-6">
         <div>
           <div className="flex items-center space-x-2 mb-3">
-            <span className="text-xl font-bold text-[#00b1a5]">Meu</span>
-            <img 
-              src="/images/logo.jpg" 
-              alt="Meu Deliver Logo" 
-              className="h-6 w-auto"
-            />
+           {/* Logo - Responsive sizing */}
+          <Link 
+            href="/" 
+            className="flex items-center space-x-1 group flex-shrink-0"
+            aria-label="Home"
+          >
+            <span className="text-xl sm:text-2xl font-bold text-[#00b1a5] group-hover:scale-105 transition-transform duration-300">
+              Meu
+            </span>
+            <div className="relative">
+              <img 
+                src="/images/logo.png" 
+                alt="" 
+                className="h-8 sm:h-10 md:h-12 w-auto group-hover:rotate-12 transition-transform duration-500"
+                width={48}
+                height={48}
+                loading="eager"
+              />
+            </div>
+            <span className="text-xl sm:text-2xl font-bold text-[#00b1a5] group-hover:scale-105 transition-transform duration-300">
+              Deliver
+            </span>
+          </Link>
           </div>
           <p className="text-gray-600">Fast, Efficient, and Secure Everywhere.</p>
           <p className="mt-2 text-gray-600">Your all-in-one delivery solution, available nationwide — from your favorite meals to everyday essentials.</p>

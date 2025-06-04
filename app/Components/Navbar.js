@@ -51,14 +51,14 @@ export default function Navbar() {
 
   const navLinks = [
     { 
-      name: 'Vendors', 
-      path: '/Vendors', 
+      name: 'Vendor', 
+      path: '/Portal/Vendor', 
       icon: Store,
       description: 'Browse local vendors'
     },
     { 
       name: 'Ride', 
-      path: '/Ride', 
+      path: '/Portal/Ride', 
       icon: Car,
       description: 'Become a delivery partner'
     },
@@ -315,6 +315,8 @@ export default function Navbar() {
           </div>
         </div>
       </div>
+      
     </nav>
+    
   )
 }
