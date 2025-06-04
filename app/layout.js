@@ -3,6 +3,8 @@ import './globals.css'
 import Navbar from './Components/Navbar'
 import Footer from './Components/Footer'
 import GoogleTranslate from './Components/GoogleTranslate'
+import { ToastContainer } from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css'
 
 export const metadata = {
   title: 'MeuDeliver - Angola’s All-in-One Delivery',
@@ -17,6 +19,18 @@ export default function RootLayout({ children }) {
         <main className="min-h-screen">
           <GoogleTranslate />
           {children}
+          <ToastContainer
+          position="top-right"
+          autoClose={3000}
+          hideProgressBar={false}
+          newestOnTop={false}
+          closeOnClick
+          rtl={false}
+          pauseOnFocusLoss
+          draggable
+          pauseOnHover
+          theme="light"
+        />
         </main>
         <Footer />
       </body>

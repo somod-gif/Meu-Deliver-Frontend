@@ -1,10 +1,13 @@
 'use client'
 import { useState } from 'react';
+import { useRouter } from 'next/navigation';
 import { Eye, EyeOff, User, Mail, Phone, Lock, Check, Camera } from 'lucide-react';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 export default function RegisterPage() {
+  const router = useRouter();
+
   const [formData, setFormData] = useState({
     fullName: '',
     email: '',
@@ -13,7 +16,7 @@ export default function RegisterPage() {
     profileImage: null,
     agreeTerms: false
   });
-  
+
   const [showPassword, setShowPassword] = useState(false);
   const [errors, setErrors] = useState({});
   const [isLoading, setIsLoading] = useState(false);
@@ -25,8 +28,7 @@ export default function RegisterPage() {
       ...prev,
       [name]: type === 'checkbox' ? checked : value
     }));
-    
-    // Clear error when user starts typing
+
     if (errors[name]) {
       setErrors(prev => ({ ...prev, [name]: '' }));
     }
@@ -35,11 +37,11 @@ export default function RegisterPage() {
   const handleImageUpload = (e) => {
     const file = e.target.files[0];
     if (file) {
-      if (file.size > 5 * 1024 * 1024) { // 5MB limit
+      if (file.size > 5 * 1024 * 1024) {
         toast.error('Image size should be less than 5MB');
         return;
       }
-      
+
       const reader = new FileReader();
       reader.onload = (e) => {
         setImagePreview(e.target.result);
@@ -52,7 +54,6 @@ export default function RegisterPage() {
 
   const validateForm = () => {
     const newErrors = {};
-    
     if (!formData.fullName.trim()) newErrors.fullName = 'Full name is required';
     if (!formData.email.trim()) newErrors.email = 'Email is required';
     else if (!/\S+@\S+\.\S+/.test(formData.email)) newErrors.email = 'Email is invalid';
@@ -60,30 +61,21 @@ export default function RegisterPage() {
     if (!formData.password) newErrors.password = 'Password is required';
     else if (formData.password.length < 8) newErrors.password = 'Password must be at least 8 characters';
     if (!formData.agreeTerms) newErrors.agreeTerms = 'You must agree to the terms and conditions';
-    
+
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
 
   const handleSubmit = async () => {
     if (!validateForm()) return;
-    
+
     setIsLoading(true);
     try {
-      // Simulate registration process
       await new Promise(resolve => setTimeout(resolve, 2000));
       toast.success('Registration successful! Welcome to Meu Deliver!');
-      // Reset form after successful registration
+
       setTimeout(() => {
-        setFormData({
-          fullName: '',
-          email: '',
-          phone: '',
-          password: '',
-          profileImage: null,
-          agreeTerms: false
-        });
-        setImagePreview(null);
+        router.push('/Clients/Dashboard/page');
       }, 1500);
     } catch (error) {
       toast.error('Registration failed. Please try again.');
@@ -97,6 +89,7 @@ export default function RegisterPage() {
   };
 
   return (
+    <>
     <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100 flex items-center justify-center p-4 mt-16">
       {/* Toast Container */}
       <ToastContainer
@@ -363,5 +356,6 @@ export default function RegisterPage() {
         </div>
       </div>
     </div>
+  </>
   );
 }
