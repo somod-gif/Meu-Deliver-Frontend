@@ -71,7 +71,7 @@ export default function RegisterPage() {
 
     setIsLoading(true);
     try {
-      await new Promise(resolve => setTim eout(resolve, 2000));
+      await new Promise(resolve => setTimeout(resolve, 2000));
       toast.success('Registration successful! Welcome to Meu Deliver!');
 
       setTimeout(() => {
