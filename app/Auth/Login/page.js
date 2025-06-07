@@ -32,16 +32,28 @@ export default function LoginPage() {
 
   const validateForm = () => {
     const newErrors = {};
-    if (!formData.email.trim()) {
-      newErrors.email = 'Email is required';
-    } else if (!/\S+@\S+\.\S+/.test(formData.email)) {
-      newErrors.email = 'Please enter a valid email address';
+  
+    // Require at least one: email or phone
+    if (!formData.email.trim() && !formData.phone.trim()) {
+      newErrors.email = 'Email or phone number is required';
+      newErrors.phone = 'Email or phone number is required';
+    } else {
+      // If email is present, validate email
+      if (formData.email.trim()) {
+        if (!/\S+@\S+\.\S+/.test(formData.email)) {
+          newErrors.email = 'Please enter a valid email address';
+        }
+      }
+      // If phone is present, you can add phone validation here if needed
+      // Example: if (!/^\d{10,}$/.test(formData.phone)) { newErrors.phone = 'Invalid phone number'; }
     }
+  
     if (!formData.password) {
       newErrors.password = 'Password is required';
     } else if (formData.password.length < 6) {
       newErrors.password = 'Password must be at least 6 characters';
     }
+  
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
@@ -55,29 +67,60 @@ export default function LoginPage() {
     setIsLoading(true);
 
     try {
-      await new Promise(resolve => setTimeout(resolve, 2000));
-      const random = Math.random();
-      if (random > 0.7) {
-        throw new Error('Invalid credentials');
+      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/auth/signin`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          email: formData?.email,
+          password: formData.password,
+        }),
+      });
+
+      if (!response.ok) {
+        throw new Error('Signing in failed');
       }
 
-      toast.success('Login successful! Welcome back to Meu Deliver!');
+      const data = await response.json();
+      localStorage.setItem('userToken', data.access_token);
+      localStorage.setItem('user', JSON.stringify(data.user));
 
-      setTimeout(() => {
-        setFormData({ email: '', password: '' });
-        setRememberMe(false);
-        router.push('/Clients/Dashboard');
-      }, 1500);
+      toast.success('Sign in successful! Welcome to Meu Deliver!');
+
+      router.push('/Portal/Clients/Dashboard/');
 
     } catch (error) {
-      toast.error(error.message || 'Login failed. Please check your credentials.');
+      toast.error('Signing in  failed. Please try again.');
     } finally {
       setIsLoading(false);
     }
   };
 
   const handleGoogleSignIn = () => {
-    toast.info('Google Sign-In integration coming soon!');
+    try {
+      const googleAuthUrl = fetch( `${process.env.NEXT_PUBLIC_API_URL}/auth/google`, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      }).then(res => res.json());
+      if (!googleAuthUrl || !googleAuthUrl.ok || !googleAuthUrl.url) {
+        throw new Error('Failed to get Google authentication URL');
+      }
+      
+      localStorage.setItem('userToken', googleAuthUrl.access_token);
+      localStorage.setItem('user', JSON.stringify(googleAuthUrl.user));
+      toast.success('Redirecting to Google Sign-In...');
+
+      setTimeout(() => {
+        router.push('/Portal/Clients/Dashboard/');
+      }, 1500);
+    } catch (error) {
+      console.error('Google Sign-In error:', error);
+      toast.error('Failed to sign in with Google. Please try again later.');
+      return;
+    }
   };
 
   const handleForgotPassword = () => {
@@ -133,9 +176,9 @@ export default function LoginPage() {
             {/* Email */}
             <div>
               <label className="block text-sm font-semibold text-gray-700 mb-2">
-                Email Address
+                Email Address <span className="text-gray-400">or</span> Phone Number
               </label>
-              <div className="relative">
+              <div className="relative mb-4">
                 <Mail className="absolute left-4 top-4 h-5 w-5 text-gray-400" />
                 <input
                   type="email"
@@ -148,9 +191,10 @@ export default function LoginPage() {
                       : 'border-gray-200 focus:border-teal-500'
                   }`}
                   placeholder="Enter your email"
+                  autoComplete="username"
                 />
+                {errors.email && <p className="text-red-500 text-sm mt-1">{errors.email}</p>}
               </div>
-              {errors.email && <p className="text-red-500 text-sm mt-1">{errors.email}</p>}
             </div>
 
             {/* Password */}

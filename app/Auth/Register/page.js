@@ -71,21 +71,64 @@ export default function RegisterPage() {
 
     setIsLoading(true);
     try {
-      await new Promise(resolve => setTimeout(resolve, 2000));
-      toast.success('Registration successful! Welcome to Meu Deliver!');
+      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/auth/signup`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          name: formData.fullName,
+          email: formData.email,
+          phone: formData.phone,
+          password: formData.password,
+        }),
+      });
 
-      setTimeout(() => {
-        router.push('/Portal/Clients/Dashboard/');
-      }, 1500);
+      if (!response.ok) {
+        const error = await response.json();
+        throw new Error(error.message || 'Registration failed');
+      }
+
+      const data = await response.json();
+
+      localStorage.setItem('userToken', data.access_token);
+      localStorage.setItem('user', JSON.stringify(data.user));
+
+      toast.success('Registration successful!');
+
+      router.push('/Portal/Clients/Dashboard/');
     } catch (error) {
-      toast.error('Registration failed. Please try again.');
+      console.error('Registration error:', error);
+      toast.error(error.message || 'Something went wrong');
     } finally {
       setIsLoading(false);
     }
   };
 
-  const handleGoogleSignIn = () => {
-    toast.info('Google Sign-In coming soon!');
+  const handleGoogleSignIn = async () => {
+     try {
+      const googleAuthUrl = await fetch( `${process.env.NEXT_PUBLIC_API_URL}/auth/google`, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      }).then(res => res.json());
+      if (!googleAuthUrl || !googleAuthUrl.ok || !googleAuthUrl.url) {
+        throw new Error('Failed to get Google authentication URL');
+      }
+      
+      localStorage.setItem('userToken', googleAuthUrl.access_token);
+      localStorage.setItem('user', JSON.stringify(googleAuthUrl.user));
+      toast.success('Redirecting to Google Sign-In...');
+
+       setTimeout(() => {
+        router.push('/Portal/Clients/Dashboard/');
+      }, 1500);
+    } catch (error) {
+      console.error('Google Sign-In error:', error);
+      toast.error('Failed to sign in with Google. Please try again later.');
+      return;
+    }
   };
 
   return (
@@ -172,7 +215,7 @@ export default function RegisterPage() {
                   name="fullName"
                   value={formData.fullName}
                   onChange={handleInputChange}
-                  className={`w-full pl-12 pr-4 py-4 border-2 rounded-xl focus:outline-none transition-all duration-300 ${
+                  className={`w-full pl-12 pr-4 py-4 border-2 rounded-xl focus:outline-none transition-all duration-300 text-gray-400 ${
                     errors.fullName 
                       ? 'border-red-300 focus:border-red-500' 
                       : 'border-gray-200 focus:border-teal-500'
