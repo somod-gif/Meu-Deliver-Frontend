@@ -20,7 +20,7 @@ export default function GoogleTranslate() {
     script.onload = () => setIsLoaded(true)
     script.onerror = () => {
       setError(true)
-      console.error('Failed to load Google Translate script')
+      // console.error('Failed to load Google Translate script')
     }
 
     document.body.appendChild(script)
