@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useCallback } from 'react'
 import Link from 'next/link'
+import { usePathname } from 'next/navigation'
 import { Menu, X, UserPlus, LogIn, Store, Car } from 'lucide-react'
 import GoogleTranslate from './GoogleTranslate'
 
@@ -9,6 +10,7 @@ export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false)
   const [scrolled, setScrolled] = useState(false)
   const [isMounted, setIsMounted] = useState(false)
+  const pathname = usePathname()
 
   // Handle scroll effect for navbar background with throttling
   const handleScroll = useCallback(() => {
@@ -79,6 +81,11 @@ export default function Navbar() {
     },
   ]
 
+  // Check if a nav link is active
+  const isActive = (path) => {
+    return pathname.startsWith(path)
+  }
+
   // Close menu when clicking outside
   useEffect(() => {
     const handleClickOutside = (event) => {
@@ -133,17 +140,25 @@ export default function Navbar() {
             <div className="flex items-center space-x-4 xl:space-x-6">
               {navLinks.map((link) => {
                 const IconComponent = link.icon
+                const active = isActive(link.path)
                 return (
                   <Link
                     key={link.name}
                     href={link.path}
-                    className="group relative flex items-center space-x-2 text-gray-700 hover:text-[#00b1a5] transition-all duration-300 font-medium py-2 px-3 rounded-lg hover:bg-[#00b1a5]/5"
+                    className={`group relative flex items-center space-x-2 transition-all duration-300 font-medium py-2 px-3 rounded-lg hover:bg-[#00b1a5]/5
+                      ${active 
+                        ? 'text-[#00b1a5] bg-[#00b1a5]/10' 
+                        : 'text-gray-700 hover:text-[#00b1a5]'
+                      }
+                    `}
                     title={link.description}
                     aria-label={link.description}
                   >
-                    <IconComponent className="w-4 h-4 group-hover:scale-110 transition-transform" aria-hidden="true" />
+                    <IconComponent className={`w-4 h-4 group-hover:scale-110 transition-transform ${active ? 'scale-110' : ''}`} aria-hidden="true" />
                     <span className="whitespace-nowrap">{link.name}</span>
-                    <div className="absolute bottom-0 left-0 w-0 h-0.5 bg-[#00b1a5] group-hover:w-full transition-all duration-300"></div>
+                    <div className={`absolute bottom-0 left-0 h-0.5 bg-[#00b1a5] transition-all duration-300 ${
+                      active ? 'w-full' : 'w-0 group-hover:w-full'
+                    }`}></div>
                   </Link>
                 )
               })}
@@ -188,15 +203,21 @@ export default function Navbar() {
             <div className="flex items-center space-x-3">
               {navLinks.map((link) => {
                 const IconComponent = link.icon
+                const active = isActive(link.path)
                 return (
                   <Link
                     key={link.name}
                     href={link.path}
-                    className="flex items-center space-x-1 text-gray-700 hover:text-[#00b1a5] transition-all duration-300 font-medium py-2 px-2 rounded-lg hover:bg-[#00b1a5]/5"
+                    className={`flex items-center space-x-1 transition-all duration-300 font-medium py-2 px-2 rounded-lg
+                      ${active 
+                        ? 'text-[#00b1a5] bg-[#00b1a5]/10' 
+                        : 'text-gray-700 hover:text-[#00b1a5] hover:bg-[#00b1a5]/5'
+                      }
+                    `}
                     title={link.description}
                     aria-label={link.description}
                   >
-                    <IconComponent className="w-4 h-4" aria-hidden="true" />
+                    <IconComponent className={`w-4 h-4 ${active ? 'scale-110' : ''}`} aria-hidden="true" />
                     <span className="text-sm">{link.name}</span>
                   </Link>
                 )
@@ -253,16 +274,19 @@ export default function Navbar() {
             </h3>
             {navLinks.map((link) => {
               const IconComponent = link.icon
+              const active = isActive(link.path)
               return (
                 <Link
                   key={link.name}
                   href={link.path}
-                  className="flex items-center space-x-3 text-gray-700 hover:text-[#00b1a5] transition-colors duration-300 font-medium py-3 px-4 rounded-xl hover:bg-[#00b1a5]/5 group active:bg-[#00b1a5]/10"
+                  className={`flex items-center space-x-3 transition-colors duration-300 font-medium py-3 px-4 rounded-xl hover:bg-[#00b1a5]/5 group active:bg-[#00b1a5]/10
+                    ${active ? 'text-[#00b1a5] bg-[#00b1a5]/10' : 'text-gray-700 hover:text-[#00b1a5]'}
+                  `}
                   onClick={() => setIsOpen(false)}
                   aria-label={link.description}
                 >
                   <div className="flex-shrink-0">
-                    <IconComponent className="w-10 h-10 group-hover:scale-110 transition-transform" aria-hidden="true" />
+                    <IconComponent className={`w-10 h-10 group-hover:scale-110 transition-transform ${active ? 'scale-110' : ''}`} aria-hidden="true" />
                   </div>
                   <div className="flex-1 min-w-0">
                     <div className="font-semibold truncate">{link.name}</div>
@@ -315,8 +339,6 @@ export default function Navbar() {
           </div>
         </div>
       </div>
-      
     </nav>
-    
   )
 }
