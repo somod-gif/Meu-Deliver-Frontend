@@ -7,6 +7,8 @@ import {
   Bars3Icon, XMarkIcon, ClockIcon, CheckCircleIcon,
   TruckIcon, DocumentTextIcon, PencilIcon
 } from '@heroicons/react/24/outline';
+import { useRouter } from 'next/navigation';
+
 
 export default function ClientDashboard() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
@@ -18,18 +20,79 @@ export default function ClientDashboard() {
   const [error, setError] = useState(null);
   const [currentSection, setCurrentSection] = useState('dashboard');
 
-  // Fake data loading
+  const router = useRouter();
+  // authentication and data loading logic
+  useEffect(() => {
+    const initializeAuth = async () => {
+      try {
+        const token = localStorage.getItem('token');
+        const userData = localStorage.getItem('userData');
+
+        if (!token || !userData) {
+          router.push('/Auth/Login/');
+          return;
+        }
+
+        // Verify token if both token and userData exist
+        const verifyToken = async () => {
+          try {
+            const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/verify-token`, {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json',
+                Authorization: `Bearer ${token}`
+              },
+              body: JSON.stringify({ token })
+            });
+
+            if (!response.ok) {
+              router.push('/Auth/Login/');
+              throw new Error('Token verification failed');
+            }
+
+            const data = await response.json();
+            if(data.payload.role === 'VENDOR'){
+              router.push('/Portal/Vendor/Dashboard');
+            }
+            if(data.payload.role === 'ADMIN'){
+              router.push('/Portal/Vendor/Dashboard');
+            }
+            setUser(data.user);
+          } catch (err) {
+            console.error('Token verification error:', err);
+            setError(err.message);
+            // Clear invalid token and redirect
+            localStorage.removeItem('token');
+            localStorage.removeItem('userData');
+            router.push('/Auth/Login/');
+          }
+        };
+
+        await verifyToken();
+      } catch (error) {
+        console.error('Auth initialization error:', error);
+        setError(error.message);
+        router.push('/Auth/Login/');
+      }
+    };
+
+    initializeAuth();
+  }, [router]);
+
+  // Separate useEffect for loading fake data
   useEffect(() => {
     const loadFakeData = () => {
       try {
         setLoading(true);
         setError(null);
+
         const userData = {
           id: 1,
           name: 'João Silva',
           email: 'joao.silva@email.com',
           avatar: null
         };
+
         const currentOrderData = {
           id: 'MD240607001',
           status: 'on_way',
@@ -43,6 +106,7 @@ export default function ClientDashboard() {
             { name: 'French Fries', quantity: 1 }
           ]
         };
+
         const historyData = {
           orders: [
             {
@@ -57,6 +121,7 @@ export default function ClientDashboard() {
             }
           ]
         };
+
         const addressData = {
           addresses: [
             {
@@ -70,6 +135,8 @@ export default function ClientDashboard() {
             }
           ]
         };
+
+        // Simulate API delay
         setTimeout(() => {
           setUser(userData);
           setCurrentOrder(currentOrderData);
@@ -77,12 +144,14 @@ export default function ClientDashboard() {
           setSavedAddresses(addressData.addresses || []);
           setLoading(false);
         }, 1000);
+
       } catch (err) {
         console.error('Error loading fake data:', err);
         setError(err.message);
         setLoading(false);
       }
     };
+
     loadFakeData();
   }, []);
 

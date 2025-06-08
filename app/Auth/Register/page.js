@@ -105,31 +105,17 @@ export default function RegisterPage() {
     }
   };
 
-  const handleGoogleSignIn = async () => {
-     try {
-      const googleAuthUrl = await fetch( `${process.env.NEXT_PUBLIC_API_URL}/auth/google`, {
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json'
-        }
-      }).then(res => res.json());
-      if (!googleAuthUrl || !googleAuthUrl.ok || !googleAuthUrl.url) {
-        throw new Error('Failed to get Google authentication URL');
-      }
-      
-      localStorage.setItem('userToken', googleAuthUrl.access_token);
-      localStorage.setItem('user', JSON.stringify(googleAuthUrl.user));
-      toast.success('Redirecting to Google Sign-In...');
+ const handleGoogleSignIn = () => {
+  try {
+    toast.success('Redirecting to Google Sign-In...');
+    window.location.href = `${process.env.NEXT_PUBLIC_API_URL}/auth/google`;
+  } catch (error) {
+    console.error('Google Sign-In error:', error);
+    toast.error('Failed to sign in with Google. Please try again later.');
+  }
+};
 
-       setTimeout(() => {
-        router.push('/Portal/Clients/Dashboard/');
-      }, 1500);
-    } catch (error) {
-      console.error('Google Sign-In error:', error);
-      toast.error('Failed to sign in with Google. Please try again later.');
-      return;
-    }
-  };
+
 
   return (
     <>
