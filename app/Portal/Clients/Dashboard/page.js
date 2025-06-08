@@ -25,8 +25,8 @@ export default function ClientDashboard() {
   useEffect(() => {
     const initializeAuth = async () => {
       try {
-        const token = localStorage.getItem('token');
-        const userData = localStorage.getItem('userData');
+        const token = localStorage.getItem('userToken');
+        const userData = localStorage.getItem('user');
 
         if (!token || !userData) {
           router.push('/Auth/Login/');
@@ -36,7 +36,7 @@ export default function ClientDashboard() {
         // Verify token if both token and userData exist
         const verifyToken = async () => {
           try {
-            const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/verify-token`, {
+            const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/auth/verify-current-user`, {
               method: 'POST',
               headers: {
                 'Content-Type': 'application/json',
