@@ -276,6 +276,29 @@ export default function ClientDashboard() {
     </div>
   );
 
+  const logoutHanlder = async() => {
+    try {
+
+      const token = localStorage.getItem('userToken')
+
+      const response  = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/auth/logout`, {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${token}`
+        }
+      })
+
+      if(response.ok){
+        localStorage.removeItem('user');
+        localStorage.removeItem('userToken');
+        return 
+      }
+    } catch (error) {
+      console.error('Network error', error)
+      toast.error('Something went wronmg try againg')
+    }
+  }
+
   if (loading) {
     return (
       <div className="min-h-screen bg-gray-50 flex items-center justify-center p-4">
@@ -583,8 +606,16 @@ export default function ClientDashboard() {
         );
       case 'logout':
         return (
-          <div className="p-4">
-            <p>You have been logged out.</p>
+          <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+            <h2 className="text-lg font-semibold mb-4">Logout</h2>
+
+            <button 
+              className="p-1 rounded-md hover:text-gray-800 bg-black-500"
+              aria-label="Close menu"
+              onClick={()=>{logoutHanlder()}}
+            >
+              Logout
+            </button>
           </div>
         );
       default:
