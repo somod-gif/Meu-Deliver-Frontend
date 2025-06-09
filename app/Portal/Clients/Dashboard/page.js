@@ -47,7 +47,7 @@ export default function ClientDashboard() {
 
             if (!response.ok) {
               router.push('/Auth/Login/');
-              throw new Error('Token verification failed');
+              toast.error('Token verification failed');
             }
 
             const data = await response.json();
@@ -612,7 +612,7 @@ export default function ClientDashboard() {
             <button 
               className="p-1 rounded-md hover:text-gray-800 bg-black-500"
               aria-label="Close menu"
-              onClick={()=>{logoutHanlder()}}
+              onClick={logoutHanlder}
             >
               Logout
             </button>

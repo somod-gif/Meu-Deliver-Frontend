@@ -105,7 +105,7 @@ export default function RegisterPage() {
     }
   };
 
- const handleGoogleSignIn = () => {
+ const handleGoogleSignUp = () => {
   try {
     toast.success('Redirecting to Google Sign-In...');
     window.location.href = `${process.env.NEXT_PUBLIC_API_URL}/auth/google`;
@@ -351,7 +351,7 @@ export default function RegisterPage() {
 
             {/* Google Sign In */}
             <button
-              onClick={handleGoogleSignIn}
+              onClick={handleGoogleSignUp}
               className="w-full py-4 px-6 border-2 border-gray-200 rounded-xl font-semibold text-gray-700 hover:bg-gray-50 hover:border-gray-300 transition-all duration-300 flex items-center justify-center space-x-3"
             >
               <svg className="w-5 h-5" viewBox="0 0 24 24">

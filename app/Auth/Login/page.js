@@ -78,24 +78,33 @@ export default function LoginPage() {
         }),
       });
 
+      const data = await response.json();
+
       if (!response.ok) {
-        throw new Error('Signing in failed');
+        const errorMessage = data?.message || 'Invalid credentials or server error';
+        toast.error(errorMessage);
+        return;
       }
 
-      const data = await response.json();
+      if (!data?.access_token || !data?.user) {
+        toast.error('Invalid response from server. Please contact support.');
+        return;
+      }
+
       localStorage.setItem('userToken', data.access_token);
       localStorage.setItem('user', JSON.stringify(data.user));
 
       toast.success('Sign in successful! Welcome to Meu Deliver!');
-
       router.push('/Portal/Clients/Dashboard/');
 
     } catch (error) {
-      toast.error('Signing in  failed. Please try again.');
+      const errorMsg = error?.message || 'Signing in failed. Please check your connection and try again.';
+      toast.error(errorMsg);
     } finally {
       setIsLoading(false);
     }
   };
+
 
  const handleGoogleSignIn = () => {
   try {
