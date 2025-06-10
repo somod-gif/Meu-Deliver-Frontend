@@ -16,7 +16,7 @@ const CallbackPage = () => {
 
         if (!token || !userStr) {
           toast.error('Missing login information.');
-          router.replace('/login');
+          router.replace('/Auth/Login');
           return;
         }
 
