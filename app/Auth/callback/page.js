@@ -1,6 +1,4 @@
-'use client';
-
-import { useRouter } from 'next/navigation'; // ← use 'next/navigation' in the app directory
+import { useRouter } from 'next/router';
 import { useEffect } from 'react';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -9,32 +7,35 @@ const CallbackPage = () => {
   const router = useRouter();
 
   useEffect(() => {
-    if (typeof window !== 'undefined') {
-      const url = new URL(window.location.href);
-      const token = url.searchParams.get('access_token');
-      const userStr = url.searchParams.get('user');
+    const handleAuthCallback = () => {
+      try {
+        const url = new URL(window.location.href);
+        const token = url.searchParams.get('access_token');
+        const userStr = url.searchParams.get('user');
 
-      if (token && userStr) {
-        try {
-          const decodedUserStr = decodeURIComponent(userStr);
-          const user = JSON.parse(decodedUserStr);
+        if (token && userStr) {
+            const user = JSON.parse(decodeURIComponent(userStr));
 
-          localStorage.setItem('userToken', token);
-          localStorage.setItem('user', JSON.stringify(user));
+            localStorage.setItem('userToken', token);
+            localStorage.setItem('user', JSON.stringify(user));
 
-          toast.success('Login successful!');
-          router.replace('/Portal/Clients/Dashboard');
-        } catch (err) {
-          console.error('Error parsing user data:', err);
-          toast.error('Failed to process user data.');
+            toast.success('Login successful!');
+            router.replace('/Portal/Clients/Dashboard'); 
+        } else {
+          toast.error('Missing login information.');
         }
-      } else {
-        toast.error('Missing login information.');
+      } catch (err) {
+        toast.error('Failed to process user data.');
       }
     }
+    handleAuthCallback();
   }, [router]);
 
-  return <p>Logging you in...</p>;
+  return (
+    <div className="flex items-center justify-center min-h-screen">
+      <p className="text-lg">Logging you in...</p>
+    </div>
+  );
 };
 
 export default CallbackPage;
