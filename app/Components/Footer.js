@@ -12,12 +12,10 @@ export default function Footer() {
               className="flex items-center space-x-1 group flex-shrink-0"
               aria-label="Home"
             >
-              <span className="text-xl sm:text-2xl font-bold text-[#00b1a5] group-hover:scale-105 transition-transform duration-300">
-                Meu
-              </span>
+              
               <div className="relative">
                 <img 
-                  src="/images/logo.png" 
+                  src="/images/logo.jpg" 
                   alt="" 
                   className="h-8 sm:h-10 md:h-12 w-auto group-hover:rotate-12 transition-transform duration-500"
                   width={48}
@@ -25,9 +23,7 @@ export default function Footer() {
                   loading="eager"
                 />
               </div>
-              <span className="text-xl sm:text-2xl font-bold text-[#00b1a5] group-hover:scale-105 transition-transform duration-300">
-                Deliver
-              </span>
+              
             </Link>
           </div>
           <p className="text-gray-600">Fast, Efficient, and Secure Everywhere.</p>

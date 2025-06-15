@@ -84,12 +84,10 @@ export default function Navbar() {
           <div className="flex justify-between items-center h-16 lg:h-20">
             {/* Logo */}
             <Link href="/" className="flex items-center space-x-1 group" aria-label="Home">
-              <span className="text-xl sm:text-2xl font-bold text-black group-hover:scale-105 transition-transform duration-300">
-                Meu
-              </span>
+              
               <div className="relative">
                 <img
-                  src="/images/logo.png"
+                  src="/images/logo.jpg"
                   alt="Meu Deliver Logo"
                   className="h-8 sm:h-10 md:h-12 w-auto group-hover:rotate-12 transition-transform duration-500"
                   width={48}
@@ -97,9 +95,7 @@ export default function Navbar() {
                   loading="eager"
                 />
               </div>
-              <span className="text-xl sm:text-2xl font-bold text-black group-hover:scale-105 transition-transform duration-300">
-                Deliver
-              </span>
+              
             </Link>
 
             {/* Location Selector - Desktop */}
