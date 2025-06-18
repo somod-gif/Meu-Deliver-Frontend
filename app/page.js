@@ -105,11 +105,11 @@ export default function HomePage() {
   ];
 
   return (
-    <main className="min-h-screen bg-white">
+    <main className=" bg-white">
 
 
       {/* Enhanced Hero Section */}
-      <section className="relative h-screen mt-3  bg-gradient-to-br from-[#00b1a5] via-[#00b1a5] to-[#a3d900] overflow-hidden">
+      <section className="relative  mt-3  bg-gradient-to-br from-[#00b1a5] via-[#00b1a5] to-[#a3d900] overflow-hidden">
         
         {/* Enhanced Background Overlay */}
         <div className="absolute inset-0 bg-black/30"></div>
