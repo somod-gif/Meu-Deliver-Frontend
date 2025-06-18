@@ -156,15 +156,6 @@ export default function GoogleTranslate({
 
   return (
     <div className={`flex items-center ${className}`}>
-      {variant !== 'icon-only' && (
-        <div className="flex items-center gap-2 text-gray-600">
-          <Globe className={`w-5 h-5 text-[#00b1a5]`} />
-          {variant === 'default' && (
-            <span className="text-sm">Language</span>
-          )}
-        </div>
-      )}
-      
       {variant === 'icon-only' ? (
         <button 
           className="p-2 hover:bg-gray-50 rounded-lg"

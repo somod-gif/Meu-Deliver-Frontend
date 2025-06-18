@@ -64,15 +64,15 @@ export default function Navbar() {
         border-b border-gray-100
       `}>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between items-center ">
+          <div className="flex justify-between items-center h-20">
             {/* Logo - Bigger size */}
             <Link href="/" className="flex items-center" aria-label="Home">
               <img 
                 src="/images/m_logo.png" 
                 alt="Meu Deliver Logo" 
-                className=" w-auto " 
-                width={120}
-                // height={au}
+                className=" " 
+                width={110}
+                height={110}
               />
             </Link>
 
@@ -228,7 +228,7 @@ export default function Navbar() {
           </div>
         </div>
       </nav>
-      <div className="h-19"></div>
+      <div className="h-16"></div>
     </>
   )
 }
