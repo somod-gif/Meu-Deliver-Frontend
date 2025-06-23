@@ -22,6 +22,74 @@ export default function HomePage() {
     { name: 'Retail', icon: '👕' }
   ];
 
+  // Products data organized by category
+  const productsByCategory = {
+    Food: [
+      {
+        id: 1,
+        name: 'Cheeseburger Meal',
+        price: 12.99,
+        vendor: 'Burger Palace',
+        rating: 4.8,
+        deliveryTime: '15-25 min',
+        image: 'https://images.unsplash.com/photo-1568901346375-23c9450c58cd?w=400&h=300&fit=crop',
+        badge: 'Best Seller'
+      },
+      // ... add more products as needed
+    ],
+    Groceries: [
+      {
+        id: 2,
+        name: 'Fresh Fruits Basket',
+        price: 20.5,
+        vendor: 'FreshMart',
+        rating: 4.6,
+        deliveryTime: '20-30 min',
+        image: 'https://images.unsplash.com/photo-1586985289688-ca3cf47d3e6e?w=400&h=300&fit=crop',
+        badge: ''
+      }
+    ],
+    Pharmacy: [
+      {
+        id: 3,
+        name: 'Pain Relief Tablets',
+        price: 8.99,
+        vendor: 'MediCare',
+        rating: 4.9,
+        deliveryTime: '10-20 min',
+        image: 'https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?w=400&h=300&fit=crop',
+        badge: ''
+      }
+    ],
+    Electronics: [
+      {
+        id: 4,
+        name: 'Smartphone X200',
+        price: 299.99,
+        vendor: 'TechZone',
+        rating: 4.5,
+        deliveryTime: '30-45 min',
+        image: 'https://images.unsplash.com/photo-1518770660439-4636190af475?w=400&h=300&fit=crop',
+        badge: ''
+      }
+    ],
+    Retail: [
+      {
+        id: 5,
+        name: 'Fashion T-Shirt',
+        price: 19.99,
+        vendor: 'Fashion Hub',
+        rating: 4.4,
+        deliveryTime: '35-50 min',
+        image: 'https://images.unsplash.com/photo-1489987707025-afc232f7ea0f?w=400&h=300&fit=crop',
+        badge: ''
+      }
+    ],
+  };
+
+  const allProducts = Object.values(productsByCategory).flat();
+
+  // Popular Vendors Data
   const popularVendors = [
     {
       id: 1,
@@ -53,37 +121,15 @@ export default function HomePage() {
       featured: true,
       badge: 'Fast'
     },
-    {
-      id: 4,
-      name: 'Pizza Heaven',
-      category: 'Food',
-      rating: 4.7,
-      deliveryTime: '25-35 min',
-      image: 'https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?w=400&h=300&fit=crop'
-    },
-    {
-      id: 5,
-      name: 'TechZone',
-      category: 'Electronics',
-      rating: 4.5,
-      deliveryTime: '30-45 min',
-      image: 'https://images.unsplash.com/photo-1518770660439-4636190af475?w=400&h=300&fit=crop'
-    },
-    {
-      id: 6,
-      name: 'Fashion Hub',
-      category: 'Retail',
-      rating: 4.4,
-      deliveryTime: '35-50 min',
-      image: 'https://images.unsplash.com/photo-1489987707025-afc232f7ea0f?w=400&h=300&fit=crop'
-    }
+    // ... other vendors as needed
   ];
 
+  // Other static data
   const stats = [
-    { number: '50K+', label: 'Happy Customers' },
-    { number: '1000+', label: 'Partner Vendors' },
-    { number: '15min', label: 'Average Delivery' },
-    { number: '24/7', label: 'Support Available' }
+    { number: '50K+', label: 'Happy Customers', icon: '😊' },
+    { number: '1000+', label: 'Partner Vendors', icon: '🍽️' },
+    { number: '15min', label: 'Average Delivery', icon: '⚡' },
+    { number: '24/7', label: 'Support Available', icon: '⭐' }
   ];
 
   const riderFeatures = [
@@ -105,12 +151,12 @@ export default function HomePage() {
   ];
 
   return (
-    <main className=" bg-white">
+    <main className="bg-white">
 
-
-      {/* Enhanced Hero Section */}
+      {/* --------- Hero Section --------- */}
+      
       <section className="relative  mt-3  bg-gradient-to-br from-[#00b1a5] via-[#00b1a5] to-[#a3d900] overflow-hidden">
-        
+
         {/* Enhanced Background Overlay */}
         <div className="absolute inset-0 bg-black/30"></div>
 
@@ -267,8 +313,8 @@ export default function HomePage() {
     `}</style>
       </section>
 
-      {/* Categories Navigation */}
-      <div className={` top-0 z-40 bg-white border-b border-gray-100 transition-all duration-300  ${isScrolled ? 'shadow-md' : ''}`}>
+      {/* --------- Categories Navigation --------- */}
+      <div className={`top-0 z-40 bg-white border-b border-gray-100 transition-all duration-300 ${isScrolled ? 'shadow-md' : ''}`}>
         <div className="max-w-7xl mx-auto px-4 py-6">
           <div className="flex space-x-8 overflow-x-auto scrollbar-hide">
             {categories.map((category) => (
@@ -276,13 +322,13 @@ export default function HomePage() {
                 key={category.name}
                 onClick={() => setActiveCategory(category.name)}
                 className={`flex flex-col items-center min-w-fit pb-4 border-b-3 transition-all duration-300 transform hover:scale-105 ${activeCategory === category.name
-                    ? 'border-[#00b1a5] text-[#00b1a5]'
-                    : 'border-transparent text-gray-600 hover:text-black hover:border-[#a3d900]'
+                  ? 'border-[#00b1a5] text-[#00b1a5]'
+                  : 'border-transparent text-gray-600 hover:text-black hover:border-[#a3d900]'
                   }`}
               >
                 <div className={`text-3xl mb-2 p-3 rounded-2xl transition-all duration-300 ${activeCategory === category.name
-                    ? 'bg-[#00b1a5]/10 transform scale-110'
-                    : 'hover:bg-gray-100'
+                  ? 'bg-[#00b1a5]/10 transform scale-110'
+                  : 'hover:bg-gray-100'
                   }`}>
                   {category.icon}
                 </div>
@@ -293,7 +339,74 @@ export default function HomePage() {
         </div>
       </div>
 
-      {/* Featured Vendors */}
+      {/* --------- Shop by Category Products --------- */}
+      <section className="max-w-7xl mx-auto px-4 py-16">
+        <div className="text-center mb-12">
+          <h2 className="text-4xl md:text-5xl font-black text-black mb-4">
+            Shop by <span className="text-[#00b1a5]">Category</span>
+          </h2>
+          <p className="text-xl text-gray-600 max-w-2xl mx-auto">
+            Discover top products in each category, handpicked for you
+          </p>
+        </div>
+        {/* Products Grid */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+          {(activeCategory === 'All' ? allProducts : productsByCategory[activeCategory] || []).map((product) => (
+            <div key={product.id} className="bg-white rounded-xl shadow-md overflow-hidden hover:shadow-xl transition-all duration-300 group border border-gray-100">
+              <div className="relative h-48 overflow-hidden">
+                <img src={product.image} alt={product.name} className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" />
+                {product.badge && (
+                  <div className="absolute top-3 left-3 bg-[#c6d90d] text-black px-3 py-1 rounded-full text-xs font-bold shadow-sm">{product.badge}</div>
+                )}
+                <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/70 to-transparent p-4">
+                  <h3 className="text-white font-bold text-lg">{product.name}</h3>
+                  <p className="text-white/90 text-sm">{product.vendor}</p>
+                </div>
+              </div>
+              <div className="p-4">
+                <div className="flex items-center justify-between mb-3">
+                  <div className="flex items-center">
+                    <span className="text-yellow-400">★</span>
+                    <span className="ml-1 font-bold text-gray-800">{product.rating}</span>
+                    <span className="mx-2 text-gray-400">•</span>
+                    <span className="text-gray-600 text-sm">{product.deliveryTime}</span>
+                  </div>
+                  <span className="bg-[#00b1a5]/10 text-[#00b1a5] px-2 py-1 rounded-md text-sm font-bold">
+                    ${product.price.toFixed(2)}
+                  </span>
+                </div>
+                {/* Action Buttons */}
+                <div className="flex gap-2">
+                  <button className="flex-1 bg-[#00b1a5] hover:bg-[#008a80] text-white px-4 py-2 rounded-lg text-sm font-bold flex items-center justify-center gap-2 transition-colors">
+                    <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
+                    </svg>
+                    Add to Cart
+                  </button>
+                  <button className="flex-1 bg-white border border-gray-300 hover:border-[#00b1a5] text-gray-700 hover:text-[#00b1a5] px-4 py-2 rounded-lg text-sm font-bold transition-colors">
+                    <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                    </svg>
+                    View Product
+                  </button>
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+        {/* View All Button */}
+        <div className="text-center mt-12">
+          <button className="bg-white border-2 border-[#00b1a5] text-[#00b1a5] hover:bg-[#00b1a5] hover:text-white px-8 py-3 rounded-full font-bold transition-colors duration-300 flex items-center mx-auto gap-2">
+            View All {activeCategory === 'All' ? 'Products' : activeCategory}
+            <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+              <path fillRule="evenodd" d="M10.293 5.293a1 1 0 011.414 0l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414-1.414L12.586 11H5a1 1 0 110-2h7.586l-2.293-2.293a1 1 0 010-1.414z" clipRule="evenodd" />
+            </svg>
+          </button>
+        </div>
+      </section>
+
+      {/* --------- Featured Vendors --------- */}
       <section className="max-w-7xl mx-auto px-4 py-16">
         <div className="text-center mb-12">
           <h2 className="text-4xl md:text-5xl font-black text-black mb-4">
@@ -303,7 +416,6 @@ export default function HomePage() {
             Discover the best local vendors delivering quality right to your doorstep
           </p>
         </div>
-
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {popularVendors
             .filter(vendor => activeCategory === 'All' || vendor.category === activeCategory)
@@ -311,16 +423,10 @@ export default function HomePage() {
             .map((vendor) => (
               <div key={vendor.id} className="group bg-white rounded-3xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-2">
                 <div className="relative h-64 overflow-hidden">
-                  <img
-                    src={vendor.image}
-                    alt={vendor.name}
-                    className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
-                  />
+                  <img src={vendor.image} alt={vendor.name} className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent"></div>
                   <div className="absolute top-4 left-4">
-                    <span className="bg-[#c6d90d] text-black px-3 py-1 rounded-full text-sm font-bold">
-                      {vendor.badge}
-                    </span>
+                    <span className="bg-[#c6d90d] text-black px-3 py-1 rounded-full text-sm font-bold">{vendor.badge}</span>
                   </div>
                   <div className="absolute bottom-4 right-4 bg-white/95 backdrop-blur-sm px-3 py-2 rounded-xl">
                     <div className="flex items-center space-x-2 text-sm font-bold">
@@ -332,9 +438,7 @@ export default function HomePage() {
                   </div>
                 </div>
                 <div className="p-6">
-                  <h3 className="font-black text-xl mb-2 text-black group-hover:text-[#00b1a5] transition-colors">
-                    {vendor.name}
-                  </h3>
+                  <h3 className="font-black text-xl mb-2 text-black group-hover:text-[#00b1a5] transition-colors">{vendor.name}</h3>
                   <p className="text-gray-600 font-medium">{vendor.category}</p>
                 </div>
               </div>
@@ -342,7 +446,7 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* All Vendors */}
+      {/* --------- All Vendors --------- */}
       <section className="bg-gray-50 py-16">
         <div className="max-w-7xl mx-auto px-4">
           <h2 className="text-3xl font-black text-black mb-8">
@@ -354,11 +458,7 @@ export default function HomePage() {
               .map((vendor) => (
                 <div key={vendor.id} className="bg-white rounded-2xl overflow-hidden shadow-md hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1">
                   <div className="relative h-48 overflow-hidden">
-                    <img
-                      src={vendor.image}
-                      alt={vendor.name}
-                      className="w-full h-full object-cover transition-transform duration-300 hover:scale-105"
-                    />
+                    <img src={vendor.image} alt={vendor.name} className="w-full h-full object-cover transition-transform duration-300 hover:scale-105" />
                   </div>
                   <div className="p-4">
                     <h3 className="font-bold text-lg mb-1 text-black">{vendor.name}</h3>

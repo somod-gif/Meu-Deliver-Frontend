@@ -67,10 +67,10 @@ export default function Navbar() {
           <div className="flex justify-between items-center h-20">
             {/* Logo - Bigger size */}
             <Link href="/" className="flex items-center" aria-label="Home">
-              <img 
-                src="/images/m_logo.png" 
-                alt="Meu Deliver Logo" 
-                className=" " 
+              <img
+                src="/images/m_logo.png"
+                alt="Meu Deliver Logo"
+                className=" "
                 width={110}
                 height={110}
               />
@@ -85,9 +85,8 @@ export default function Navbar() {
                   <Link
                     key={link.name}
                     href={link.path}
-                    className={`group flex items-center space-x-2 transition-all duration-200 font-medium py-2 px-4 rounded-lg ${
-                      active ? 'text-black' : 'text-gray-600 hover:text-black'
-                    }`}
+                    className={`group flex items-center space-x-2 transition-all duration-200 font-medium py-2 px-4 rounded-lg ${active ? 'text-black' : 'text-gray-600 hover:text-black'
+                      }`}
                     title={link.description}
                     aria-label={link.description}
                   >
@@ -98,20 +97,20 @@ export default function Navbar() {
               })}
             </div>
 
-            
+
 
             {/* Right Side Controls */}
             <div className="flex items-center space-x-6">
-               {/* Cart Icon - Desktop */}
-            <button 
-              className="hidden lg:block p-2 hover:bg-gray-50 rounded-lg transition-colors duration-200 relative"
-              aria-label="Shopping cart"
-            >
-              <ShoppingBag className="w-6 h-6 text-gray-600 hover:text-[#00b1a5]" />
-              <span className="absolute -top-1 -right-1 bg-[#00b1a5] text-white text-xs rounded-full w-5 h-5 flex items-center justify-center font-medium">
-                0
-              </span>
-            </button>
+              {/* Cart Icon - Desktop */}
+              <button
+                className="hidden lg:block p-2 hover:bg-gray-50 rounded-lg transition-colors duration-200 relative"
+                aria-label="Shopping cart"
+              >
+                <ShoppingBag className="w-6 h-6 text-gray-600 hover:text-[#00b1a5]" />
+                <span className="absolute -top-1 -right-1 bg-[#00b1a5] text-white text-xs rounded-full w-5 h-5 flex items-center justify-center font-medium">
+                  0
+                </span>
+              </button>
               {/* Auth Buttons - Desktop - Moved before Google Translate */}
               <div className="hidden lg:flex items-center space-x-4">
                 {authLinks.map((link) => {
@@ -120,11 +119,10 @@ export default function Navbar() {
                     <Link
                       key={link.name}
                       href={link.path}
-                      className={`flex items-center space-x-2 font-medium px-5 py-2.5 rounded-lg transition-all duration-200 text-base whitespace-nowrap ${
-                        link.style === 'primary'
+                      className={`flex items-center space-x-2 font-medium px-5 py-2.5 rounded-lg transition-all duration-200 text-base whitespace-nowrap ${link.style === 'primary'
                           ? 'bg-[#00b1a5] text-white hover:bg-[#008a80]'
                           : 'border border-gray-300 text-gray-700 hover:bg-gray-50'
-                      }`}
+                        }`}
                       aria-label={link.name}
                     >
                       <IconComponent className="w-5 h-5" />
@@ -147,7 +145,7 @@ export default function Navbar() {
                 </div>
 
                 {/* Cart Icon */}
-                <button 
+                <button
                   className="p-2 hover:bg-gray-50 rounded-lg transition-colors duration-200 relative"
                   aria-label="Shopping cart"
                 >
@@ -177,9 +175,8 @@ export default function Navbar() {
 
         {/* Mobile Menu Dropdown */}
         <div
-          className={`lg:hidden bg-white shadow-lg transform transition-all duration-300 ease-in-out overflow-hidden ${
-            isOpen ? 'max-h-[500px] opacity-100 border-t border-gray-100' : 'max-h-0 opacity-0'
-          }`}
+          className={`lg:hidden bg-white shadow-lg transform transition-all duration-300 ease-in-out overflow-hidden ${isOpen ? 'max-h-[500px] opacity-100 border-t border-gray-100' : 'max-h-0 opacity-0'
+            }`}
         >
           <div className="flex flex-col p-4 space-y-4">
             {/* Mobile Navigation Links */}
@@ -190,9 +187,8 @@ export default function Navbar() {
                 <Link
                   key={link.name}
                   href={link.path}
-                  className={`flex items-center space-x-3 font-medium px-4 py-3 rounded-lg transition-all duration-200 text-base ${
-                    active ? 'text-black bg-gray-50' : 'text-gray-600 hover:text-black hover:bg-gray-50'
-                  }`}
+                  className={`flex items-center space-x-3 font-medium px-4 py-3 rounded-lg transition-all duration-200 text-base ${active ? 'text-black bg-gray-50' : 'text-gray-600 hover:text-black hover:bg-gray-50'
+                    }`}
                   onClick={() => setIsOpen(false)}
                 >
                   <IconComponent className={`w-6 h-6 ${active ? 'text-[#00b1a5]' : 'text-gray-500'}`} />
@@ -212,11 +208,10 @@ export default function Navbar() {
                   <Link
                     key={link.name}
                     href={link.path}
-                    className={`flex items-center justify-center space-x-3 font-medium px-4 py-3 rounded-lg transition-all duration-200 text-base ${
-                      link.style === 'primary'
+                    className={`flex items-center justify-center space-x-3 font-medium px-4 py-3 rounded-lg transition-all duration-200 text-base ${link.style === 'primary'
                         ? 'bg-[#00b1a5] text-white hover:bg-[#008a80]'
                         : 'border border-gray-300 text-gray-700 hover:bg-gray-50'
-                    }`}
+                      }`}
                     onClick={() => setIsOpen(false)}
                   >
                     <IconComponent className="w-5 h-5" />
