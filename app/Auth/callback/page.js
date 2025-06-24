@@ -1,8 +1,8 @@
 "use client";
-import { useRouter } from 'next/navigation';
-import { useEffect } from 'react';
-import { toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+import { useRouter } from "next/navigation";
+import { useEffect } from "react";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const CallbackPage = () => {
   const router = useRouter();
@@ -11,24 +11,26 @@ const CallbackPage = () => {
     const handleAuthCallback = () => {
       try {
         const url = new URL(window.location.href);
-        const token = url.searchParams.get('access_token');
-        const userStr = url.searchParams.get('user');
+        const token = url.searchParams.get("access_token");
+        const userStr = url.searchParams.get("user");
 
         if (token && userStr) {
-            const user = JSON.parse(decodeURIComponent(userStr));
+          const user = JSON.parse(decodeURIComponent(userStr));
 
-            localStorage.setItem('userToken', token);
-            localStorage.setItem('user', JSON.stringify(user));
+          localStorage.setItem("userToken", token);
+          localStorage.setItem("user", JSON.stringify(user));
 
-            toast.success('Login successful!');
-            router.replace('/Portal/Clients/Dashboard'); 
+          toast.success("Login successful!");
+          setTimeout(() => {
+            router.replace("/Portal/Clients/Dashboard");
+          }, 2000); // Redirect after 2 seconds
         } else {
-          toast.error('Missing login information.');
+          toast.error("Missing login information.");
         }
       } catch (err) {
-        toast.error('Failed to process user data.');
+        toast.error("Failed to process user data.");
       }
-    }
+    };
     handleAuthCallback();
   }, [router]);
 
