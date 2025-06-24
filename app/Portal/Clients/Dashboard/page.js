@@ -54,12 +54,10 @@ export default function ClientDashboard() {
   const verifyUserToken = async (token) => {
     try {
       const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/auth/verify-current-user`, {
-        method: 'POST',
+        method: 'GET',
         headers: {
-          'Content-Type': 'application/json',
           Authorization: `Bearer ${token}`
-        },
-        body: JSON.stringify({ token })
+        }
       });
 
       if (!response.ok) {
@@ -93,6 +91,7 @@ export default function ClientDashboard() {
       });
 
       if (response.ok) {
+        toast.success('Logout successfuly.');
         localStorage.removeItem('user');
         localStorage.removeItem('userToken');
         router.push('/Auth/Login/');
@@ -210,6 +209,19 @@ export default function ClientDashboard() {
         const verification = await verifyUserToken(token);
         const userRole = verification.payload?.role;
 
+        switch (userRole) {
+          case 'CLIENT':
+            router.push('/Portal/Clients/Dashboard');
+            break;
+          case 'VENDOR':
+            router.push('/Portal/Vendor/Dashboard');
+            break;
+          case 'DELIVERY':
+            router.push('/Portal/Ride/Dashboard');
+          case 'ADMIN':
+            router.push('/Portal/Admin/Dashboard'); 
+            break;
+        }
         // Redirect based on role
         if (userRole === 'VENDOR') {
           router.push('/Portal/Vendor/Dashboard');

@@ -101,16 +101,6 @@ export default function RegisterPage() {
         email: formData.email,
         phone: formData.phone,
         password: formData.password,
-        role: formData.role,
-        ...(formData.role === 'vendor' && {
-          businessName: additionalDetails.vendor.businessName,
-          businessType: additionalDetails.vendor.businessType,
-          address: additionalDetails.vendor.address
-        }),
-        ...(formData.role === 'rider' && {
-          vehicleType: additionalDetails.rider.vehicleType,
-          licenseNumber: additionalDetails.rider.licenseNumber
-        })
       };
 
       const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/auth/signup`, {
@@ -127,23 +117,12 @@ export default function RegisterPage() {
       }
 
       const data = await response.json();
-
+      console.log('Registration successful:', data);
       localStorage.setItem('userToken', data.access_token);
       localStorage.setItem('user', JSON.stringify(data.user));
 
       toast.success('Registration successful!');
-
-      // Redirect based on role
-      switch(formData.role) {
-        case 'vendor':
-          router.push('/Portal/Vendor/Dashboard/');
-          break;
-        case 'rider':
-          router.push('/Portal/Rider/Dashboard/');
-          break;
-        default:
-          router.push('/Portal/Clients/Dashboard/');
-      }
+      router.push('/Portal/Clients/Dashboard');
     } catch (error) {
       console.error('Registration error:', error);
       toast.error(error.message || 'Something went wrong');
