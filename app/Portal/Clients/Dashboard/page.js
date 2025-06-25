@@ -4,22 +4,13 @@ import {
   HomeIcon, ShoppingBagIcon, MapPinIcon, CreditCardIcon,
   QuestionMarkCircleIcon, ArrowRightOnRectangleIcon,
   Bars3Icon, XMarkIcon, ClockIcon, CheckCircleIcon,
-  TruckIcon, DocumentTextIcon, PencilIcon
+  TruckIcon, DocumentTextIcon, PencilIcon,
+  UserCircleIcon, PlusIcon, ArrowRightIcon
 } from '@heroicons/react/24/outline';
 import { useRouter } from 'next/navigation';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
-/**
- * Client Dashboard Component
- * 
- * Features:
- * - Authentication verification
- * - Role-based redirection
- * - Order tracking
- * - Address management
- * - Responsive design with mobile sidebar
- */
 export default function ClientDashboard() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [user, setUser] = useState(null);
@@ -29,6 +20,8 @@ export default function ClientDashboard() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [currentSection, setCurrentSection] = useState('dashboard');
+  const [showVendorForm, setShowVendorForm] = useState(false);
+  const [showRiderForm, setShowRiderForm] = useState(false);
 
   const router = useRouter();
 
@@ -42,79 +35,89 @@ export default function ClientDashboard() {
     { name: 'Logout', icon: ArrowRightOnRectangleIcon, key: 'logout' },
   ];
 
-  /**
-   * API: Verify User Authentication
-   * Endpoint: /auth/verify-current-user
-   * Method: POST
-   * Headers: Authorization: Bearer <token>
-   * Body: { token }
-   * 
-   * Validates the user's JWT token and redirects if invalid
-   */
+  /* 
+  * API FETCH: Verify user token
+  * Endpoint: /auth/verify-current-user
+  * Method: GET
+  * Headers: Authorization: Bearer {token}
+  */
   const verifyUserToken = async (token) => {
     try {
-      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/auth/verify-current-user`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${token}`
-        },
-        body: JSON.stringify({ token })
-      });
+      // const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/auth/verify-current-user`, {
+      //   method: 'GET',
+      //   headers: {
+      //     Authorization: `Bearer ${token}`
+      //   }
+      // });
 
-      if (!response.ok) {
-        throw new Error('Token verification failed');
-      }
+      // if (!response.ok) {
+      //   throw new Error('Token verification failed');
+      // }
 
-      const data = await response.json();
-      return data;
+      // const data = await response.json();
+      // return data;
+      
+      // Mock response for development
+      return {
+        success: true,
+        payload: {
+          role: 'CLIENT',
+          name: 'John Doe',
+          email: 'john@example.com'
+        }
+      };
     } catch (err) {
       console.error('Token verification error:', err);
       throw err;
     }
   };
 
-  /**
-   * API: Logout User
-   * Endpoint: /auth/logout
-   * Method: POST
-   * Headers: Authorization: Bearer <token>
-   * 
-   * Clears user session on the server and client
-   */
+  /* 
+  * API FETCH: Logout user
+  * Endpoint: /auth/logout
+  * Method: POST
+  * Headers: Authorization: Bearer {token}
+  */
   const logoutUser = async () => {
     try {
       const token = localStorage.getItem('userToken');
-      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/auth/logout`, {
-        method: 'POST',
-        headers: {
-          'Authorization': `Bearer ${token}`
-        }
-      });
+      // const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/auth/logout`, {
+      //   method: 'POST',
+      //   headers: {
+      //     'Authorization': `Bearer ${token}`
+      //   }
+      // });
 
-      if (response.ok) {
+      // if (response.ok) {
+        toast.success('Logged out successfully');
         localStorage.removeItem('user');
         localStorage.removeItem('userToken');
         router.push('/Auth/Login/');
-      } else {
-        throw new Error('Logout failed');
-      }
+      // } else {
+      //   throw new Error('Logout failed');
+      // }
     } catch (error) {
       console.error('Logout error:', error);
       toast.error('Failed to logout. Please try again.');
     }
   };
 
-  /**
-   * API: Get Current Order (Mock)
-   * Endpoint: /orders/current (mock implementation)
-   * Method: GET
-   * Headers: Authorization: Bearer <token>
-   * 
-   * Returns the user's current active order
-   */
+  /* 
+  * API FETCH: Get current order
+  * Endpoint: /orders/current
+  * Method: GET
+  * Headers: Authorization: Bearer {token}
+  */
   const fetchCurrentOrder = async () => {
-    // In a real implementation, this would be an API call
+    // const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/orders/current`, {
+    //   headers: {
+    //     Authorization: `Bearer ${localStorage.getItem('userToken')}`
+    //   }
+    // });
+    // const data = await response.json();
+    // return data;
+
+    // Mock data for development
     return {
       id: 'MD240607001',
       status: 'on_way',
@@ -130,16 +133,22 @@ export default function ClientDashboard() {
     };
   };
 
-  /**
-   * API: Get Order History (Mock)
-   * Endpoint: /orders/history (mock implementation)
-   * Method: GET
-   * Headers: Authorization: Bearer <token>
-   * 
-   * Returns the user's order history
-   */
+  /* 
+  * API FETCH: Get order history
+  * Endpoint: /orders/history
+  * Method: GET
+  * Headers: Authorization: Bearer {token}
+  */
   const fetchOrderHistory = async () => {
-    // In a real implementation, this would be an API call
+    // const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/orders/history`, {
+    //   headers: {
+    //     Authorization: `Bearer ${localStorage.getItem('userToken')}`
+    //   }
+    // });
+    // const data = await response.json();
+    // return data;
+
+    // Mock data for development
     return [
       {
         id: 'MD240606001',
@@ -154,16 +163,22 @@ export default function ClientDashboard() {
     ];
   };
 
-  /**
-   * API: Get Saved Addresses (Mock)
-   * Endpoint: /user/addresses (mock implementation)
-   * Method: GET
-   * Headers: Authorization: Bearer <token>
-   * 
-   * Returns the user's saved addresses
-   */
+  /* 
+  * API FETCH: Get saved addresses
+  * Endpoint: /user/addresses
+  * Method: GET
+  * Headers: Authorization: Bearer {token}
+  */
   const fetchSavedAddresses = async () => {
-    // In a real implementation, this would be an API call
+    // const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/user/addresses`, {
+    //   headers: {
+    //     Authorization: `Bearer ${localStorage.getItem('userToken')}`
+    //   }
+    // });
+    // const data = await response.json();
+    // return data;
+
+    // Mock data for development
     return [
       {
         id: 1,
@@ -177,21 +192,83 @@ export default function ClientDashboard() {
     ];
   };
 
-  /**
-   * API: Cancel Order (Mock)
-   * Endpoint: /orders/{orderId}/cancel (mock implementation)
-   * Method: POST
-   * Headers: Authorization: Bearer <token>
-   * 
-   * Cancels the specified order if within the allowed time window
-   */
+  /* 
+  * API FETCH: Cancel order
+  * Endpoint: /orders/{orderId}/cancel
+  * Method: POST
+  * Headers: Authorization: Bearer {token}
+  */
   const cancelOrder = async (orderId) => {
-    // In a real implementation, this would be an API call
+    // const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/orders/${orderId}/cancel`, {
+    //   method: 'POST',
+    //   headers: {
+    //     Authorization: `Bearer ${localStorage.getItem('userToken')}`
+    //   }
+    // });
+    // return await response.json();
+
+    // Mock response for development
     return new Promise((resolve) => {
       setTimeout(() => {
         resolve({ success: true });
       }, 1000);
     });
+  };
+
+  /* 
+  * API FETCH: Submit vendor application
+  * Endpoint: /vendor/apply
+  * Method: POST
+  * Headers: Authorization: Bearer {token}
+  */
+  const submitVendorApplication = async (formData) => {
+    try {
+      // const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/vendor/apply`, {
+      //   method: 'POST',
+      //   headers: {
+      //     'Content-Type': 'application/json',
+      //     Authorization: `Bearer ${localStorage.getItem('userToken')}`
+      //   },
+      //   body: JSON.stringify(formData)
+      // });
+      
+      // if (!response.ok) throw new Error('Application submission failed');
+      
+      // Mock success response
+      toast.success('Vendor application submitted successfully!');
+      setShowVendorForm(false);
+    } catch (error) {
+      console.error('Vendor application error:', error);
+      toast.error(error.message || 'Failed to submit application');
+    }
+  };
+
+  /* 
+  * API FETCH: Submit rider application
+  * Endpoint: /rider/apply
+  * Method: POST
+  * Headers: Authorization: Bearer {token}
+  */
+  const submitRiderApplication = async (formData) => {
+    try {
+      // const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/rider/apply`, {
+      //   method: 'POST',
+      //   headers: {
+      //     'Content-Type': 'application/json',
+      //     Authorization: `Bearer ${localStorage.getItem('userToken')}`
+      //   },
+      //   body: JSON.stringify(formData)
+      // });
+      
+      // if (!response.ok) throw new Error('Application submission failed');
+      
+      // Mock success response
+      toast.success('Rider application submitted successfully!');
+      setShowRiderForm(false);
+    } catch (error) {
+      console.error('Rider application error:', error);
+      toast.error(error.message || 'Failed to submit application');
+    }
   };
 
   // Authentication and data loading
@@ -211,13 +288,21 @@ export default function ClientDashboard() {
         const userRole = verification.payload?.role;
 
         // Redirect based on role
-        if (userRole === 'VENDOR') {
-          router.push('/Portal/Vendor/Dashboard');
-          return;
-        }
-        if (userRole === 'ADMIN') {
-          router.push('/Portal/Admin/Dashboard');
-          return;
+        switch (userRole) {
+          case 'CLIENT':
+            // Continue with client dashboard
+            break;
+          case 'VENDOR':
+            router.push('/Portal/Vendor/Dashboard');
+            return;
+          case 'DELIVERY':
+            router.push('/Portal/Ride/Dashboard');
+            return;
+          case 'ADMIN':
+            router.push('/Portal/Admin/Dashboard');
+            return;
+          default:
+            throw new Error('Unauthorized access');
         }
 
         // Set user data
@@ -362,14 +447,6 @@ export default function ClientDashboard() {
     );
   };
 
-  // Loading skeleton component
-  const LoadingSkeleton = () => (
-    <div className="animate-pulse">
-      <div className="h-4 bg-gray-200 rounded w-3/4 mb-2"></div>
-      <div className="h-4 bg-gray-200 rounded w-1/2"></div>
-    </div>
-  );
-
   // Render content based on selected section
   const renderMainContent = () => {
     switch (currentSection) {
@@ -389,6 +466,12 @@ export default function ClientDashboard() {
             canCancelOrder={canCancelOrder}
             handleCancelOrder={handleCancelOrder}
             TrackingProgress={TrackingProgress}
+            showVendorForm={showVendorForm}
+            setShowVendorForm={setShowVendorForm}
+            showRiderForm={showRiderForm}
+            setShowRiderForm={setShowRiderForm}
+            submitVendorApplication={submitVendorApplication}
+            submitRiderApplication={submitRiderApplication}
           />
         );
       case 'orders':
@@ -489,194 +572,494 @@ const DashboardView = ({
   formatCurrency,
   canCancelOrder,
   handleCancelOrder,
-  TrackingProgress
-}) => (
-  <>
-    <div className="mb-8">
-      <h1 className="text-2xl font-bold text-gray-900">
-        Welcome{user?.name ? `, ${user.name.split(' ')[0]}` : ''}!
-      </h1>
-      <p className="text-gray-600">Track your orders and manage your account</p>
-    </div>
-    
-    {currentOrder && (
-      <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6 mb-6">
-        <div className="flex items-center justify-between mb-4">
-          <h2 className="text-lg font-semibold">Current Order</h2>
-          <span className={`px-3 py-1 rounded-full text-sm font-medium ${getStatusColor(currentOrder.status)}`}>
-            {getStatusText(currentOrder.status)}
-          </span>
-        </div>
-        
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-          <div>
-            <TrackingProgress status={currentOrder.status} />
-            
-            <div className="space-y-2 text-sm">
-              <div className="flex justify-between">
-                <span className="text-gray-600">Order ID:</span>
-                <span className="font-medium">{currentOrder.id}</span>
-              </div>
-              <div className="flex justify-between">
-                <span className="text-gray-600">Order Time:</span>
-                <span>{formatTime(currentOrder.created_at)}</span>
-              </div>
-              <div className="flex justify-between">
-                <span className="text-gray-600">Estimated Delivery:</span>
-                <span className="font-medium text-lime-600">{formatTime(currentOrder.estimated_delivery)}</span>
-              </div>
-              {currentOrder.driver_name && (
+  TrackingProgress,
+  showVendorForm,
+  setShowVendorForm,
+  showRiderForm,
+  setShowRiderForm,
+  submitVendorApplication,
+  submitRiderApplication
+}) => {
+  const [vendorForm, setVendorForm] = useState({
+    businessName: '',
+    businessType: '',
+    address: '',
+    phone: '',
+    description: ''
+  });
+
+  const [riderForm, setRiderForm] = useState({
+    vehicleType: '',
+    licenseNumber: '',
+    vehicleModel: '',
+    phone: ''
+  });
+
+  const handleVendorInputChange = (e) => {
+    const { name, value } = e.target;
+    setVendorForm(prev => ({ ...prev, [name]: value }));
+  };
+
+  const handleRiderInputChange = (e) => {
+    const { name, value } = e.target;
+    setRiderForm(prev => ({ ...prev, [name]: value }));
+  };
+
+  const handleVendorSubmit = (e) => {
+    e.preventDefault();
+    submitVendorApplication(vendorForm);
+  };
+
+  const handleRiderSubmit = (e) => {
+    e.preventDefault();
+    submitRiderApplication(riderForm);
+  };
+
+  return (
+    <>
+      <div className="mb-8">
+        <h1 className="text-2xl font-bold text-gray-900">
+          Welcome{user?.name ? `, ${user.name.split(' ')[0]}` : ''}!
+        </h1>
+        <p className="text-gray-600">Track your orders and manage your account</p>
+      </div>
+      
+      {currentOrder && (
+        <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6 mb-6">
+          <div className="flex items-center justify-between mb-4">
+            <h2 className="text-lg font-semibold">Current Order</h2>
+            <span className={`px-3 py-1 rounded-full text-sm font-medium ${getStatusColor(currentOrder.status)}`}>
+              {getStatusText(currentOrder.status)}
+            </span>
+          </div>
+          
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            <div>
+              <TrackingProgress status={currentOrder.status} />
+              
+              <div className="space-y-2 text-sm">
                 <div className="flex justify-between">
-                  <span className="text-gray-600">Driver:</span>
-                  <span>{currentOrder.driver_name}</span>
+                  <span className="text-gray-600">Order ID:</span>
+                  <span className="font-medium">{currentOrder.id}</span>
                 </div>
+                <div className="flex justify-between">
+                  <span className="text-gray-600">Order Time:</span>
+                  <span>{formatTime(currentOrder.created_at)}</span>
+                </div>
+                <div className="flex justify-between">
+                  <span className="text-gray-600">Estimated Delivery:</span>
+                  <span className="font-medium text-lime-600">{formatTime(currentOrder.estimated_delivery)}</span>
+                </div>
+                {currentOrder.driver_name && (
+                  <div className="flex justify-between">
+                    <span className="text-gray-600">Driver:</span>
+                    <span>{currentOrder.driver_name}</span>
+                  </div>
+                )}
+              </div>
+            </div>
+            
+            <div>
+              <h3 className="font-medium mb-2">Order Items</h3>
+              {currentOrder.items.length > 0 ? (
+                <ul className="text-gray-600 space-y-1">
+                  {currentOrder.items.map((item, index) => (
+                    <li key={index}>
+                      {item.name} x{item.quantity}
+                    </li>
+                  ))}
+                </ul>
+              ) : (
+                <p className="text-gray-600">No items available</p>
+              )}
+              
+              <div className="mt-4 flex justify-between items-center">
+                <span className="text-lg font-bold text-gray-900">Total:</span>
+                <span className="text-lg font-semibold">{formatCurrency(currentOrder.total_amount)}</span>
+              </div>
+              
+              {canCancelOrder(currentOrder.created_at) && (
+                <button
+                  onClick={() => handleCancelOrder(currentOrder.id)}
+                  className="mt-4 w-full bg-red-50 text-red-700 border border-red-200 px-4 py-2 rounded-lg hover:bg-red-100 transition"
+                >
+                  Cancel Order
+                </button>
               )}
             </div>
           </div>
-          
-          <div>
-            <h3 className="font-medium mb-2">Order Items</h3>
-            {currentOrder.items.length > 0 ? (
-              <ul className="text-gray-600 space-y-1">
-                {currentOrder.items.map((item, index) => (
-                  <li key={index}>
-                    {item.name} x{item.quantity}
-                  </li>
-                ))}
-              </ul>
-            ) : (
-              <p className="text-gray-600">No items available</p>
-            )}
-            
-            <div className="mt-4 flex justify-between items-center">
-              <span className="text-lg font-bold text-gray-900">Total:</span>
-              <span className="text-lg font-semibold">{formatCurrency(currentOrder.total_amount)}</span>
-            </div>
-            
-            {canCancelOrder(currentOrder.created_at) && (
-              <button
-                onClick={() => handleCancelOrder(currentOrder.id)}
-                className="mt-4 w-full bg-red-50 text-red-700 border border-red-200 px-4 py-2 rounded-lg hover:bg-red-100 transition"
-              >
-                Cancel Order
-              </button>
-            )}
-          </div>
         </div>
-      </div>
-    )}
-    
-    <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
-      <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
-        <h2 className="text-lg font-semibold mb-4">Order History</h2>
-        {orderHistory.length > 0 ? (
-          orderHistory.map((order) => (
-            <div
-              key={order.id}
-              className="flex items-center justify-between p-4 border border-gray-100 rounded-lg hover:bg-gray-50 transition mb-2"
-            >
-              <div className="flex-1">
-                <div className="flex justify-between mb-1">
-                  <span className="font-medium text-gray-900">{order.id}</span>
-                  <span className={`px-2 py-1 rounded-full text-xs font-medium ${getStatusColor(order.status)}`}>
-                    {getStatusText(order.status)}
-                  </span>
-                </div>
-                <p className="text-sm text-gray-600 mb-1">
-                  {order.items.length > 0
-                    ? `${order.items.length} item${order.items.length > 1 ? 's' : ''}`
-                    : 'No items'}
-                </p>
-                <div className="flex justify-between items-center text-xs text-gray-500">
-                  <span>
-                    {formatDate(order.created_at)} at {formatTime(order.created_at)}
-                  </span>
-                  <span>{formatCurrency(order.total_amount)}</span>
-                </div>
-              </div>
-              <button 
-                className="ml-4 p-2 text-gray-400 hover:text-gray-600" 
-                aria-label="View order details"
-                onClick={() => setCurrentSection('orders')}
-              >
-                <DocumentTextIcon className="w-4 h-4" />
-              </button>
-            </div>
-          ))
-        ) : (
-          <div className="text-center py-8 text-gray-500">
-            <ShoppingBagIcon className="w-12 h-12 mx-auto mb-4 text-gray-300" />
-            <p>No orders yet</p>
-            <p className="text-sm">Your order history will appear here</p>
-          </div>
-        )}
-      </div>
+      )}
       
-      <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
-        <h2 className="text-lg font-semibold mb-4">Saved Addresses</h2>
-        {savedAddresses.length > 0 ? (
-          savedAddresses.map((addr) => (
-            <div key={addr.id} className="p-4 border border-gray-100 rounded-lg mb-2">
-              <div className="flex items-center justify-between mb-2">
-                <div className="flex items-center space-x-2">
-                  <span className="font-medium text-gray-900">{addr.label}</span>
-                  {addr.is_default && (
-                    <span className="px-2 py-1 bg-lime-100 text-lime-800 text-xs rounded-full">
-                      Default
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
+        <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+          <h2 className="text-lg font-semibold mb-4">Order History</h2>
+          {orderHistory.length > 0 ? (
+            orderHistory.map((order) => (
+              <div
+                key={order.id}
+                className="flex items-center justify-between p-4 border border-gray-100 rounded-lg hover:bg-gray-50 transition mb-2"
+              >
+                <div className="flex-1">
+                  <div className="flex justify-between mb-1">
+                    <span className="font-medium text-gray-900">{order.id}</span>
+                    <span className={`px-2 py-1 rounded-full text-xs font-medium ${getStatusColor(order.status)}`}>
+                      {getStatusText(order.status)}
                     </span>
-                  )}
+                  </div>
+                  <p className="text-sm text-gray-600 mb-1">
+                    {order.items.length > 0
+                      ? `${order.items.length} item${order.items.length > 1 ? 's' : ''}`
+                      : 'No items'}
+                  </p>
+                  <div className="flex justify-between items-center text-xs text-gray-500">
+                    <span>
+                      {formatDate(order.created_at)} at {formatTime(order.created_at)}
+                    </span>
+                    <span>{formatCurrency(order.total_amount)}</span>
+                  </div>
                 </div>
                 <button 
-                  className="text-gray-400 hover:text-gray-600" 
-                  aria-label="Edit address"
-                  onClick={() => setCurrentSection('addresses')}
+                  className="ml-4 p-2 text-gray-400 hover:text-gray-600" 
+                  aria-label="View order details"
+                  onClick={() => setCurrentSection('orders')}
                 >
-                  <PencilIcon className="w-4 h-4" />
+                  <DocumentTextIcon className="w-4 h-4" />
                 </button>
               </div>
-              <p className="text-sm text-gray-600">
-                {addr.street_address}
-                {addr.city && `, ${addr.city}`}
-                {addr.state && `, ${addr.state}`}
-                {addr.zip_code && ` ${addr.zip_code}`}
+            ))
+          ) : (
+            <div className="text-center py-8 text-gray-500">
+              <ShoppingBagIcon className="w-12 h-12 mx-auto mb-4 text-gray-300" />
+              <p>No orders yet</p>
+              <p className="text-sm">Your order history will appear here</p>
+            </div>
+          )}
+        </div>
+        
+        <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+          <h2 className="text-lg font-semibold mb-4">Saved Addresses</h2>
+          {savedAddresses.length > 0 ? (
+            savedAddresses.map((addr) => (
+              <div key={addr.id} className="p-4 border border-gray-100 rounded-lg mb-2">
+                <div className="flex items-center justify-between mb-2">
+                  <div className="flex items-center space-x-2">
+                    <span className="font-medium text-gray-900">{addr.label}</span>
+                    {addr.is_default && (
+                      <span className="px-2 py-1 bg-lime-100 text-lime-800 text-xs rounded-full">
+                        Default
+                      </span>
+                    )}
+                  </div>
+                  <button 
+                    className="text-gray-400 hover:text-gray-600" 
+                    aria-label="Edit address"
+                    onClick={() => setCurrentSection('addresses')}
+                  >
+                    <PencilIcon className="w-4 h-4" />
+                  </button>
+                </div>
+                <p className="text-sm text-gray-600">
+                  {addr.street_address}
+                  {addr.city && `, ${addr.city}`}
+                  {addr.state && `, ${addr.state}`}
+                  {addr.zip_code && ` ${addr.zip_code}`}
+                </p>
+              </div>
+            ))
+          ) : (
+            <div className="text-center py-8 text-gray-500">
+              <MapPinIcon className="w-12 h-12 mx-auto mb-4 text-gray-300" />
+              <p>No saved addresses</p>
+              <p className="text-sm">Add an address to get started</p>
+            </div>
+          )}
+        </div>
+      </div>
+      
+      {/* Become a Vendor/Rider Sections */}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+        <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+          <div className="flex items-start justify-between">
+            <div>
+              <h2 className="text-lg font-semibold mb-2">Become a Vendor</h2>
+              <p className="text-gray-600 mb-4">
+                Join our platform and start selling your products to thousands of customers.
               </p>
             </div>
-          ))
-        ) : (
-          <div className="text-center py-8 text-gray-500">
-            <MapPinIcon className="w-12 h-12 mx-auto mb-4 text-gray-300" />
-            <p>No saved addresses</p>
-            <p className="text-sm">Add an address to get started</p>
+            <div className="bg-teal-50 p-2 rounded-lg">
+              <ShoppingBagIcon className="w-6 h-6 text-teal-600" />
+            </div>
           </div>
-        )}
+          <button
+            onClick={() => setShowVendorForm(true)}
+            className="w-full mt-4 bg-teal-500 hover:bg-teal-600 text-white py-2 px-4 rounded-lg flex items-center justify-center transition"
+          >
+            <PlusIcon className="w-4 h-4 mr-2" />
+            Apply Now
+          </button>
+        </div>
+
+        <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+          <div className="flex items-start justify-between">
+            <div>
+              <h2 className="text-lg font-semibold mb-2">Become a Rider</h2>
+              <p className="text-gray-600 mb-4">
+                Earn money by delivering orders to customers in your area.
+              </p>
+            </div>
+            <div className="bg-blue-50 p-2 rounded-lg">
+              <TruckIcon className="w-6 h-6 text-blue-600" />
+            </div>
+          </div>
+          <button
+            onClick={() => setShowRiderForm(true)}
+            className="w-full mt-4 bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded-lg flex items-center justify-center transition"
+          >
+            <PlusIcon className="w-4 h-4 mr-2" />
+            Apply Now
+          </button>
+        </div>
       </div>
-    </div>
-    
-    <div className="mt-6 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-      <button
-        onClick={() => setCurrentSection('orders')}
-        className="bg-teal-500 hover:bg-teal-600 text-white p-4 rounded-lg flex flex-col items-center transition"
-      >
-        <ShoppingBagIcon className="w-8 h-8 mb-2" />
-        <span className="font-medium">My Orders</span>
-      </button>
-      <button
-        onClick={() => setCurrentSection('support')}
-        className="bg-white hover:bg-gray-50 border border-gray-200 text-gray-700 p-4 rounded-lg flex flex-col items-center transition"
-      >
-        <QuestionMarkCircleIcon className="w-8 h-8 mb-2" />
-        <span className="font-medium">Support</span>
-      </button>
-      <button
-        onClick={() => setCurrentSection('payments')}
-        className="bg-white hover:bg-gray-50 border border-gray-200 text-gray-700 p-4 rounded-lg flex flex-col items-center transition"
-      >
-        <CreditCardIcon className="w-8 h-8 mb-2" />
-        <span className="font-medium">Payments</span>
-      </button>
-    </div>
-  </>
-);
+
+      {/* Vendor Application Form Modal */}
+      {showVendorForm && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+          <div className="bg-white rounded-lg shadow-xl max-w-md w-full max-h-[90vh] overflow-y-auto">
+            <div className="p-6">
+              <div className="flex justify-between items-center mb-4">
+                <h3 className="text-xl font-bold text-gray-900">Vendor Application</h3>
+                <button
+                  onClick={() => setShowVendorForm(false)}
+                  className="text-gray-400 hover:text-gray-500"
+                >
+                  <XMarkIcon className="w-6 h-6" />
+                </button>
+              </div>
+              
+              <form onSubmit={handleVendorSubmit}>
+                <div className="space-y-4">
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-1">
+                      Business Name *
+                    </label>
+                    <input
+                      type="text"
+                      name="businessName"
+                      value={vendorForm.businessName}
+                      onChange={handleVendorInputChange}
+                      required
+                      className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-teal-500"
+                    />
+                  </div>
+                  
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-1">
+                      Business Type *
+                    </label>
+                    <select
+                      name="businessType"
+                      value={vendorForm.businessType}
+                      onChange={handleVendorInputChange}
+                      required
+                      className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-teal-500"
+                    >
+                      <option value="">Select business type</option>
+                      <option value="restaurant">Restaurant</option>
+                      <option value="grocery">Grocery</option>
+                      <option value="pharmacy">Pharmacy</option>
+                      <option value="other">Other</option>
+                    </select>
+                  </div>
+                  
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-1">
+                      Business Address *
+                    </label>
+                    <input
+                      type="text"
+                      name="address"
+                      value={vendorForm.address}
+                      onChange={handleVendorInputChange}
+                      required
+                      className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-teal-500"
+                    />
+                  </div>
+                  
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-1">
+                      Contact Phone *
+                    </label>
+                    <input
+                      type="tel"
+                      name="phone"
+                      value={vendorForm.phone}
+                      onChange={handleVendorInputChange}
+                      required
+                      className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-teal-500"
+                    />
+                  </div>
+                  
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-1">
+                      Business Description
+                    </label>
+                    <textarea
+                      name="description"
+                      value={vendorForm.description}
+                      onChange={handleVendorInputChange}
+                      rows={3}
+                      className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-teal-500"
+                    />
+                  </div>
+                </div>
+                
+                <div className="mt-6 flex justify-end space-x-3">
+                  <button
+                    type="button"
+                    onClick={() => setShowVendorForm(false)}
+                    className="px-4 py-2 border border-gray-300 rounded-md text-gray-700 hover:bg-gray-50"
+                  >
+                    Cancel
+                  </button>
+                  <button
+                    type="submit"
+                    className="px-4 py-2 bg-teal-600 text-white rounded-md hover:bg-teal-700 focus:outline-none focus:ring-2 focus:ring-teal-500"
+                  >
+                    Submit Application
+                  </button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Rider Application Form Modal */}
+      {showRiderForm && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+          <div className="bg-white rounded-lg shadow-xl max-w-md w-full max-h-[90vh] overflow-y-auto">
+            <div className="p-6">
+              <div className="flex justify-between items-center mb-4">
+                <h3 className="text-xl font-bold text-gray-900">Rider Application</h3>
+                <button
+                  onClick={() => setShowRiderForm(false)}
+                  className="text-gray-400 hover:text-gray-500"
+                >
+                  <XMarkIcon className="w-6 h-6" />
+                </button>
+              </div>
+              
+              <form onSubmit={handleRiderSubmit}>
+                <div className="space-y-4">
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-1">
+                      Vehicle Type *
+                    </label>
+                    <select
+                      name="vehicleType"
+                      value={riderForm.vehicleType}
+                      onChange={handleRiderInputChange}
+                      required
+                      className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    >
+                      <option value="">Select vehicle type</option>
+                      <option value="motorcycle">Motorcycle</option>
+                      <option value="bicycle">Bicycle</option>
+                      <option value="car">Car</option>
+                    </select>
+                  </div>
+                  
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-1">
+                      License Number *
+                    </label>
+                    <input
+                      type="text"
+                      name="licenseNumber"
+                      value={riderForm.licenseNumber}
+                      onChange={handleRiderInputChange}
+                      required
+                      className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    />
+                  </div>
+                  
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-1">
+                      Vehicle Model
+                    </label>
+                    <input
+                      type="text"
+                      name="vehicleModel"
+                      value={riderForm.vehicleModel}
+                      onChange={handleRiderInputChange}
+                      className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    />
+                  </div>
+                  
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-1">
+                      Contact Phone *
+                    </label>
+                    <input
+                      type="tel"
+                      name="phone"
+                      value={riderForm.phone}
+                      onChange={handleRiderInputChange}
+                      required
+                      className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    />
+                  </div>
+                </div>
+                
+                <div className="mt-6 flex justify-end space-x-3">
+                  <button
+                    type="button"
+                    onClick={() => setShowRiderForm(false)}
+                    className="px-4 py-2 border border-gray-300 rounded-md text-gray-700 hover:bg-gray-50"
+                  >
+                    Cancel
+                  </button>
+                  <button
+                    type="submit"
+                    className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  >
+                    Submit Application
+                  </button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Quick Actions */}
+      <div className="mt-6 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+        <button
+          onClick={() => setCurrentSection('orders')}
+          className="bg-teal-500 hover:bg-teal-600 text-white p-4 rounded-lg flex flex-col items-center transition"
+        >
+          <ShoppingBagIcon className="w-8 h-8 mb-2" />
+          <span className="font-medium">My Orders</span>
+        </button>
+        <button
+          onClick={() => setCurrentSection('support')}
+          className="bg-white hover:bg-gray-50 border border-gray-200 text-gray-700 p-4 rounded-lg flex flex-col items-center transition"
+        >
+          <QuestionMarkCircleIcon className="w-8 h-8 mb-2" />
+          <span className="font-medium">Support</span>
+        </button>
+        <button
+          onClick={() => setCurrentSection('payments')}
+          className="bg-white hover:bg-gray-50 border border-gray-200 text-gray-700 p-4 rounded-lg flex flex-col items-center transition"
+        >
+          <CreditCardIcon className="w-8 h-8 mb-2" />
+          <span className="font-medium">Payments</span>
+        </button>
+      </div>
+    </>
+  );
+};
 
 const OrdersView = ({
   orderHistory,

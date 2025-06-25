@@ -1,7 +1,7 @@
 'use client'
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { Eye, EyeOff, User, Mail, Phone, Lock, Check, Camera, ShoppingBag, ShoppingCart, Bike } from 'lucide-react';
+import { Eye, EyeOff, User, Mail, Phone, Lock, Check, Camera } from 'lucide-react';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
@@ -15,17 +15,13 @@ export default function RegisterPage() {
     password: '',
     profileImage: null,
     agreeTerms: false,
-    role: 'client' // Default role
+    role: 'client'
   });
 
   const [showPassword, setShowPassword] = useState(false);
   const [errors, setErrors] = useState({});
   const [isLoading, setIsLoading] = useState(false);
   const [imagePreview, setImagePreview] = useState(null);
-  const [additionalDetails, setAdditionalDetails] = useState({
-    vendor: { businessName: '', businessType: '', address: '' },
-    rider: { vehicleType: '', licenseNumber: '' }
-  });
 
   const handleInputChange = (e) => {
     const { name, value, type, checked } = e.target;
@@ -37,16 +33,6 @@ export default function RegisterPage() {
     if (errors[name]) {
       setErrors(prev => ({ ...prev, [name]: '' }));
     }
-  };
-
-  const handleAdditionalDetailsChange = (role, field, value) => {
-    setAdditionalDetails(prev => ({
-      ...prev,
-      [role]: {
-        ...prev[role],
-        [field]: value
-      }
-    }));
   };
 
   const handleImageUpload = (e) => {
@@ -77,16 +63,6 @@ export default function RegisterPage() {
     else if (formData.password.length < 8) newErrors.password = 'Password must be at least 8 characters';
     if (!formData.agreeTerms) newErrors.agreeTerms = 'You must agree to the terms and conditions';
 
-    // Role-specific validations
-    if (formData.role === 'vendor') {
-      if (!additionalDetails.vendor.businessName.trim()) newErrors.businessName = 'Business name is required';
-      if (!additionalDetails.vendor.businessType.trim()) newErrors.businessType = 'Business type is required';
-      if (!additionalDetails.vendor.address.trim()) newErrors.address = 'Business address is required';
-    } else if (formData.role === 'rider') {
-      if (!additionalDetails.rider.vehicleType.trim()) newErrors.vehicleType = 'Vehicle type is required';
-      if (!additionalDetails.rider.licenseNumber.trim()) newErrors.licenseNumber = 'License number is required';
-    }
-
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
@@ -101,16 +77,7 @@ export default function RegisterPage() {
         email: formData.email,
         phone: formData.phone,
         password: formData.password,
-        role: formData.role,
-        ...(formData.role === 'vendor' && {
-          businessName: additionalDetails.vendor.businessName,
-          businessType: additionalDetails.vendor.businessType,
-          address: additionalDetails.vendor.address
-        }),
-        ...(formData.role === 'rider' && {
-          vehicleType: additionalDetails.rider.vehicleType,
-          licenseNumber: additionalDetails.rider.licenseNumber
-        })
+        role: formData.role
       };
 
       const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/auth/signup`, {
@@ -127,23 +94,12 @@ export default function RegisterPage() {
       }
 
       const data = await response.json();
-
+      console.log('Registration successful:', data);
       localStorage.setItem('userToken', data.access_token);
       localStorage.setItem('user', JSON.stringify(data.user));
 
       toast.success('Registration successful!');
-
-      // Redirect based on role
-      switch(formData.role) {
-        case 'vendor':
-          router.push('/Portal/Vendor/Dashboard/');
-          break;
-        case 'rider':
-          router.push('/Portal/Rider/Dashboard/');
-          break;
-        default:
-          router.push('/Portal/Clients/Dashboard/');
-      }
+      router.push('/Portal/Clients/Dashboard');
     } catch (error) {
       console.error('Registration error:', error);
       toast.error(error.message || 'Something went wrong');
@@ -191,70 +147,13 @@ export default function RegisterPage() {
                 height={110}
               />
             </div>
-            <h1 className="text-3xl font-bold text-gray-900 mb-2">Join Meu Deliver</h1>
+            <h1 className="text-3xl font-bold text-gray-900 mb-2">Create Your Account</h1>
             <p className="text-gray-600">Fast, Efficient, and Secure Everywhere</p>
           </div>
 
           {/* Registration Form */}
           <div className="bg-white rounded-3xl shadow-xl p-8 border border-gray-100">
             <div className="space-y-6">
-              {/* Role Selection */}
-              <div>
-                <label className="block text-sm font-semibold text-gray-700 mb-2">
-                  Register As
-                </label>
-                <div className="grid grid-cols-3 gap-3">
-                  <button
-                    type="button"
-                    onClick={() => setFormData(prev => ({ ...prev, role: 'client' }))}
-                    className={`flex flex-col items-center justify-center p-4 rounded-xl border-2 transition-all duration-300 ${
-                      formData.role === 'client' 
-                        ? 'border-teal-500 bg-teal-50' 
-                        : 'border-gray-200 hover:border-teal-300'
-                    }`}
-                  >
-                    <ShoppingCart className={`w-6 h-6 mb-2 ${
-                      formData.role === 'client' ? 'text-teal-600' : 'text-gray-500'
-                    }`} />
-                    <span className={`text-sm font-medium ${
-                      formData.role === 'client' ? 'text-teal-700' : 'text-gray-600'
-                    }`}>Customer</span>
-                  </button>
-                  <button
-                    type="button"
-                    onClick={() => setFormData(prev => ({ ...prev, role: 'vendor' }))}
-                    className={`flex flex-col items-center justify-center p-4 rounded-xl border-2 transition-all duration-300 ${
-                      formData.role === 'vendor' 
-                        ? 'border-teal-500 bg-teal-50' 
-                        : 'border-gray-200 hover:border-teal-300'
-                    }`}
-                  >
-                    <ShoppingBag className={`w-6 h-6 mb-2 ${
-                      formData.role === 'vendor' ? 'text-teal-600' : 'text-gray-500'
-                    }`} />
-                    <span className={`text-sm font-medium ${
-                      formData.role === 'vendor' ? 'text-teal-700' : 'text-gray-600'
-                    }`}>Vendor</span>
-                  </button>
-                  <button
-                    type="button"
-                    onClick={() => setFormData(prev => ({ ...prev, role: 'rider' }))}
-                    className={`flex flex-col items-center justify-center p-4 rounded-xl border-2 transition-all duration-300 ${
-                      formData.role === 'rider' 
-                        ? 'border-teal-500 bg-teal-50' 
-                        : 'border-gray-200 hover:border-teal-300'
-                    }`}
-                  >
-                    <Bike className={`w-6 h-6 mb-2 ${
-                      formData.role === 'rider' ? 'text-teal-600' : 'text-gray-500'
-                    }`} />
-                    <span className={`text-sm font-medium ${
-                      formData.role === 'rider' ? 'text-teal-700' : 'text-gray-600'
-                    }`}>Rider</span>
-                  </button>
-                </div>
-              </div>
-
               {/* Profile Image Upload */}
               <div className="flex flex-col items-center">
                 <div className="relative">
@@ -381,107 +280,6 @@ export default function RegisterPage() {
                 {errors.password && <p className="text-red-500 text-sm mt-1">{errors.password}</p>}
               </div>
 
-              {/* Vendor-specific fields */}
-              {formData.role === 'vendor' && (
-                <div className="space-y-4">
-                  <div>
-                    <label className="block text-sm font-semibold text-gray-700 mb-2">
-                      Business Name
-                    </label>
-                    <input
-                      type="text"
-                      value={additionalDetails.vendor.businessName}
-                      onChange={(e) => handleAdditionalDetailsChange('vendor', 'businessName', e.target.value)}
-                      className={`w-full px-4 py-4 border-2 rounded-xl focus:outline-none transition-all duration-300 ${
-                        errors.businessName 
-                          ? 'border-red-300 focus:border-red-500' 
-                          : 'border-gray-200 focus:border-teal-500'
-                      }`}
-                      placeholder="Enter your business name"
-                    />
-                    {errors.businessName && <p className="text-red-500 text-sm mt-1">{errors.businessName}</p>}
-                  </div>
-                  <div>
-                    <label className="block text-sm font-semibold text-gray-700 mb-2">
-                      Business Type
-                    </label>
-                    <input
-                      type="text"
-                      value={additionalDetails.vendor.businessType}
-                      onChange={(e) => handleAdditionalDetailsChange('vendor', 'businessType', e.target.value)}
-                      className={`w-full px-4 py-4 border-2 rounded-xl focus:outline-none transition-all duration-300 ${
-                        errors.businessType 
-                          ? 'border-red-300 focus:border-red-500' 
-                          : 'border-gray-200 focus:border-teal-500'
-                      }`}
-                      placeholder="e.g. Restaurant, Grocery"
-                    />
-                    {errors.businessType && <p className="text-red-500 text-sm mt-1">{errors.businessType}</p>}
-                  </div>
-                  <div>
-                    <label className="block text-sm font-semibold text-gray-700 mb-2">
-                      Business Address
-                    </label>
-                    <input
-                      type="text"
-                      value={additionalDetails.vendor.address}
-                      onChange={(e) => handleAdditionalDetailsChange('vendor', 'address', e.target.value)}
-                      className={`w-full px-4 py-4 border-2 rounded-xl focus:outline-none transition-all duration-300 ${
-                        errors.address 
-                          ? 'border-red-300 focus:border-red-500' 
-                          : 'border-gray-200 focus:border-teal-500'
-                      }`}
-                      placeholder="Enter your business address"
-                    />
-                    {errors.address && <p className="text-red-500 text-sm mt-1">{errors.address}</p>}
-                  </div>
-                </div>
-              )}
-
-              {/* Rider-specific fields */}
-              {formData.role === 'rider' && (
-                <div className="space-y-4">
-                  <div>
-                    <label className="block text-sm font-semibold text-gray-700 mb-2">
-                      Vehicle Type
-                    </label>
-                    <select
-                      value={additionalDetails.rider.vehicleType}
-                      onChange={(e) => handleAdditionalDetailsChange('rider', 'vehicleType', e.target.value)}
-                      className={`w-full px-4 py-4 border-2 rounded-xl focus:outline-none transition-all duration-300 ${
-                        errors.vehicleType 
-                          ? 'border-red-300 focus:border-red-500' 
-                          : 'border-gray-200 focus:border-teal-500'
-                      }`}
-                    >
-                      <option value="">Select vehicle type</option>
-                      <option value="bicycle">Bicycle</option>
-                      <option value="motorcycle">Motorcycle</option>
-                      <option value="car">Car</option>
-                      <option value="scooter">Scooter</option>
-                    </select>
-                    {errors.vehicleType && <p className="text-red-500 text-sm mt-1">{errors.vehicleType}</p>}
-                  </div>
-                  <div>
-                    <label className="block text-sm font-semibold text-gray-700 mb-2">
-                      License Number
-                    </label>
-                    <input
-                      type="text"
-                      value={additionalDetails.rider.licenseNumber}
-                      onChange={(e) => handleAdditionalDetailsChange('rider', 'licenseNumber', e.target.value)}
-                      className={`w-full px-4 py-4 border-2 rounded-xl focus:outline-none transition-all duration-300 ${
-                        errors.licenseNumber 
-                          ? 'border-red-300 focus:border-red-500' 
-                          : 'border-gray-200 focus:border-teal-500'
-                      }`}
-                      placeholder="Enter your license number"
-                    />
-                    {errors.licenseNumber && <p className="text-red-500 text-sm mt-1">{errors.licenseNumber}</p>}
-                  </div>
-                </div>
-              )}
-
               {/* Terms and Conditions */}
               <div className="flex items-start space-x-3">
                 <div className="relative flex items-center">
@@ -532,7 +330,7 @@ export default function RegisterPage() {
                     <span>Creating Account...</span>
                   </div>
                 ) : (
-                  `Register as ${formData.role.charAt(0).toUpperCase() + formData.role.slice(1)}`
+                  'Register Now'
                 )}
               </button>
 
