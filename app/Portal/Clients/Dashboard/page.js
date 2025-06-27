@@ -17,7 +17,7 @@ export default function ClientDashboard() {
   const [currentOrder, setCurrentOrder] = useState(null);
   const [orderHistory, setOrderHistory] = useState([]);
   const [savedAddresses, setSavedAddresses] = useState([]);
-  const [loading, setLoading] = useState(true);
+  // const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [currentSection, setCurrentSection] = useState('dashboard');
   const [showVendorForm, setShowVendorForm] = useState(false);
@@ -41,36 +41,45 @@ export default function ClientDashboard() {
   * Method: GET
   * Headers: Authorization: Bearer {token}
   */
-  const verifyUserToken = async (token) => {
-    try {
-      // const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/auth/verify-current-user`, {
-      //   method: 'GET',
-      //   headers: {
-      //     Authorization: `Bearer ${token}`
-      //   }
-      // });
+  // const verifyUserToken = async (token) => {
+  //   try {
 
-      // if (!response.ok) {
-      //   throw new Error('Token verification failed');
-      // }
+  //     // const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/auth/verify-current-user`, {
+  //     //   method: 'GET',
+  //     //   headers: {
+  //     //     Authorization: `Bearer ${token}`
+  //     //   }
+  //     // });
 
-      // const data = await response.json();
-      // return data;
+  //     const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/auth/verify-current-user`, {
+  //       method: 'GET',
+  //       headers: {
+  //         Authorization: `Bearer ${token}`
+  //       }
+  //     });
+
+
+  //     // if (!response.ok) {
+  //     //   throw new Error('Token verification failed');
+  //     // }
+
+  //     // const data = await response.json();
+  //     // return data;
       
-      // Mock response for development
-      return {
-        success: true,
-        payload: {
-          role: 'CLIENT',
-          name: 'John Doe',
-          email: 'john@example.com'
-        }
-      };
-    } catch (err) {
-      console.error('Token verification error:', err);
-      throw err;
-    }
-  };
+  //     // Mock response for development
+  //     return {
+  //       success: true,
+  //       payload: {
+  //         role: 'CLIENT',
+  //         name: 'John Doe',
+  //         email: 'john@example.com'
+  //       }
+  //     };
+  //   } catch (err) {
+  //     console.error('Token verification error:', err);
+  //     throw err;
+  //   }
+  // };
 
   /* 
   * API FETCH: Logout user
@@ -78,29 +87,34 @@ export default function ClientDashboard() {
   * Method: POST
   * Headers: Authorization: Bearer {token}
   */
-  const logoutUser = async () => {
-    try {
-      const token = localStorage.getItem('userToken');
-      // const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/auth/logout`, {
-      //   method: 'POST',
-      //   headers: {
-      //     'Authorization': `Bearer ${token}`
-      //   }
-      // });
+  // const logoutUser = async () => {
+  //   try {
+  //     const token = localStorage.getItem('userToken');
+  //     // const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/auth/logout`, {
+  //     //   method: 'POST',
+  //     //   headers: {
+  //     //     'Authorization': `Bearer ${token}`
+  //     //   }
+  //     // });
 
-      // if (response.ok) {
-        toast.success('Logged out successfully');
-        localStorage.removeItem('user');
-        localStorage.removeItem('userToken');
-        router.push('/Auth/Login/');
-      // } else {
-      //   throw new Error('Logout failed');
-      // }
-    } catch (error) {
-      console.error('Logout error:', error);
-      toast.error('Failed to logout. Please try again.');
-    }
-  };
+
+  //     // if (response.ok) {
+  //       toast.success('Logged out successfully');
+
+  //     if (response.ok) {
+  //       toast.success('Logout successfuly.');
+
+  //       localStorage.removeItem('user');
+  //       localStorage.removeItem('userToken');
+  //       router.push('/Auth/Login/');
+  //     // } else {
+  //     //   throw new Error('Logout failed');
+  //     // }
+  //   } catch (error) {
+  //     console.error('Logout error:', error);
+  //     toast.error('Failed to logout. Please try again.');
+  //   }
+  // };
 
   /* 
   * API FETCH: Get current order
@@ -272,64 +286,77 @@ export default function ClientDashboard() {
   };
 
   // Authentication and data loading
-  useEffect(() => {
-    const initializeDashboard = async () => {
-      try {
-        const token = localStorage.getItem('userToken');
-        const userData = localStorage.getItem('user');
+  // useEffect(() => {
+  //   const initializeDashboard = async () => {
+  //     try {
+  //       const token = localStorage.getItem('userToken');
+  //       const userData = localStorage.getItem('user');
 
-        if (!token || !userData) {
-          router.push('/Auth/Login/');
-          return;
-        }
+  //       if (!token || !userData) {
+  //         router.push('/Auth/Login/');
+  //         return;
+  //       }
 
-        // Verify token and check role
-        const verification = await verifyUserToken(token);
-        const userRole = verification.payload?.role;
+  //       // Verify token and check role
+  //       const verification = await verifyUserToken(token);
+  //       const userRole = verification.payload?.role;
 
-        // Redirect based on role
-        switch (userRole) {
-          case 'CLIENT':
-            // Continue with client dashboard
-            break;
-          case 'VENDOR':
-            router.push('/Portal/Vendor/Dashboard');
-            return;
-          case 'DELIVERY':
-            router.push('/Portal/Ride/Dashboard');
-            return;
-          case 'ADMIN':
-            router.push('/Portal/Admin/Dashboard');
-            return;
-          default:
-            throw new Error('Unauthorized access');
-        }
+  //       switch (userRole) {
+  //         case 'CLIENT':
+  //           router.push('/Portal/Clients/Dashboard');
+  //           break;
+  //         case 'VENDOR':
+  //           router.push('/Portal/Vendor/Dashboard');
+  //           break;
+  //         case 'DELIVERY':
+  //           router.push('/Portal/Ride/Dashboard');
+  //         case 'ADMIN':
+  //           router.push('/Portal/Admin/Dashboard'); 
+  //           break;
+  //       }
+  //       // Redirect based on role
+  //       switch (userRole) {
+  //         case 'CLIENT':
+  //           // Continue with client dashboard
+  //           break;
+  //         case 'VENDOR':
+  //           router.push('/Portal/Vendor/Dashboard');
+  //           return;
+  //         case 'DELIVERY':
+  //           router.push('/Portal/Ride/Dashboard');
+  //           return;
+  //         case 'ADMIN':
+  //           router.push('/Portal/Admin/Dashboard');
+  //           return;
+  //         default:
+  //           throw new Error('Unauthorized access');
+  //       }
 
-        // Set user data
-        setUser(JSON.parse(userData));
+  //       // Set user data
+  //       setUser(JSON.parse(userData));
 
-        // Load dashboard data
-        const [currentOrder, history, addresses] = await Promise.all([
-          fetchCurrentOrder(),
-          fetchOrderHistory(),
-          fetchSavedAddresses()
-        ]);
+  //       // Load dashboard data
+  //       const [currentOrder, history, addresses] = await Promise.all([
+  //         fetchCurrentOrder(),
+  //         fetchOrderHistory(),
+  //         fetchSavedAddresses()
+  //       ]);
 
-        setCurrentOrder(currentOrder);
-        setOrderHistory(history);
-        setSavedAddresses(addresses);
-        setLoading(false);
-      } catch (error) {
-        console.error('Dashboard initialization error:', error);
-        setError(error.message);
-        localStorage.removeItem('userToken');
-        localStorage.removeItem('user');
-        router.push('/Auth/Login/');
-      }
-    };
+  //       setCurrentOrder(currentOrder);
+  //       setOrderHistory(history);
+  //       setSavedAddresses(addresses);
+  //       setLoading(false);
+  //     } catch (error) {
+  //       console.error('Dashboard initialization error:', error);
+  //       setError(error.message);
+  //       localStorage.removeItem('userToken');
+  //       localStorage.removeItem('user');
+  //       router.push('/Auth/Login/');
+  //     }
+  //   };
 
-    initializeDashboard();
-  }, [router]);
+  //   initializeDashboard();
+  // }, [router]);
 
   // Helper functions
   const getStatusText = (status) => {
@@ -502,26 +529,26 @@ export default function ClientDashboard() {
     }
   };
 
-  if (loading) {
-    return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center p-4">
-        <div className="text-center">
-          <div className="w-8 h-8 bg-teal-500 rounded-full mx-auto mb-4 animate-pulse"></div>
-          <p className="text-gray-600">Loading your dashboard...</p>
-        </div>
-      </div>
-    );
-  }
+  // if (loading) {
+  //   return (
+  //     <div className="min-h-screen bg-gray-50 flex items-center justify-center p-4">
+  //       <div className="text-center">
+  //         <div className="w-8 h-8 bg-teal-500 rounded-full mx-auto mb-4 animate-pulse"></div>
+  //         <p className="text-gray-600">Loading your dashboard...</p>
+  //       </div>
+  //     </div>
+  //   );
+  // }
 
-  if (error) {
-    return (
-      <div className="min-h-screen flex items-center justify-center bg-gray-50 p-4">
-        <div className="text-center text-red-600">
-          <p>Error: {error}</p>
-        </div>
-      </div>
-    );
-  }
+  // if (error) {
+  //   return (
+  //     <div className="min-h-screen flex items-center justify-center bg-gray-50 p-4">
+  //       <div className="text-center text-red-600">
+  //         <p>Error: {error}</p>
+  //       </div>
+  //     </div>
+  //   );
+  // }
 
   return (
     <div className="min-h-screen bg-gray-50 flex z-50 overflow-hidden mt-16">

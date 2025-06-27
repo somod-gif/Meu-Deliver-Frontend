@@ -13,124 +13,400 @@ export default function HomePage() {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  const categories = [
-    { name: 'All', icon: '🍔' },
-    { name: 'Food', icon: '🍕' },
-    { name: 'Groceries', icon: '🛒' },
-    { name: 'Pharmacy', icon: '💊' },
-    { name: 'Electronics', icon: '📱' },
-    { name: 'Retail', icon: '👕' }
-  ];
+const categories = [
+  { name: 'All', icon: '🍔' },
+  { name: 'Food', icon: '🍕' },
+  { name: 'Groceries', icon: '🛒' },
+  { name: 'Pharmacy', icon: '💊' },
+  { name: 'Electronics', icon: '📱' },
+  { name: 'Retail', icon: '👕' },
+  { name: 'Beverages', icon: '🥤' },
+  { name: 'Home', icon: '🏠' }
+];
 
-  // Products data organized by category
-  const productsByCategory = {
-    Food: [
-      {
-        id: 1,
-        name: 'Cheeseburger Meal',
-        price: 12.99,
-        vendor: 'Burger Palace',
-        rating: 4.8,
-        deliveryTime: '15-25 min',
-        image: 'https://images.unsplash.com/photo-1568901346375-23c9450c58cd?w=400&h=300&fit=crop',
-        badge: 'Best Seller'
-      },
-      // ... add more products as needed
-    ],
-    Groceries: [
-      {
-        id: 2,
-        name: 'Fresh Fruits Basket',
-        price: 20.5,
-        vendor: 'FreshMart',
-        rating: 4.6,
-        deliveryTime: '20-30 min',
-        image: 'https://images.unsplash.com/photo-1586985289688-ca3cf47d3e6e?w=400&h=300&fit=crop',
-        badge: ''
-      }
-    ],
-    Pharmacy: [
-      {
-        id: 3,
-        name: 'Pain Relief Tablets',
-        price: 8.99,
-        vendor: 'MediCare',
-        rating: 4.9,
-        deliveryTime: '10-20 min',
-        image: 'https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?w=400&h=300&fit=crop',
-        badge: ''
-      }
-    ],
-    Electronics: [
-      {
-        id: 4,
-        name: 'Smartphone X200',
-        price: 299.99,
-        vendor: 'TechZone',
-        rating: 4.5,
-        deliveryTime: '30-45 min',
-        image: 'https://images.unsplash.com/photo-1518770660439-4636190af475?w=400&h=300&fit=crop',
-        badge: ''
-      }
-    ],
-    Retail: [
-      {
-        id: 5,
-        name: 'Fashion T-Shirt',
-        price: 19.99,
-        vendor: 'Fashion Hub',
-        rating: 4.4,
-        deliveryTime: '35-50 min',
-        image: 'https://images.unsplash.com/photo-1489987707025-afc232f7ea0f?w=400&h=300&fit=crop',
-        badge: ''
-      }
-    ],
-  };
-
-  const allProducts = Object.values(productsByCategory).flat();
-
-  // Popular Vendors Data
-  const popularVendors = [
+// Products data organized by category
+const productsByCategory = {
+  Food: [
     {
       id: 1,
-      name: 'Burger Palace',
-      category: 'Food',
+      name: 'Cheeseburger Meal',
+      price: 12.99,
+      vendor: 'Burger Palace',
       rating: 4.8,
       deliveryTime: '15-25 min',
-      image: 'https://images.unsplash.com/photo-1571091718767-18b5b1457add?w=400&h=300&fit=crop',
-      featured: true,
-      badge: 'Popular'
+      image: 'https://images.unsplash.com/photo-1568901346375-23c9450c58cd?w=400&h=300&fit=crop',
+      badge: 'Best Seller'
     },
     {
+      id: 6,
+      name: 'Pepperoni Pizza',
+      price: 14.99,
+      vendor: 'Pizza Heaven',
+      rating: 4.7,
+      deliveryTime: '20-30 min',
+      image: 'https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?w=400&h=300&fit=crop',
+      badge: 'New'
+    },
+    {
+      id: 7,
+      name: 'Chicken Tacos',
+      price: 9.99,
+      vendor: 'Taco Fiesta',
+      rating: 4.5,
+      deliveryTime: '15-20 min',
+      image: 'https://images.unsplash.com/photo-1565299585323-38d6b0865b47?w=400&h=300&fit=crop',
+      badge: ''
+    },
+    {
+      id: 8,
+      name: 'Sushi Combo',
+      price: 18.50,
+      vendor: 'Tokyo Sushi',
+      rating: 4.9,
+      deliveryTime: '25-35 min',
+      image: 'https://images.unsplash.com/photo-1611143669185-af224c5e3252?w=400&h=300&fit=crop',
+      badge: 'Chef\'s Choice'
+    }
+  ],
+  Groceries: [
+    {
       id: 2,
-      name: 'FreshMart',
-      category: 'Groceries',
+      name: 'Fresh Fruits Basket',
+      price: 20.5,
+      vendor: 'FreshMart',
       rating: 4.6,
       deliveryTime: '20-30 min',
       image: 'https://images.unsplash.com/photo-1586985289688-ca3cf47d3e6e?w=400&h=300&fit=crop',
-      featured: true,
-      badge: 'Fresh'
+      badge: ''
     },
     {
+      id: 9,
+      name: 'Organic Vegetables Pack',
+      price: 15.99,
+      vendor: 'GreenGrocer',
+      rating: 4.7,
+      deliveryTime: '25-40 min',
+      image: 'https://images.unsplash.com/photo-1518977676601-b53f82aba655?w=400&h=300&fit=crop',
+      badge: 'Organic'
+    },
+    {
+      id: 10,
+      name: 'Dairy Essentials Bundle',
+      price: 12.75,
+      vendor: 'Milk & More',
+      rating: 4.5,
+      deliveryTime: '15-25 min',
+      image: 'https://images.unsplash.com/photo-1550583724-b2692b85b150?w=400&h=300&fit=crop',
+      badge: ''
+    },
+    {
+      id: 11,
+      name: 'Premium Coffee Beans',
+      price: 14.99,
+      vendor: 'Bean There',
+      rating: 4.8,
+      deliveryTime: '30-45 min',
+      image: 'https://images.unsplash.com/photo-1515442261605-65987783cb6a?w=400&h=300&fit=crop',
+      badge: 'Exclusive'
+    }
+  ],
+  Pharmacy: [
+    {
       id: 3,
-      name: 'MediCare',
-      category: 'Pharmacy',
+      name: 'Pain Relief Tablets',
+      price: 8.99,
+      vendor: 'MediCare',
       rating: 4.9,
       deliveryTime: '10-20 min',
       image: 'https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?w=400&h=300&fit=crop',
-      featured: true,
-      badge: 'Fast'
+      badge: ''
     },
-    // ... other vendors as needed
-  ];
+    {
+      id: 12,
+      name: 'Multivitamin Supplement',
+      price: 12.49,
+      vendor: 'HealthPlus',
+      rating: 4.7,
+      deliveryTime: '15-25 min',
+      image: 'https://images.unsplash.com/photo-1587854692152-cbe660dbde88?w=400&h=300&fit=crop',
+      badge: 'Best Value'
+    },
+    {
+      id: 13,
+      name: 'First Aid Kit',
+      price: 19.99,
+      vendor: 'SafeLife',
+      rating: 4.8,
+      deliveryTime: '20-30 min',
+      image: 'https://images.unsplash.com/photo-1579684385127-1ef15d508118?w=400&h=300&fit=crop',
+      badge: 'Essential'
+    },
+    {
+      id: 14,
+      name: 'Allergy Relief',
+      price: 10.25,
+      vendor: 'MediCare',
+      rating: 4.6,
+      deliveryTime: '10-15 min',
+      image: 'https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?w=400&h=300&fit=crop',
+      badge: 'Fast Acting'
+    }
+  ],
+  Electronics: [
+    {
+      id: 4,
+      name: 'Smartphone X200',
+      price: 299.99,
+      vendor: 'TechZone',
+      rating: 4.5,
+      deliveryTime: '30-45 min',
+      image: 'https://images.unsplash.com/photo-1518770660439-4636190af475?w=400&h=300&fit=crop',
+      badge: ''
+    },
+    {
+      id: 15,
+      name: 'Wireless Earbuds',
+      price: 79.99,
+      vendor: 'AudioTech',
+      rating: 4.6,
+      deliveryTime: '25-40 min',
+      image: 'https://images.unsplash.com/photo-1590658268037-6bf12165a8df?w=400&h=300&fit=crop',
+      badge: 'Popular'
+    },
+    {
+      id: 16,
+      name: 'Smart Watch Pro',
+      price: 149.99,
+      vendor: 'TechZone',
+      rating: 4.7,
+      deliveryTime: '30-50 min',
+      image: 'https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=400&h=300&fit=crop',
+      badge: 'New'
+    },
+    {
+      id: 17,
+      name: 'Bluetooth Speaker',
+      price: 59.99,
+      vendor: 'SoundMaster',
+      rating: 4.4,
+      deliveryTime: '20-35 min',
+      image: 'https://images.unsplash.com/photo-1572569511254-d8f925fe2cbb?w=400&h=300&fit=crop',
+      badge: ''
+    }
+  ],
+  Retail: [
+    {
+      id: 5,
+      name: 'Fashion T-Shirt',
+      price: 19.99,
+      vendor: 'Fashion Hub',
+      rating: 4.4,
+      deliveryTime: '35-50 min',
+      image: 'https://images.unsplash.com/photo-1489987707025-afc232f7ea0f?w=400&h=300&fit=crop',
+      badge: ''
+    },
+    {
+      id: 18,
+      name: 'Denim Jeans',
+      price: 39.99,
+      vendor: 'Urban Style',
+      rating: 4.5,
+      deliveryTime: '40-55 min',
+      image: 'https://images.unsplash.com/photo-1473966968600-fa801b869a1a?w=400&h=300&fit=crop',
+      badge: 'Trending'
+    },
+    {
+      id: 19,
+      name: 'Leather Wallet',
+      price: 24.99,
+      vendor: 'LeatherCraft',
+      rating: 4.7,
+      deliveryTime: '30-45 min',
+      image: 'https://images.unsplash.com/photo-1548032885-b5e38734688a?w=400&h=300&fit=crop',
+      badge: ''
+    },
+    {
+      id: 20,
+      name: 'Running Shoes',
+      price: 69.99,
+      vendor: 'SportLife',
+      rating: 4.8,
+      deliveryTime: '35-50 min',
+      image: 'https://images.unsplash.com/photo-1491553895911-0055eca6402d?w=400&h=300&fit=crop',
+      badge: 'Best Seller'
+    }
+  ],
+  Beverages: [
+    {
+      id: 21,
+      name: 'Craft Beer Selection',
+      price: 16.99,
+      vendor: 'Brew Masters',
+      rating: 4.7,
+      deliveryTime: '25-40 min',
+      image: 'https://images.unsplash.com/photo-1535958636474-b021ee887b13?w=400&h=300&fit=crop',
+      badge: 'Local'
+    },
+    {
+      id: 22,
+      name: 'Premium Wine Collection',
+      price: 29.99,
+      vendor: 'Vino Delight',
+      rating: 4.8,
+      deliveryTime: '30-45 min',
+      image: 'https://images.unsplash.com/photo-1559496417-e7f25cb247f3?w=400&h=300&fit=crop',
+      badge: 'Exclusive'
+    },
+    {
+      id: 23,
+      name: 'Cold Pressed Juices',
+      price: 12.50,
+      vendor: 'Juice Bar',
+      rating: 4.6,
+      deliveryTime: '20-30 min',
+      image: 'https://images.unsplash.com/photo-1603569283847-aa295f0d016a?w=400&h=300&fit=crop',
+      badge: 'Healthy'
+    }
+  ],
+  Home: [
+    {
+      id: 24,
+      name: 'Scented Candles Set',
+      price: 22.99,
+      vendor: 'Home Comfort',
+      rating: 4.7,
+      deliveryTime: '30-45 min',
+      image: 'https://images.unsplash.com/photo-1585320806297-9794b3e4eeae?w=400&h=300&fit=crop',
+      badge: 'Cozy'
+    },
+    {
+      id: 25,
+      name: 'Throw Blanket',
+      price: 34.99,
+      vendor: 'Cozy Living',
+      rating: 4.5,
+      deliveryTime: '35-50 min',
+      image: 'https://images.unsplash.com/photo-1576566588028-4147f3842f27?w=400&h=300&fit=crop',
+      badge: ''
+    },
+    {
+      id: 26,
+      name: 'Ceramic Dinner Set',
+      price: 49.99,
+      vendor: 'Table Art',
+      rating: 4.8,
+      deliveryTime: '40-55 min',
+      image: 'https://images.unsplash.com/photo-1581578731548-c64695cc6952?w=400&h=300&fit=crop',
+      badge: 'Premium'
+    }
+  ]
+};
+
+const allProducts = Object.values(productsByCategory).flat();
+
+// Popular Vendors Data
+const popularVendors = [
+  {
+    id: 1,
+    name: 'Burger Palace',
+    category: 'Food',
+    rating: 4.8,
+    deliveryTime: '15-25 min',
+    image: 'https://images.unsplash.com/photo-1571091718767-18b5b1457add?w=400&h=300&fit=crop',
+    featured: true,
+    badge: 'Popular'
+  },
+  {
+    id: 2,
+    name: 'FreshMart',
+    category: 'Groceries',
+    rating: 4.6,
+    deliveryTime: '20-30 min',
+    image: 'https://images.unsplash.com/photo-1586985289688-ca3cf47d3e6e?w=400&h=300&fit=crop',
+    featured: true,
+    badge: 'Fresh'
+  },
+  {
+    id: 3,
+    name: 'MediCare',
+    category: 'Pharmacy',
+    rating: 4.9,
+    deliveryTime: '10-20 min',
+    image: 'https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?w=400&h=300&fit=crop',
+    featured: true,
+    badge: 'Fast'
+  },
+  {
+    id: 4,
+    name: 'TechZone',
+    category: 'Electronics',
+    rating: 4.7,
+    deliveryTime: '30-45 min',
+    image: 'https://images.unsplash.com/photo-1512941937669-90a1b58e7e9c?w=400&h=300&fit=crop',
+    featured: true,
+    badge: 'Tech'
+  },
+  {
+    id: 5,
+    name: 'Fashion Hub',
+    category: 'Retail',
+    rating: 4.5,
+    deliveryTime: '35-50 min',
+    image: 'https://images.unsplash.com/photo-1489987707025-afc232f7ea0f?w=400&h=300&fit=crop',
+    featured: true,
+    badge: 'Trendy'
+  },
+  {
+    id: 6,
+    name: 'Brew Masters',
+    category: 'Beverages',
+    rating: 4.8,
+    deliveryTime: '25-40 min',
+    image: 'https://images.unsplash.com/photo-1471421298428-1513ab720a8e?w=400&h=300&fit=crop',
+    featured: true,
+    badge: 'Local'
+  }
+];
 
   // Other static data
-  const stats = [
-    { number: '50K+', label: 'Happy Customers', icon: '😊' },
-    { number: '1000+', label: 'Partner Vendors', icon: '🍽️' },
-    { number: '15min', label: 'Average Delivery', icon: '⚡' },
-    { number: '24/7', label: 'Support Available', icon: '⭐' }
-  ];
+const stats = [
+  { 
+    number: '50K+', 
+    label: 'Happy Customers', 
+    icon: '😊',
+    description: 'Serving smiles across the city with our quality products'
+  },
+  { 
+    number: '1.2K+', 
+    label: 'Premium Vendors', 
+    icon: '🤝',
+    description: 'Curated selection of top-rated local businesses'
+  },
+  { 
+    number: '18min', 
+    label: 'Avg. Delivery Time', 
+    icon: '⚡',
+    description: 'Lightning-fast delivery to your doorstep'
+  },
+  { 
+    number: '99.8%', 
+    label: 'Order Accuracy', 
+    icon: '🎯',
+    description: 'Precision in every order you place'
+  },
+  { 
+    number: '24/7', 
+    label: 'Customer Support', 
+    icon: '💬',
+    description: 'Always here when you need us'
+  },
+  { 
+    number: '50+', 
+    label: 'Neighborhoods Served', 
+    icon: '📍',
+    description: 'Expanding our reach daily'
+  }
+];
 
   const riderFeatures = [
     {
@@ -267,217 +543,196 @@ export default function HomePage() {
         </div>
 
         {/* Custom CSS for animations */}
-        <style jsx>{`
-      @keyframes fade-in-up {
-        from {
-          opacity: 0;
-          transform: translateY(30px);
+      <style jsx>{`
+        @keyframes fade-in-up {
+          from {
+            opacity: 0;
+            transform: translateY(30px);
+          }
+          to {
+            opacity: 1;
+            transform: translateY(0);
+          }
         }
-        to {
-          opacity: 1;
-          transform: translateY(0);
+        
+        .animate-fade-in-up {
+          animation: fade-in-up 0.8s ease-out forwards;
         }
-      }
-      
-      .animate-fade-in-up {
-        animation: fade-in-up 0.8s ease-out forwards;
-      }
-      
-      .delay-200 {
-        animation-delay: 0.2s;
-      }
-      
-      .delay-400 {
-        animation-delay: 0.4s;
-      }
-      
-      .delay-600 {
-        animation-delay: 0.6s;
-      }
-      
-      .delay-800 {
-        animation-delay: 0.8s;
-      }
-      
-      .delay-1000 {
-        animation-delay: 1s;
-      }
-      
-      .delay-1200 {
-        animation-delay: 1.2s;
-      }
-      
-      .delay-1400 {
-        animation-delay: 1.4s;
-      }
-    `}</style>
+        
+        .delay-200 {
+          animation-delay: 0.2s;
+        }
+        
+        .delay-400 {
+          animation-delay: 0.4s;
+        }
+        
+        .delay-600 {
+          animation-delay: 0.6s;
+        }
+        
+        .delay-800 {
+          animation-delay: 0.8s;
+        }
+        
+        .delay-1000 {
+          animation-delay: 1s;
+        }
+        
+        .delay-1200 {
+          animation-delay: 1.2s;
+        }
+        
+        .delay-1400 {
+          animation-delay: 1.4s;
+        }
+      `}
+      </style>
       </section>
 
-      {/* --------- Categories Navigation --------- */}
-      <div className={`top-0 z-40 bg-white border-b border-gray-100 transition-all duration-300 ${isScrolled ? 'shadow-md' : ''}`}>
-        <div className="max-w-7xl mx-auto px-4 py-6">
-          <div className="flex space-x-8 overflow-x-auto scrollbar-hide">
-            {categories.map((category) => (
-              <button
-                key={category.name}
-                onClick={() => setActiveCategory(category.name)}
-                className={`flex flex-col items-center min-w-fit pb-4 border-b-3 transition-all duration-300 transform hover:scale-105 ${activeCategory === category.name
-                  ? 'border-[#00b1a5] text-[#00b1a5]'
-                  : 'border-transparent text-gray-600 hover:text-black hover:border-[#a3d900]'
-                  }`}
-              >
-                <div className={`text-3xl mb-2 p-3 rounded-2xl transition-all duration-300 ${activeCategory === category.name
-                  ? 'bg-[#00b1a5]/10 transform scale-110'
-                  : 'hover:bg-gray-100'
-                  }`}>
-                  {category.icon}
-                </div>
-                <span className="text-sm font-bold whitespace-nowrap">{category.name}</span>
-              </button>
-            ))}
+{/* --------- Categories Section (Responsive - 2 per row on mobile) --------- */}
+<section className="bg-white py-6 sm:py-8">
+  <div className="max-w-7xl mx-auto px-4 sm:px-6">
+    <h2 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-4 sm:mb-6">Shop by Category</h2>
+    <div className="relative">
+      <div className="grid grid-cols-2 sm:flex sm:space-x-4 lg:space-x-6 gap-3 sm:gap-0 overflow-x-auto pb-2 sm:pb-4 scrollbar-hide">
+        {categories.map((category) => (
+          <div 
+            key={category.name}
+            onClick={() => setActiveCategory(category.name)}
+            className={`flex flex-col items-center w-full sm:min-w-[120px] lg:min-w-[140px] p-4 sm:p-3 lg:p-4 rounded-lg cursor-pointer transition-all duration-200 ${activeCategory === category.name
+              ? 'bg-[#00b1a5] text-white shadow-md'
+              : 'bg-gray-50 hover:bg-gray-100 text-gray-800'
+            }`}
+          >
+            <div className="text-3xl sm:text-2xl lg:text-3xl mb-2 sm:mb-1 lg:mb-2">{category.icon}</div>
+            <span className="text-sm sm:text-xs lg:text-sm font-medium text-center">{category.name}</span>
+          </div>
+        ))}
+      </div>
+    </div>
+  </div>
+</section>
+
+{/* --------- Featured Products Grid (Responsive - 2 per row on mobile) --------- */}
+<section className="max-w-7xl mx-auto px-4 sm:px-6 py-8 sm:py-12">
+  <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 sm:mb-8 gap-3 sm:gap-0">
+    <div>
+      <h2 className="text-2xl sm:text-3xl font-bold text-gray-900">
+        {activeCategory === 'All' ? 'Featured Products' : activeCategory}
+      </h2>
+      <p className="text-gray-600 mt-1 sm:mt-2 text-sm sm:text-base">
+        {activeCategory === 'All' 
+          ? 'Discover our most popular items' 
+          : `Best ${activeCategory} products`}
+      </p>
+    </div>
+    <button className="flex items-center text-[#00b1a5] font-medium hover:underline text-sm sm:text-base">
+      View all
+      <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 sm:h-5 sm:w-5 ml-1" viewBox="0 0 20 20" fill="currentColor">
+        <path fillRule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clipRule="evenodd" />
+      </svg>
+    </button>
+  </div>
+
+  {/* Products Grid - Responsive columns */}
+  <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-4 lg:gap-6">
+    {(activeCategory === 'All' ? allProducts : productsByCategory[activeCategory] || []).slice(0, 4).map((product) => (
+      <div key={product.id} className="group relative bg-white rounded-md sm:rounded-lg overflow-hidden shadow-xs hover:shadow-sm transition-shadow duration-200 border border-gray-100">
+        {/* Product Image */}
+        <div className="aspect-square bg-gray-100 relative overflow-hidden">
+          <img 
+            src={product.image} 
+            alt={product.name} 
+            className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105" 
+          />
+          {/* Badge */}
+          {product.badge && (
+            <div className="absolute top-1.5 sm:top-2 left-1.5 sm:left-2 bg-[#00b1a5] text-white px-1.5 sm:px-2 py-0.5 sm:py-1 rounded text-xs font-bold">
+              {product.badge}
+            </div>
+          )}
+          {/* Quick Actions */}
+          <div className="absolute inset-0 bg-black/5 opacity-0 group-hover:opacity-100 transition-opacity duration-200 flex items-center justify-center gap-1 sm:gap-2">
+            <button className="bg-white rounded-full p-1 hover:bg-[#00b1a5] hover:text-white transition-colors">
+              <svg xmlns="http://www.w3.org/2000/svg" className="h-3 w-3 sm:h-4 sm:w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
+              </svg>
+            </button>
+            <button className="bg-white rounded-full p-1 hover:bg-[#00b1a5] hover:text-white transition-colors">
+              <svg xmlns="http://www.w3.org/2000/svg" className="h-3 w-3 sm:h-4 sm:w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+              </svg>
+            </button>
           </div>
         </div>
-      </div>
-
-      {/* --------- Shop by Category Products --------- */}
-      <section className="max-w-7xl mx-auto px-4 py-16">
-        <div className="text-center mb-12">
-          <h2 className="text-4xl md:text-5xl font-black text-black mb-4">
-            Shop by <span className="text-[#00b1a5]">Category</span>
-          </h2>
-          <p className="text-xl text-gray-600 max-w-2xl mx-auto">
-            Discover top products in each category, handpicked for you
-          </p>
-        </div>
-        {/* Products Grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-          {(activeCategory === 'All' ? allProducts : productsByCategory[activeCategory] || []).map((product) => (
-            <div key={product.id} className="bg-white rounded-xl shadow-md overflow-hidden hover:shadow-xl transition-all duration-300 group border border-gray-100">
-              <div className="relative h-48 overflow-hidden">
-                <img src={product.image} alt={product.name} className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" />
-                {product.badge && (
-                  <div className="absolute top-3 left-3 bg-[#c6d90d] text-black px-3 py-1 rounded-full text-xs font-bold shadow-sm">{product.badge}</div>
-                )}
-                <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/70 to-transparent p-4">
-                  <h3 className="text-white font-bold text-lg">{product.name}</h3>
-                  <p className="text-white/90 text-sm">{product.vendor}</p>
-                </div>
-              </div>
-              <div className="p-4">
-                <div className="flex items-center justify-between mb-3">
-                  <div className="flex items-center">
-                    <span className="text-yellow-400">★</span>
-                    <span className="ml-1 font-bold text-gray-800">{product.rating}</span>
-                    <span className="mx-2 text-gray-400">•</span>
-                    <span className="text-gray-600 text-sm">{product.deliveryTime}</span>
-                  </div>
-                  <span className="bg-[#00b1a5]/10 text-[#00b1a5] px-2 py-1 rounded-md text-sm font-bold">
-                    ${product.price.toFixed(2)}
-                  </span>
-                </div>
-                {/* Action Buttons */}
-                <div className="flex gap-2">
-                  <button className="flex-1 bg-[#00b1a5] hover:bg-[#008a80] text-white px-4 py-2 rounded-lg text-sm font-bold flex items-center justify-center gap-2 transition-colors">
-                    <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
-                    </svg>
-                    Add to Cart
-                  </button>
-                  <button className="flex-1 bg-white border border-gray-300 hover:border-[#00b1a5] text-gray-700 hover:text-[#00b1a5] px-4 py-2 rounded-lg text-sm font-bold transition-colors">
-                    <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
-                    </svg>
-                    View Product
-                  </button>
-                </div>
-              </div>
+        
+        {/* Product Info */}
+        <div className="p-2 sm:p-3">
+          <h3 className="font-semibold text-xs sm:text-sm text-gray-900 mb-1 line-clamp-1">{product.name}</h3>
+          <p className="text-2xs sm:text-xs text-gray-500 mb-1 sm:mb-2">{product.vendor}</p>
+          
+          <div className="flex items-center justify-between">
+            <div className="flex items-center">
+              <span className="text-yellow-400 text-xs">★</span>
+              <span className="ml-0.5 text-2xs sm:text-xs font-medium text-gray-900">{product.rating}</span>
+              <span className="mx-1 text-gray-200">•</span>
+              <span className="text-2xs sm:text-xs text-gray-500">{product.deliveryTime}</span>
             </div>
-          ))}
-        </div>
-        {/* View All Button */}
-        <div className="text-center mt-12">
-          <button className="bg-white border-2 border-[#00b1a5] text-[#00b1a5] hover:bg-[#00b1a5] hover:text-white px-8 py-3 rounded-full font-bold transition-colors duration-300 flex items-center mx-auto gap-2">
-            View All {activeCategory === 'All' ? 'Products' : activeCategory}
-            <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-              <path fillRule="evenodd" d="M10.293 5.293a1 1 0 011.414 0l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414-1.414L12.586 11H5a1 1 0 110-2h7.586l-2.293-2.293a1 1 0 010-1.414z" clipRule="evenodd" />
+            <span className="font-bold text-xs sm:text-sm text-gray-900">${product.price.toFixed(2)}</span>
+          </div>
+          
+          {/* Add to Cart Button */}
+          <button className="mt-1.5 sm:mt-2 w-full bg-[#00b1a5] hover:bg-[#008a80] text-white py-1 rounded text-xs sm:text-xs font-medium transition-colors flex items-center justify-center gap-1">
+            <svg xmlns="http://www.w3.org/2000/svg" className="h-2.5 w-2.5 sm:h-3 sm:w-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
             </svg>
+            Add to Cart
           </button>
         </div>
-      </section>
+      </div>
+    ))}
+  </div>
+</section>
 
-      {/* --------- Featured Vendors --------- */}
-      <section className="max-w-7xl mx-auto px-4 py-16">
-        <div className="text-center mb-12">
-          <h2 className="text-4xl md:text-5xl font-black text-black mb-4">
-            Featured <span className="text-[#00b1a5]">Partners</span>
-          </h2>
-          <p className="text-xl text-gray-600 max-w-2xl mx-auto">
-            Discover the best local vendors delivering quality right to your doorstep
-          </p>
-        </div>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {popularVendors
-            .filter(vendor => activeCategory === 'All' || vendor.category === activeCategory)
-            .filter(vendor => vendor.featured)
-            .map((vendor) => (
-              <div key={vendor.id} className="group bg-white rounded-3xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-2">
-                <div className="relative h-64 overflow-hidden">
-                  <img src={vendor.image} alt={vendor.name} className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent"></div>
-                  <div className="absolute top-4 left-4">
-                    <span className="bg-[#c6d90d] text-black px-3 py-1 rounded-full text-sm font-bold">{vendor.badge}</span>
-                  </div>
-                  <div className="absolute bottom-4 right-4 bg-white/95 backdrop-blur-sm px-3 py-2 rounded-xl">
-                    <div className="flex items-center space-x-2 text-sm font-bold">
-                      <span className="text-[#c6d90d]">⭐</span>
-                      <span>{vendor.rating}</span>
-                      <span className="text-gray-500">•</span>
-                      <span className="text-[#00b1a5]">{vendor.deliveryTime}</span>
-                    </div>
-                  </div>
-                </div>
-                <div className="p-6">
-                  <h3 className="font-black text-xl mb-2 text-black group-hover:text-[#00b1a5] transition-colors">{vendor.name}</h3>
-                  <p className="text-gray-600 font-medium">{vendor.category}</p>
-                </div>
+{/* --------- Popular Vendors Section (Responsive) --------- */}
+<section className="bg-gray-50 py-8 sm:py-12">
+  <div className="max-w-7xl mx-auto px-4 sm:px-6">
+    <h2 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-1 sm:mb-2">Popular Vendors</h2>
+    <p className="text-gray-600 mb-4 sm:mb-6 sm:mb-8 text-sm sm:text-base">Shop from your favorite local stores</p>
+    
+    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4 lg:gap-6">
+      {popularVendors.map((vendor) => (
+        <div key={vendor.id} className="bg-white rounded-lg sm:rounded-xl shadow-xs hover:shadow-sm overflow-hidden transition-shadow duration-200">
+          <div className="relative h-32 sm:h-40 md:h-48">
+            <img src={vendor.image} alt={vendor.name} className="w-full h-full object-cover" />
+            {vendor.badge && (
+              <div className="absolute top-1.5 sm:top-2 right-1.5 sm:right-2 bg-white px-1.5 sm:px-2 py-0.5 sm:py-1 rounded-full text-2xs sm:text-xs font-bold shadow-xs">
+                {vendor.badge}
               </div>
-            ))}
-        </div>
-      </section>
-
-      {/* --------- All Vendors --------- */}
-      <section className="bg-gray-50 py-16">
-        <div className="max-w-7xl mx-auto px-4">
-          <h2 className="text-3xl font-black text-black mb-8">
-            Browse All <span className="text-[#a3d900]">Vendors</span>
-          </h2>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-            {popularVendors
-              .filter(vendor => activeCategory === 'All' || vendor.category === activeCategory)
-              .map((vendor) => (
-                <div key={vendor.id} className="bg-white rounded-2xl overflow-hidden shadow-md hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1">
-                  <div className="relative h-48 overflow-hidden">
-                    <img src={vendor.image} alt={vendor.name} className="w-full h-full object-cover transition-transform duration-300 hover:scale-105" />
-                  </div>
-                  <div className="p-4">
-                    <h3 className="font-bold text-lg mb-1 text-black">{vendor.name}</h3>
-                    <div className="flex justify-between items-center">
-                      <span className="text-gray-600 font-medium text-sm">{vendor.category}</span>
-                      <div className="flex items-center space-x-1 text-sm">
-                        <span className="text-[#c6d90d]">⭐</span>
-                        <span className="font-bold">{vendor.rating}</span>
-                        <span className="text-gray-400">•</span>
-                        <span className="text-[#00b1a5] font-medium">{vendor.deliveryTime}</span>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              ))}
+            )}
+          </div>
+          <div className="p-3 sm:p-4">
+            <h3 className="text-sm sm:text-base md:text-lg font-bold text-gray-900 mb-0.5 sm:mb-1">{vendor.name}</h3>
+            <p className="text-xs sm:text-sm text-gray-600 mb-1.5 sm:mb-2 md:mb-3">{vendor.category}</p>
+            <div className="flex items-center justify-between">
+              <div className="flex items-center">
+                <span className="text-yellow-400 text-xs sm:text-sm">★</span>
+                <span className="ml-0.5 text-xs sm:text-sm font-medium text-gray-900">{vendor.rating}</span>
+                <span className="mx-1 text-gray-200">•</span>
+                <span className="text-2xs sm:text-xs text-gray-600">{vendor.deliveryTime}</span>
+              </div>
+              <button className="text-[#00b1a5] hover:text-[#008a80] font-medium text-2xs sm:text-xs">
+                View Store
+              </button>
+            </div>
           </div>
         </div>
-      </section>
-
+      ))}
+    </div>
+  </div>
+</section>
       {/* Become a Rider Section */}
       <section className="relative py-20 overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-r from-[#00b1a5] to-[#a3d900]"></div>
@@ -669,6 +924,49 @@ export default function HomePage() {
           </div>
         </div>
       </section>
+
+      {/* --------- Stats Section --------- */}
+<section className="bg-gradient-to-r from-[#00b1a5] to-[#a3d900] py-12 text-white">
+  <div className="max-w-7xl mx-auto px-4">
+    <h2 className="text-3xl font-bold mb-8 text-center">Why Customers Love Us</h2>
+    
+    <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-6">
+      {stats.map((stat, index) => (
+        <div key={index} className="flex flex-col items-center text-center p-4">
+          <div className="text-4xl mb-3">{stat.icon}</div>
+          <span className="text-3xl font-bold mb-1">{stat.number}</span>
+          <span className="text-sm font-medium mb-2">{stat.label}</span>
+          <span className="text-xs opacity-80 hidden md:block">{stat.description}</span>
+        </div>
+      ))}
+    </div>
+    
+    {/* Trust Badges */}
+    <div className="mt-12 flex flex-wrap justify-center gap-6 items-center">
+      <div className="flex items-center gap-2 bg-white/10 px-4 py-2 rounded-full">
+        <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path>
+        </svg>
+        <span className="text-sm">Secure Payments</span>
+      </div>
+      
+      <div className="flex items-center gap-2 bg-white/10 px-4 py-2 rounded-full">
+        <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"></path>
+        </svg>
+        <span className="text-sm">Quality Guaranteed</span>
+      </div>
+      
+      <div className="flex items-center gap-2 bg-white/10 px-4 py-2 rounded-full">
+        <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"></path>
+        </svg>
+        <span className="text-sm">No Hidden Fees</span>
+      </div>
+    </div>
+  </div>
+</section>
+
 
       {/* Testimonials */}
       <section className="py-20 bg-white">
