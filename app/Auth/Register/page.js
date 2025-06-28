@@ -117,7 +117,6 @@ export default function RegisterPage() {
       }
 
       const data = await response.json();
-      console.log('Registration successful:', data);
       localStorage.setItem('userToken', data.access_token);
       localStorage.setItem('user', JSON.stringify(data.user));
 

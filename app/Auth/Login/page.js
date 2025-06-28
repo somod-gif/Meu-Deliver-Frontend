@@ -1,20 +1,20 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useContext } from "react";
 import { useRouter } from "next/navigation";
 import { Eye, EyeOff, Mail, Lock, User, Phone } from "lucide-react";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { AuthContext } from "@/app/hooks/authContext";
 
 export default function LoginPage() {
   const router = useRouter();
-
+  const { setIsLoggedIn, setVerifiedUser } = useContext(AuthContext);
   const [formData, setFormData] = useState({
     email: "",
     phone: "",
     password: "",
   });
-
   const [showPassword, setShowPassword] = useState(false);
   const [errors, setErrors] = useState({});
   const [isLoading, setIsLoading] = useState(false);
@@ -119,6 +119,8 @@ export default function LoginPage() {
 
       // Store token and user data securely
       try {
+        setIsLoggedIn(true);
+        setVerifiedUser(data.user);
         localStorage.setItem("userToken", data.access_token);
         localStorage.setItem("user", JSON.stringify(data.user));
 
@@ -134,7 +136,7 @@ export default function LoginPage() {
         );
       }
 
-      toast.success("Login successful! Welcome to Meu Deliver!");
+      // toast.success("Login successful! Welcome to Meu Deliver!");
 
       // Redirect based on user role with fallback
       const redirectPath =
@@ -156,13 +158,13 @@ export default function LoginPage() {
       toast.error(displayMessage || "Signing in failed. Please try again.");
 
       // Clear sensitive data on error
-      if (
-        error.message.includes("Invalid credentials") ||
-        error.message.includes("Unauthorized")
-      ) {
-        localStorage.removeItem("userToken");
-        localStorage.removeItem("user");
-      }
+      // if (
+      //   error.message.includes("Invalid credentials") ||
+      //   error.message.includes("Unauthorized")
+      // ) {
+      //   localStorage.removeItem("userToken");
+      //   localStorage.removeItem("user");
+      // }
     } finally {
       setIsLoading(false);
     }

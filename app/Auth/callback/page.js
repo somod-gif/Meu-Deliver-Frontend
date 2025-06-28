@@ -1,11 +1,13 @@
 "use client";
-import { useRouter } from "next/navigation";
+import { useRouter, useContext } from "next/navigation";
 import { useEffect } from "react";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { AuthContext } from "@/app/hooks/authContext";
 
 const CallbackPage = () => {
   const router = useRouter();
+  const { setIsLoggedIn, setVerifiedUser } = useContext(AuthContext);
 
   useEffect(() => {
     const handleAuthCallback = () => {
@@ -17,6 +19,8 @@ const CallbackPage = () => {
         if (token && userStr) {
           const user = JSON.parse(decodeURIComponent(userStr));
 
+          setIsLoggedIn(true);
+          setVerifiedUser(user);
           localStorage.setItem("userToken", token);
           localStorage.setItem("user", JSON.stringify(user));
 
