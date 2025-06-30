@@ -1,9 +1,12 @@
 'use client';
 import { useState, useEffect } from 'react';
 import Image from 'next/image';
+import { useRouter } from 'next/router';
+import Products from './UI/Products'
 
 export default function HomePage() {
-  const [activeCategory, setActiveCategory] = useState('All');
+  // const [activeCategory, setActiveCategory] = useState('All');
+  const [showAllProducts, setShowAllProducts] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
 
   useEffect(() => {
@@ -14,335 +17,77 @@ export default function HomePage() {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  const categories = [
-    { "name": "All", "icon": "🔄" },
-    { "name": "Bar", "icon": "🍺" },
-    { "name": "Store", "icon": "🛍️" },
-    { "name": "Supermarket", "icon": "🛒" },
-    { "name": "Pharmacy", "icon": "💊" },
-    { "name": "Post Office", "icon": "🏤" },
-    { "name": "Restaurant", "icon": "🍽️" }
-  ];
+  // const ProductsComponent = () => {
+  //   const router = useRouter();
+  //   const [categories, setCategories] = useState([]);
+  //   const [productsByCategory, setProductsByCategory] = useState({});
+  //   const [allProducts, setAllProducts] = useState([]);
+  //   const [activeCategory, setActiveCategory] = useState('All');
+  //   const [loading, setLoading] = useState(true);
+  //   const [error, setError] = useState(null);
 
+  //   // const ANGOLA_RATE = 850; // You can adjust this rate as needed
 
-  // Products data organized by category
-  const productsByCategory = {
-    "Bar": [
-      {
-        "id": 21,
-        "name": "Craft Beer Selection",
-        "price": 16.99,
-        "vendor": "Brew Masters",
-        "rating": 4.7,
-        "deliveryTime": "25-40 min",
-        "image": "https://images.unsplash.com/photo-1535958636474-b021ee887b13?w=400&h=300&fit=crop",
-        "badge": "Local"
-      },
-      {
-        "id": 22,
-        "name": "Premium Wine Collection",
-        "price": 29.99,
-        "vendor": "Vino Delight",
-        "rating": 4.8,
-        "deliveryTime": "30-45 min",
-        "image": "https://images.unsplash.com/photo-1559496417-e7f25cb247f3?w=400&h=300&fit=crop",
-        "badge": "Exclusive"
-      },
-      {
-        "id": 23,
-        "name": "Cold Pressed Juices",
-        "price": 12.50,
-        "vendor": "Juice Bar",
-        "rating": 4.6,
-        "deliveryTime": "20-30 min",
-        "image": "https://images.unsplash.com/photo-1603569283847-aa295f0d016a?w=400&h=300&fit=crop",
-        "badge": "Healthy"
-      }
-    ],
-    "Store": [
-      {
-        "id": 5,
-        "name": "Fashion T-Shirt",
-        "price": 19.99,
-        "vendor": "Fashion Hub",
-        "rating": 4.4,
-        "deliveryTime": "35-50 min",
-        "image": "https://images.unsplash.com/photo-1489987707025-afc232f7ea0f?w=400&h=300&fit=crop",
-        "badge": "",
-      },
-      {
-        "id": 18,
-        "name": "Denim Jeans",
-        "price": 39.99,
-        "vendor": "Urban Style",
-        "rating": 4.5,
-        "deliveryTime": "40-55 min",
-        "image": "https://images.unsplash.com/photo-1473966968600-fa801b869a1a?w=400&h=300&fit=crop",
-        "badge": "Trending"
-      },
-      {
-        "id": 19,
-        "name": "Leather Wallet",
-        "price": 24.99,
-        "vendor": "LeatherCraft",
-        "rating": 4.7,
-        "deliveryTime": "30-45 min",
-        "image": "https://images.unsplash.com/photo-1548032885-b5e38734688a?w=400&h=300&fit=crop",
-        "badge": ""
-      },
-      {
-        "id": 20,
-        "name": "Running Shoes",
-        "price": 69.99,
-        "vendor": "SportLife",
-        "rating": 4.8,
-        "deliveryTime": "35-50 min",
-        "image": "https://images.unsplash.com/photo-1491553895911-0055eca6402d?w=400&h=300&fit=crop",
-        "badge": "Best Seller"
-      },
-      {
-        "id": 4,
-        "name": "Smartphone X200",
-        "price": 299.99,
-        "vendor": "TechZone",
-        "rating": 4.5,
-        "deliveryTime": "30-45 min",
-        "image": "https://images.unsplash.com/photo-1518770660439-4636190af475?w=400&h=300&fit=crop",
-        "badge": ""
-      },
-      {
-        "id": 15,
-        "name": "Wireless Earbuds",
-        "price": 79.99,
-        "vendor": "AudioTech",
-        "rating": 4.6,
-        "deliveryTime": "25-40 min",
-        "image": "https://images.unsplash.com/photo-1590658268037-6bf12165a8df?w=400&h=300&fit=crop",
-        "badge": "Popular"
-      },
-      {
-        "id": 16,
-        "name": "Smart Watch Pro",
-        "price": 149.99,
-        "vendor": "TechZone",
-        "rating": 4.7,
-        "deliveryTime": "30-50 min",
-        "image": "https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=400&h=300&fit=crop",
-        "badge": "New"
-      },
-      {
-        "id": 17,
-        "name": "Bluetooth Speaker",
-        "price": 59.99,
-        "vendor": "SoundMaster",
-        "rating": 4.4,
-        "deliveryTime": "20-35 min",
-        "image": "https://images.unsplash.com/photo-1572569511254-d8f925fe2cbb?w=400&h=300&fit=crop",
-        "badge": ""
-      },
-      {
-        "id": 24,
-        "name": "Scented Candles Set",
-        "price": 22.99,
-        "vendor": "Home Comfort",
-        "rating": 4.7,
-        "deliveryTime": "30-45 min",
-        "image": "https://images.unsplash.com/photo-1585320806297-9794b3e4eeae?w=400&h=300&fit=crop",
-        "badge": "Cozy"
-      },
-      {
-        "id": 25,
-        "name": "Throw Blanket",
-        "price": 34.99,
-        "vendor": "Cozy Living",
-        "rating": 4.5,
-        "deliveryTime": "35-50 min",
-        "image": "https://images.unsplash.com/photo-1576566588028-4147f3842f27?w=400&h=300&fit=crop",
-        "badge": ""
-      },
-      {
-        "id": 26,
-        "name": "Ceramic Dinner Set",
-        "price": 49.99,
-        "vendor": "Table Art",
-        "rating": 4.8,
-        "deliveryTime": "40-55 min",
-        "image": "https://images.unsplash.com/photo-1581578731548-c64695cc6952?w=400&h=300&fit=crop",
-        "badge": "Premium"
-      }
-    ],
-    "Supermarket": [
-      {
-        "id": 2,
-        "name": "Fresh Fruits Basket",
-        "price": 20.5,
-        "vendor": "FreshMart",
-        "rating": 4.6,
-        "deliveryTime": "20-30 min",
-        "image": "https://images.unsplash.com/photo-1586985289688-ca3cf47d3e6e?w=400&h=300&fit=crop",
-        "badge": ""
-      },
-      {
-        "id": 9,
-        "name": "Organic Vegetables Pack",
-        "price": 15.99,
-        "vendor": "GreenGrocer",
-        "rating": 4.7,
-        "deliveryTime": "25-40 min",
-        "image": "https://images.unsplash.com/photo-1518977676601-b53f82aba655?w=400&h=300&fit=crop",
-        "badge": "Organic"
-      },
-      {
-        "id": 10,
-        "name": "Dairy Essentials Bundle",
-        "price": 12.75,
-        "vendor": "Milk & More",
-        "rating": 4.5,
-        "deliveryTime": "15-25 min",
-        "image": "https://images.unsplash.com/photo-1550583724-b2692b85b150?w=400&h=300&fit=crop",
-        "badge": ""
-      },
-      {
-        "id": 11,
-        "name": "Premium Coffee Beans",
-        "price": 14.99,
-        "vendor": "Bean There",
-        "rating": 4.8,
-        "deliveryTime": "30-45 min",
-        "image": "https://images.unsplash.com/photo-1515442261605-65987783cb6a?w=400&h=300&fit=crop",
-        "badge": "Exclusive"
-      }
-    ],
-    "Pharmacy": [
-      {
-        "id": 3,
-        "name": "Pain Relief Tablets",
-        "price": 8.99,
-        "vendor": "MediCare",
-        "rating": 4.9,
-        "deliveryTime": "10-20 min",
-        "image": "https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?w=400&h=300&fit=crop",
-        "badge": ""
-      },
-      {
-        "id": 12,
-        "name": "Multivitamin Supplement",
-        "price": 12.49,
-        "vendor": "HealthPlus",
-        "rating": 4.7,
-        "deliveryTime": "15-25 min",
-        "image": "https://images.unsplash.com/photo-1587854692152-cbe660dbde88?w=400&h=300&fit=crop",
-        "badge": "Best Value"
-      },
-      {
-        "id": 13,
-        "name": "First Aid Kit",
-        "price": 19.99,
-        "vendor": "SafeLife",
-        "rating": 4.8,
-        "deliveryTime": "20-30 min",
-        "image": "https://images.unsplash.com/photo-1579684385127-1ef15d508118?w=400&h=300&fit=crop",
-        "badge": "Essential"
-      },
-      {
-        "id": 14,
-        "name": "Allergy Relief",
-        "price": 10.25,
-        "vendor": "MediCare",
-        "rating": 4.6,
-        "deliveryTime": "10-15 min",
-        "image": "https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?w=400&h=300&fit=crop",
-        "badge": "Fast Acting"
-      }
-    ],
-    "Post Office": [
-      {
-        "id": 27,
-        "name": "Express Shipping Service",
-        "price": 12.99,
-        "vendor": "QuickPost",
-        "rating": 4.5,
-        "deliveryTime": "24-48 hrs",
-        "image": "https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?w=400&h=300&fit=crop",
-        "badge": "Fast"
-      },
-      {
-        "id": 28,
-        "name": "Document Printing & Binding",
-        "price": 8.50,
-        "vendor": "Print Pro",
-        "rating": 4.6,
-        "deliveryTime": "30-45 min",
-        "image": "https://images.unsplash.com/photo-1586953208448-b95a79798f07?w=400&h=300&fit=crop",
-        "badge": "Professional"
-      },
-      {
-        "id": 29,
-        "name": "Packaging Materials Kit",
-        "price": 15.99,
-        "vendor": "Pack It Right",
-        "rating": 4.4,
-        "deliveryTime": "20-35 min",
-        "image": "https://images.unsplash.com/photo-1578662996442-48f60103fc96?w=400&h=300&fit=crop",
-        "badge": "Complete Set"
-      },
-      {
-        "id": 30,
-        "name": "Postage Stamps Collection",
-        "price": 25.00,
-        "vendor": "Postal Services",
-        "rating": 4.8,
-        "deliveryTime": "15-30 min",
-        "image": "https://images.unsplash.com/photo-1586953208448-b95a79798f07?w=400&h=300&fit=crop",
-        "badge": "Official"
-      }
-    ],
-    "Restaurant": [
-      {
-        "id": 1,
-        "name": "Cheeseburger Meal",
-        "price": 12.99,
-        "vendor": "Burger Palace",
-        "rating": 4.8,
-        "deliveryTime": "15-25 min",
-        "image": "https://images.unsplash.com/photo-1568901346375-23c9450c58cd?w=400&h=300&fit=crop",
-        "badge": "Best Seller"
-      },
-      {
-        "id": 6,
-        "name": "Pepperoni Pizza",
-        "price": 14.99,
-        "vendor": "Pizza Heaven",
-        "rating": 4.7,
-        "deliveryTime": "20-30 min",
-        "image": "https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?w=400&h=300&fit=crop",
-        "badge": "New"
-      },
-      {
-        "id": 7,
-        "name": "Chicken Tacos",
-        "price": 9.99,
-        "vendor": "Taco Fiesta",
-        "rating": 4.5,
-        "deliveryTime": "15-20 min",
-        "image": "https://images.unsplash.com/photo-1565299585323-38d6b0865b47?w=400&h=300&fit=crop",
-        "badge": ""
-      },
-      {
-        "id": 8,
-        "name": "Sushi Combo",
-        "price": 18.50,
-        "vendor": "Tokyo Sushi",
-        "rating": 4.9,
-        "deliveryTime": "25-35 min",
-        "image": "https://images.unsplash.com/photo-1611143669185-af224c5e3252?w=400&h=300&fit=crop",
-        "badge": "Chef's Choice"
-      }
-    ]
-  };
+  //   // Fetch products data from JSON file
+  //   useEffect(() => {
+  //     const fetchProducts = async () => {
+  //       try {
+  //         setLoading(true);
+  //         const response = await fetch('/Products/Products.json');
 
-  const allProducts = Object.values(productsByCategory).flat();
+  //         if (!response.ok) {
+  //           throw new Error('Failed to fetch products data');
+  //         }
 
+  //         const data = await response.json();
+
+  //         setCategories(data.categories || []);
+  //         setProductsByCategory(data.productsByCategory || {});
+
+  //         // Create allProducts array from all categories
+  //         const allProductsArray = Object.values(data.productsByCategory || {}).flat();
+  //         setAllProducts(allProductsArray);
+
+  //       } catch (err) {
+  //         setError(err.message);
+  //         console.error('Error fetching products:', err);
+  //       } finally {
+  //         setLoading(false);
+  //       }
+  //     };
+
+  //     fetchProducts();
+  //   }, []);
+
+  //   const handleViewAllProducts = () => {
+  //     router.push('/products');
+  //   };
+  //   if (loading) {
+  //     return (
+  //       <div className="max-w-7xl mx-auto px-4 sm:px-6 py-8">
+  //         <div className="flex items-center justify-center h-64">
+  //           <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#00b1a5]"></div>
+  //         </div>
+  //       </div>
+  //     );
+  //   }
+
+  //   if (error) {
+  //     return (
+  //       <div className="max-w-7xl mx-auto px-4 sm:px-6 py-8">
+  //         <div className="bg-red-50 border border-red-200 rounded-lg p-4 text-center">
+  //           <p className="text-red-600">Error loading products: {error}</p>
+  //           <button
+  //             onClick={() => window.location.reload()}
+  //             className="mt-2 px-4 py-2 bg-red-600 text-white rounded hover:bg-red-700"
+  //           >
+  //             Retry
+  //           </button>
+  //         </div>
+  //       </div>
+  //     );
+  //   }
+  // }
   // Popular Vendors Data
   const popularVendors = [
     {
@@ -540,7 +285,7 @@ export default function HomePage() {
 
           {/* Text Content */}
           <div className="w-full lg:w-1/2 space-y-6 text-center lg:text-left">
-            <h1 className="text-3xl sm:text-4xl lg:text-4xl font-extrabold text-gray-900 leading-tight">
+            <h1 className="text-3xl sm:text-4xl mt-4 lg:text-4xl font-extrabold text-gray-900 leading-tight">
               Fast, Reliable Delivery<br />
               <span className="text-[#00b1a5]">From Restaurants, Shops & More</span>
             </h1>
@@ -576,130 +321,7 @@ export default function HomePage() {
 
 
 
-
-      {/* --------- Categories Section  --------- */}
-      <section className="bg-white py-6 sm:py-8">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6">
-          <h2 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-4 sm:mb-6">
-            Shop by Category
-          </h2>
-
-          <div className="relative overflow-x-auto pb-2 sm:pb-4">
-            <div className="flex space-x-4">
-              {categories.map((category) => (
-                <div
-                  key={category.name}
-                  onClick={() => setActiveCategory(category.name)}
-                  className={`
-              flex-shrink-0 flex flex-col items-center
-              w-20 sm:w-24 lg:w-28 p-2 rounded-full cursor-pointer transition-all duration-200
-              ${activeCategory === category.name
-                      ? 'bg-[#00b1a5] text-white shadow-lg scale-105'
-                      : 'bg-gray-100 hover:bg-gray-200 text-gray-800'
-                    }
-            `}
-                >
-                  <div className="text-2xl sm:text-3xl mb-1">
-                    {category.icon}
-                  </div>
-                  <span className="text-xs sm:text-sm font-medium text-center">
-                    {category.name}
-                  </span>
-                </div>
-              ))}
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* --------- Featured Products   --------- */}
-      <section className="max-w-7xl mx-auto px-4 sm:px-6 py-8 sm:py-12">
-        {/* Header */}
-        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 gap-3">
-          <div>
-            <h2 className="text-xl sm:text-2xl font-bold text-black">
-              {activeCategory === 'All' ? 'Featured Products' : activeCategory}
-            </h2>
-            <p className="text-gray-600 mt-1 text-sm">
-              {activeCategory === 'All'
-                ? 'Discover our most popular items'
-                : `Best ${activeCategory} products`}
-            </p>
-          </div>
-          <button className="flex items-center text-[#00b1a5] font-medium hover:text-[#008a80] transition-colors text-sm group">
-            View all
-            <svg xmlns="http://www.w3.org/2000/svg"
-              className="h-4 w-4 ml-1 transform group-hover:translate-x-1 transition-transform"
-              viewBox="0 0 20 20" fill="currentColor">
-              <path fillRule="evenodd"
-                d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1
-           0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1
-           0 01-1.414 0z"
-                clipRule="evenodd" />
-            </svg>
-          </button>
-        </div>
-
-        {/* Products Grid - Compact Modern Design */}
-        <div className="grid grid-cols-3 sm:grid-cols-4 lg:grid-cols-5 gap-2 sm:gap-3 lg:gap-4">
-          {(activeCategory === 'All'
-            ? allProducts
-            : productsByCategory[activeCategory] || []
-          ).map((product) => (
-            <div key={product.id}
-              className="bg-white rounded-xl overflow-hidden shadow-sm border border-gray-100 hover:shadow-md hover:border-[#00b1a5]/20 transition-all duration-300 group">
-
-              {/* Image Container */}
-              <div className="aspect-square bg-gradient-to-br from-gray-50 to-gray-100 overflow-hidden relative">
-                <img src={product.image}
-                  alt={product.name}
-                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" />
-
-                {/* Quick Action Overlay */}
-                <div className="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors duration-300 flex items-center justify-center opacity-0 group-hover:opacity-100">
-                  <button
-                    onClick={() => router.push(`/products/${product.id}`)}
-                    className="bg-[#00b1a5] hover:bg-[#008a80] text-white p-2 rounded-full shadow-lg transform scale-90 group-hover:scale-100 transition-all duration-200">
-                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
-                    </svg>
-                  </button>
-                </div>
-              </div>
-
-              {/* Content */}
-              <div className="p-2 sm:p-3">
-                <h3 className="font-semibold text-xs sm:text-sm text-black mb-1 line-clamp-2 leading-tight">
-                  {product.name}
-                </h3>
-                <p className="text-xs text-gray-500 mb-2 truncate">{product.vendor}</p>
-
-                {/* Price and CTA */}
-                <div className="space-y-2">
-                  <div className="flex items-center justify-between">
-                    <span className="font-bold text-sm sm:text-base text-black">
-                      AOA {Math.round(product.price * ANGOLA_RATE)}
-                    </span>
-                    <span className="text-xs text-[#a3d900] font-medium px-2 py-1 bg-[#a3d900]/10 rounded-full">
-                      New
-                    </span>
-                  </div>
-
-                  <button
-                    onClick={() => router.push(`/products/${product.id}`)}
-                    className="w-full bg-[#00b1a5] hover:bg-[#008a80] text-white py-1.5 sm:py-2 px-2 rounded-lg text-xs sm:text-sm font-medium transition-all duration-200 hover:shadow-lg hover:shadow-[#00b1a5]/25 active:scale-95">
-                    View Product
-                  </button>
-                </div>
-              </div>
-            </div>
-          ))}
-        </div>
-      </section>
-
-
-
+      <Products />
       {/* --------- Popular Vendors Section (Responsive) --------- */}
 
       <section className="bg-gray-50 py-6 sm:py-8">
