@@ -177,7 +177,7 @@ export default function RegisterPage() {
           <div className="bg-white rounded-3xl shadow-xl p-8 border border-gray-100">
             <div className="space-y-6">
               {/* Role Selection */}
-              <div>
+              {/* <div>
                 <label className="block text-sm font-semibold text-gray-700 mb-2">
                   Register As
                 </label>
@@ -231,7 +231,7 @@ export default function RegisterPage() {
                     }`}>Rider</span>
                   </button>
                 </div>
-              </div>
+              </div> */}
 
               {/* Profile Image Upload */}
               <div className="flex flex-col items-center">

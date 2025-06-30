@@ -1,4 +1,4 @@
-"use client";
+
 // app/layout.js
 import "./globals.css";
 import Navbar from "./Components/Navbar";
@@ -11,10 +11,10 @@ import AuthContextProvider, { AuthContext } from "./hooks/authContext";
 import LayoutContent from "./layoutContent";
 // import { useState, useContext } from "react"; // Corrected: Import useState and useContext
 
-// export const metadata = {
-//   title: 'MeuDeliver - Angola’s All-in-One Delivery',
-//   description: 'Food, pharmacy, supermarket, bar, and post deliveries — fast and reliable!',
-// }
+export const metadata = {
+  title: 'MeuDeliver - Angola’s All-in-One Delivery',
+  description: 'Food, pharmacy, supermarket, bar, and post deliveries — fast and reliable!',
+}
 
 export default function RootLayout({ children }) {
   // useState and useContext calls should be inside a functional component
