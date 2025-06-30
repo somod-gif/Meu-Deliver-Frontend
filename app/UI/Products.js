@@ -199,7 +199,7 @@ export default function Products() {
                     <span className="text-yellow-400 text-xs">★</span>
                     <span className="text-xs text-gray-600 ml-1">{product.rating}</span>
                   </div>
-                  <span className="text-xs text-gray-500">{product.deliveryTime}</span>
+                  {/* <span className="text-xs text-gray-500">{product.deliveryTime}</span> */}
                 </div>
 
                 {/* Price and CTA */}
