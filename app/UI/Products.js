@@ -46,7 +46,7 @@ export default function Products() {
   }, []);
 
   const handleViewAllProducts = () => {
-    router.push('/products');
+    router.push('/Pages/Products/');
   };
 
   if (loading) {

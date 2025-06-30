@@ -8,8 +8,9 @@ import {
   UserCircleIcon, PlusIcon, ArrowRightIcon
 } from '@heroicons/react/24/outline';
 import { useRouter } from 'next/navigation';
-import { toast } from 'react-toastify';
+import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import LoginHeader from '../../../Components/Login-header'
 
 export default function ClientDashboard() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
@@ -552,7 +553,19 @@ export default function ClientDashboard() {
   // }
 
   return (
-    <div className="min-h-screen bg-gray-50 flex z-50 overflow-hidden mt-16">
+    <div className="min-h-screen bg-gray-50 flex z-50 overflow-hidden mt-10">
+      {/* Integrated LoginHeader */}
+      {/* <LoginHeader 
+        user={user}
+        setSidebarOpen={setSidebarOpen}
+        onLogout={logoutUser}
+        cartCount={cartCount}
+        notificationCount={notificationCount}
+        onCartClick={handleCartClick}
+        onNotificationClick={handleNotificationClick}
+      /> */}
+
+
       {/* Mobile overlay */}
       {sidebarOpen && (
         <div

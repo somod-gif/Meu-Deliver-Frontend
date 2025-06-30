@@ -1,7 +1,7 @@
 
 {
   "categories": [
-    { "name": "All", "icon": "🔄" },
+    
     { "name": "Bar", "icon": "🍺" },
     { "name": "Store", "icon": "🛍️" },
     { "name": "Supermarket", "icon": "🛒" },
