@@ -14,25 +14,18 @@ export const AuthContext = createContext({
 export default function AuthContextProvider({ children }) {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [verifiedUser, setVerifiedUser] = useState(null);
-  const [loading, setLoading] = useState(true); // Add loading
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const token = localStorage.getItem("userToken");
-    if (!token) {
-      setIsLoggedIn(false);
-      setLoading(false);
-      return;
-    }
-
     const verifyUser = async () => {
       try {
         const res = await fetch(
           `${process.env.NEXT_PUBLIC_API_URL}/auth/verify-current-user`,
           {
             method: "GET",
+            credentials: "include", // Send cookies
             headers: {
               "Content-Type": "application/json",
-              Authorization: `Bearer ${token}`,
             },
           }
         );
@@ -42,12 +35,9 @@ export default function AuthContextProvider({ children }) {
         if (res.ok && resData.valid) {
           setIsLoggedIn(true);
           setVerifiedUser(resData.user);
-          localStorage.setItem("user", JSON.stringify(resData.user));
-          localStorage.setItem("userToken", resData.access_token);
         } else {
           setIsLoggedIn(false);
-          localStorage.removeItem("userToken");
-          localStorage.removeItem("user");
+          setVerifiedUser(null);
 
           if (res.status === 401) {
             toast.error("Session expired. Please log in again.");
@@ -59,6 +49,7 @@ export default function AuthContextProvider({ children }) {
         console.error("Verification error:", error);
         toast.error("Network error verifying user.");
         setIsLoggedIn(false);
+        setVerifiedUser(null);
       } finally {
         setLoading(false);
       }
