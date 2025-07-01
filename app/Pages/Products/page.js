@@ -17,7 +17,6 @@ export default function ModernProductsPage() {
 
     const ANGOLA_RATE = 850;
 
-    // Fetch products data from JSON file
     useEffect(() => {
         const fetchProducts = async () => {
             try {
@@ -33,7 +32,6 @@ export default function ModernProductsPage() {
                 setCategories(data.categories || []);
                 setProductsByCategory(data.productsByCategory || {});
 
-                // Create allProducts array from all categories
                 const allProductsArray = Object.values(data.productsByCategory || {}).flat();
                 setAllProducts(allProductsArray);
 
@@ -95,7 +93,6 @@ export default function ModernProductsPage() {
 
     return (
         <div className="min-h-screen bg-gradient-to-br from-gray-50 to-white">
-            {/* Hero Section */}
             <div className="relative overflow-hidden bg-gradient-to-r from-[#00b1a5] via-[#00b1a5] to-[#a3d900] py-16 sm:py-24">
                 <div className="absolute inset-0 bg-black/10"></div>
                 <div className="relative max-w-7xl mx-auto px-4 sm:px-6 text-center">
@@ -109,7 +106,6 @@ export default function ModernProductsPage() {
                         Curated collection of premium products that blend innovation, sustainability, and style
                     </p>
 
-                    {/* Search Bar */}
                     <div className="max-w-md mx-auto relative">
                         <div className="relative">
                             <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
@@ -124,7 +120,6 @@ export default function ModernProductsPage() {
                     </div>
                 </div>
 
-                {/* Floating Elements */}
                 <div className="absolute top-20 left-10 animate-float">
                     <div className="w-16 h-16 bg-[#c6d90d]/30 rounded-full blur-xl"></div>
                 </div>
@@ -133,25 +128,21 @@ export default function ModernProductsPage() {
                 </div>
             </div>
 
-            {/* Categories & Controls */}
             <div className="max-w-7xl mx-auto px-4 sm:px-6 py-8">
                 <div className="bg-white rounded-3xl shadow-xl p-6 sm:p-8 border border-gray-100">
-                    {/* Categories */}
                     <div className="mb-8">
                         <h2 className="text-2xl font-bold text-black mb-6 flex items-center">
                             <Zap className="w-6 h-6 text-[#00b1a5] mr-2" />
                             Shop by Category
                         </h2>
-                        <div className="flex flex-wrap gap-3">
+                        <div className="flex overflow-x-auto pb-2 -mx-2 sm:mx-0 sm:flex-wrap sm:gap-3">
                             <button
                                 onClick={() => setActiveCategory('All')}
-                                className={`
-                  flex items-center px-6 py-3 rounded-2xl font-medium transition-all duration-300 transform hover:scale-105
-                  ${activeCategory === 'All'
+                                className={`flex items-center px-6 py-3 rounded-2xl font-medium transition-all duration-300 transform hover:scale-105 shrink-0 mx-2 sm:mx-0
+                                    ${activeCategory === 'All'
                                         ? 'bg-gradient-to-r from-[#00b1a5] to-[#a3d900] text-white shadow-lg shadow-[#00b1a5]/30'
                                         : 'bg-gray-100 hover:bg-gray-200 text-gray-700'
-                                    }
-                `}
+                                    }`}
                             >
                                 <span className="text-lg mr-2">🌟</span>
                                 <span>All</span>
@@ -164,13 +155,11 @@ export default function ModernProductsPage() {
                                 <button
                                     key={category.name}
                                     onClick={() => setActiveCategory(category.name)}
-                                    className={`
-                    flex items-center px-6 py-3 rounded-2xl font-medium transition-all duration-300 transform hover:scale-105
-                    ${activeCategory === category.name
+                                    className={`flex items-center px-6 py-3 rounded-2xl font-medium transition-all duration-300 transform hover:scale-105 shrink-0 mx-2 sm:mx-0
+                                        ${activeCategory === category.name
                                             ? 'bg-gradient-to-r from-[#00b1a5] to-[#a3d900] text-white shadow-lg shadow-[#00b1a5]/30'
                                             : 'bg-gray-100 hover:bg-gray-200 text-gray-700'
-                                        }
-                  `}
+                                        }`}
                                 >
                                     <span className="text-lg mr-2">{category.icon}</span>
                                     <span>{category.name}</span>
@@ -182,7 +171,6 @@ export default function ModernProductsPage() {
                         </div>
                     </div>
 
-                    {/* Controls */}
                     <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-8">
                         <div className="flex items-center space-x-4">
                             <div className="flex items-center space-x-2 bg-gray-100 rounded-xl p-1">
@@ -224,15 +212,12 @@ export default function ModernProductsPage() {
                         </div>
                     </div>
 
-                    {/* Products Grid */}
-                    {/* Products Grid */}
-                    <div className={`grid gap-3 sm:gap-4 ${viewMode === 'grid' ? 'grid-cols-2 xs:grid-cols-3 sm:grid-cols-4 lg:grid-cols-5' : 'grid-cols-1'}`}>
+                    <div className={`grid gap-3 sm:gap-4 ${viewMode === 'grid' ? 'grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5' : 'grid-cols-1'}`}>
                         {filteredProducts.map((product) => (
                             <div
                                 key={product.id}
                                 className="group bg-white rounded-xl overflow-hidden shadow-sm border border-gray-100 hover:shadow-md hover:border-[#00b1a5]/20 transition-all duration-300"
                             >
-                                {/* Image Container */}
                                 <div className="relative aspect-square bg-gradient-to-br from-gray-50 to-gray-100 overflow-hidden">
                                     <img
                                         src={product.image}
@@ -240,7 +225,6 @@ export default function ModernProductsPage() {
                                         className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                                     />
 
-                                    {/* Badges */}
                                     <div className="absolute top-2 left-2 flex flex-col gap-1">
                                         {product.badge && (
                                             <span className={`px-2 py-1 text-[10px] font-bold text-white rounded-full ${getBadgeColor(product.badge)}`}>
@@ -254,7 +238,6 @@ export default function ModernProductsPage() {
                                         )}
                                     </div>
 
-                                    {/* Favorite Button */}
                                     <button
                                         onClick={(e) => {
                                             e.stopPropagation();
@@ -268,7 +251,6 @@ export default function ModernProductsPage() {
                                         <Heart className={`w-3 h-3 ${favorites.has(product.id) ? 'fill-current' : ''}`} />
                                     </button>
 
-                                    {/* Quick View Overlay */}
                                     <div
                                         onClick={() => handleViewProduct(product.id)}
                                         className="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors duration-300 flex items-center justify-center opacity-0 group-hover:opacity-100 cursor-pointer"
@@ -279,7 +261,6 @@ export default function ModernProductsPage() {
                                     </div>
                                 </div>
 
-                                {/* Content */}
                                 <div className="p-2 sm:p-3">
                                     <h3 className="font-semibold text-xs sm:text-sm text-black mb-1 line-clamp-2 leading-tight">
                                         {product.name}
@@ -288,7 +269,6 @@ export default function ModernProductsPage() {
                                         <p className="text-xs text-gray-500 mb-1 truncate">{product.vendor}</p>
                                     )}
 
-                                    {/* Rating */}
                                     {product.rating && (
                                         <div className="flex items-center mb-2">
                                             <div className="flex items-center">
@@ -298,7 +278,6 @@ export default function ModernProductsPage() {
                                         </div>
                                     )}
 
-                                    {/* Price */}
                                     <div className="flex items-center justify-between mb-2">
                                         <span className="font-bold text-sm text-black">
                                             AOA {Math.round(product.price * ANGOLA_RATE * (product.discount ? (1 - product.discount / 100) : 1)).toLocaleString()}
@@ -310,7 +289,6 @@ export default function ModernProductsPage() {
                                         )}
                                     </div>
 
-                                    {/* CTA Button */}
                                     <button
                                         onClick={() => handleViewProduct(product.id)}
                                         className={`w-full text-xs py-1.5 px-2 rounded-lg font-medium transition-all ${product.inStock !== false
@@ -324,37 +302,24 @@ export default function ModernProductsPage() {
                             </div>
                         ))}
                     </div>
-
-                    {/* View All Products */}
-                    {/* {filteredProducts.length > 0 && (
-            <div className="text-center mt-12">
-              <button 
-                onClick={() => router.push('/Pages/Products/')}
-                className="inline-flex items-center px-8 py-4 bg-gradient-to-r from-[#00b1a5] to-[#a3d900] hover:from-[#008a80] hover:to-[#8bc000] text-white font-bold rounded-2xl transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-2xl"
-              >
-                View All Products
-                <Zap className="w-5 h-5 ml-2" />
-              </button>
-            </div>
-          )} */}
                 </div>
             </div>
 
             <style jsx>{`
-        @keyframes float {
-          0%, 100% { transform: translateY(0px); }
-          50% { transform: translateY(-20px); }
-        }
-        .animate-float {
-          animation: float 6s ease-in-out infinite;
-        }
-        .line-clamp-2 {
-          display: -webkit-box;
-          -webkit-line-clamp: 2;
-          -webkit-box-orient: vertical;
-          overflow: hidden;
-        }
-      `}</style>
+                @keyframes float {
+                    0%, 100% { transform: translateY(0px); }
+                    50% { transform: translateY(-20px); }
+                }
+                .animate-float {
+                    animation: float 6s ease-in-out infinite;
+                }
+                .line-clamp-2 {
+                    display: -webkit-box;
+                    -webkit-line-clamp: 2;
+                    -webkit-box-orient: vertical;
+                    overflow: hidden;
+                }
+            `}</style>
         </div>
     );
 }
