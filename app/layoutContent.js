@@ -1,9 +1,8 @@
 "use client";
 import { useContext, useState } from "react";
-import Navbar from "./Components/Navbar";
 import Footer from "./Components/Footer";
 import GoogleTranslate from "./Components/GoogleTranslate";
-import LoginHeader from "./Components/Login-header";
+import LoginHeader from "./Components/NavBar";
 import { ToastContainer } from "react-toastify";
 import { AuthContext } from "./hooks/authContext";
 
@@ -13,12 +12,7 @@ const LayoutContent = ({ children }) => {
 
   return (
     <>
-      {isLoggedIn ? (
-        <LoginHeader user={verifiedUser} setSidebarOpen={setSidebarOpen} />
-      ) : (
-        <Navbar />
-      )}
-      {/* Sidebar */}
+      <LoginHeader user={verifiedUser} setSidebarOpen={setSidebarOpen} />
       <main className="min-h-screen">
         <GoogleTranslate />
         {children}

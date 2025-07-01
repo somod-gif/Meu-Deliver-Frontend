@@ -1,13 +1,12 @@
 'use client';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useContext } from 'react';
 import Image from 'next/image';
-import { useRouter } from 'next/router';
-import Products from './UI/Products'
+import { AuthContext } from './hooks/authContext';
+import CategoriesAndProducts from './UI/ProCat.js';
 
 export default function HomePage() {
-  // const [activeCategory, setActiveCategory] = useState('All');
-  const [showAllProducts, setShowAllProducts] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
+  const {isLoggedIn} = useContext(AuthContext)
 
   useEffect(() => {
     const handleScroll = () => {
@@ -17,77 +16,6 @@ export default function HomePage() {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  // const ProductsComponent = () => {
-  //   const router = useRouter();
-  //   const [categories, setCategories] = useState([]);
-  //   const [productsByCategory, setProductsByCategory] = useState({});
-  //   const [allProducts, setAllProducts] = useState([]);
-  //   const [activeCategory, setActiveCategory] = useState('All');
-  //   const [loading, setLoading] = useState(true);
-  //   const [error, setError] = useState(null);
-
-  //   // const ANGOLA_RATE = 850; // You can adjust this rate as needed
-
-  //   // Fetch products data from JSON file
-  //   useEffect(() => {
-  //     const fetchProducts = async () => {
-  //       try {
-  //         setLoading(true);
-  //         const response = await fetch('/Products/Products.json');
-
-  //         if (!response.ok) {
-  //           throw new Error('Failed to fetch products data');
-  //         }
-
-  //         const data = await response.json();
-
-  //         setCategories(data.categories || []);
-  //         setProductsByCategory(data.productsByCategory || {});
-
-  //         // Create allProducts array from all categories
-  //         const allProductsArray = Object.values(data.productsByCategory || {}).flat();
-  //         setAllProducts(allProductsArray);
-
-  //       } catch (err) {
-  //         setError(err.message);
-  //         console.error('Error fetching products:', err);
-  //       } finally {
-  //         setLoading(false);
-  //       }
-  //     };
-
-  //     fetchProducts();
-  //   }, []);
-
-  //   const handleViewAllProducts = () => {
-  //     router.push('/products');
-  //   };
-  //   if (loading) {
-  //     return (
-  //       <div className="max-w-7xl mx-auto px-4 sm:px-6 py-8">
-  //         <div className="flex items-center justify-center h-64">
-  //           <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#00b1a5]"></div>
-  //         </div>
-  //       </div>
-  //     );
-  //   }
-
-  //   if (error) {
-  //     return (
-  //       <div className="max-w-7xl mx-auto px-4 sm:px-6 py-8">
-  //         <div className="bg-red-50 border border-red-200 rounded-lg p-4 text-center">
-  //           <p className="text-red-600">Error loading products: {error}</p>
-  //           <button
-  //             onClick={() => window.location.reload()}
-  //             className="mt-2 px-4 py-2 bg-red-600 text-white rounded hover:bg-red-700"
-  //           >
-  //             Retry
-  //           </button>
-  //         </div>
-  //       </div>
-  //     );
-  //   }
-  // }
   // Popular Vendors Data
   const popularVendors = [
     {
@@ -296,9 +224,11 @@ export default function HomePage() {
               <a href="/Vendors" className="inline-block bg-[#00b1a5] hover:bg-[#008a80] text-white font-semibold py-3 px-6 rounded-lg transition">
                 Order Now
               </a>
+              { !isLoggedIn && (
               <a href="/Auth/Register" className="inline-block border-2 border-[#00b1a5] hover:bg-[#00b1a5] hover:text-white text-[#00b1a5] font-semibold py-3 px-6 rounded-lg transition">
                 Join as Customer
               </a>
+              )}
             </div>
           </div>
 
@@ -321,9 +251,9 @@ export default function HomePage() {
 
 
 
-      <Products />
-      {/* --------- Popular Vendors Section (Responsive) --------- */}
+      <CategoriesAndProducts />
 
+      {/* --------- Popular Vendors Section (Responsive) --------- */}
       <section className="bg-gray-50 py-6 sm:py-8">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 text-center">
           <h2 className="text-xl sm:text-2xl font-bold text-gray-900 mb-1">Popular Vendors</h2>

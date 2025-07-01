@@ -59,8 +59,6 @@ export default function AuthContextProvider({ children }) {
         console.error("Verification error:", error);
         toast.error("Network error verifying user.");
         setIsLoggedIn(false);
-        localStorage.removeItem("userToken");
-        localStorage.removeItem("user");
       } finally {
         setLoading(false);
       }

@@ -10,7 +10,7 @@ import {
 import { useRouter } from 'next/navigation';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import LoginHeader from '../../../Components/Login-header'
+import LoginHeader from '../../../Components/NavBar'
 
 export default function ClientDashboard() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
