@@ -5,7 +5,8 @@ import { Bars3Icon } from "@heroicons/react/24/outline";
 import Link from "next/link";
 import GoogleTranslate from "./GoogleTranslate";
 import Sidebar from "./sideabar";
-import { useIsTablet } from "../hooks/media-hook";
+import SearchBar from "./UI/search-bar";
+import { useIsTablet, useIsMobile } from "../hooks/media-hook";
 import { AuthContext } from "../hooks/authContext";
 import { UserPlus, LogIn, ShoppingBag } from "lucide-react";
 
@@ -16,6 +17,7 @@ export default function NavBar({ user }) {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [currentSection, setCurrentSection] = useState();
   const isTablet = useIsTablet();
+  const isMobile = useIsMobile();
   const { isLoggedIn, verifiedUser } = useContext(AuthContext);
 
   const navigation = [
@@ -209,6 +211,15 @@ export default function NavBar({ user }) {
             </Link>
           </div>
 
+          
+          {!isMobile && (
+            <div className="flex items-center px-4 sm:px-6 py-4">
+              <SearchBar
+                placeholder="Search for products..."
+                // onSearch={handleSearch}
+              />
+            </div>
+          )}
           {/* Center Nav Buttons */}
           {!isTablet && (
             <nav className="flex flex-wrap justify-center gap-4 px-4 py-2">
