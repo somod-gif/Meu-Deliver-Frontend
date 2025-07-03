@@ -272,42 +272,52 @@ const navigation = [
     ),
   },
 ];
-const registerItem = navigation.find(item => item.key === "register");
-const loginItem = navigation.find(item => item.key === "signin");
-const logoutItem = navigation.find(item => item.key === "signout");
+const registerItem = navigation.find((item) => item.key === "register");
+const logoutItem = navigation.find((item) => item.key === "signin");
+const loginItem = navigation.find((item) => item.key === "signout");
 
 export default function Sidebar({
   sidebarOpen,
   setSidebarOpen,
   currentSection,
   setCurrentSection,
-  user,
+  user = null, // Provide default null value
+  logoutHandler,
 }) {
   const [isClient, setIsClient] = useState(false);
+
   useEffect(() => {
     setIsClient(true);
   }, []);
+
+  // Safe user data access
+  const safeUser = {
+    name: user?.name || "Guest",
+    email: user?.email || "",
+    initial: user?.name?.charAt(0)?.toUpperCase() || "G",
+  };
+
   return (
     <aside
       className={`
-    fixed inset-y-0 right-0 z-50 w-64 bg-white shadow-xl transform transition-all duration-300 ease-in-out
-    lg:static lg:translate-x-0 lg:shadow-none
-    ${sidebarOpen ? "translate-x-0" : "translate-x-full"}
-  `}
+        fixed inset-y-0 right-0 z-50 w-64 bg-white shadow-xl transform transition-all duration-300 ease-in-out
+        lg:static lg:translate-x-0 lg:shadow-none
+        ${sidebarOpen ? "translate-x-0" : "translate-x-full"}
+      `}
     >
-      {/* Header */}
+      {/* Header with safe user data */}
       <div className="flex items-center justify-between h-16 px-6 border-b border-gray-200 bg-gradient-to-r from-teal-50 to-white">
         <div className="flex items-center space-x-3">
           <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-teal-500 to-teal-600 flex items-center justify-center text-white font-bold shadow-md group-hover:shadow-lg transition-shadow duration-200">
-            {user?.name ? user.name.charAt(0).toUpperCase() : "G"}
+            {safeUser.initial}
           </div>
-          <div className="hidden sm:block">
+          <div className="hidden sm:block text-left">
             <p className="text-sm font-medium text-gray-900 group-hover:text-teal-600 transition-colors duration-200">
-              {user?.name ?? "Guest"}
+              {safeUser.name}
             </p>
-            <p className="text-xs text-gray-500">
-              {user?.email ?? "guest@meudeliver.com"}
-            </p>
+            {safeUser.email && (
+              <p className="text-xs text-gray-500">{safeUser.email}</p>
+            )}
           </div>
         </div>
         <button
@@ -342,13 +352,15 @@ export default function Sidebar({
                       : "text-gray-700 hover:bg-gray-50 hover:text-teal-600 hover:translate-x-1"
                   }`}
                 >
-                  <item.icon
-                    className={`w-5 h-5 mr-3 transition-transform duration-200 ${
-                      currentSection === item.key
-                        ? "text-white"
-                        : "group-hover:scale-110"
-                    }`}
-                  />
+                  {item.icon && (
+                    <item.icon
+                      className={`w-5 h-5 mr-3 transition-transform duration-200 ${
+                        currentSection === item.key
+                          ? "text-white"
+                          : "group-hover:scale-110"
+                      }`}
+                    />
+                  )}
                   <span className="flex-1 text-left">{item.name}</span>
                   {currentSection === item.key && (
                     <div className="w-2 h-2 bg-white rounded-full opacity-80"></div>
@@ -357,52 +369,58 @@ export default function Sidebar({
               </li>
             ))}
 
-          {/* Auth buttons */}
-          {isClient && user ? (
-            <li>
-              <button
-                onClick={() => {
-                  // handle logout logic here
-                  setCurrentSection("logout");
-                  setSidebarOpen(false);
-                }}
-                className="w-full flex items-center px-4 py-3 text-sm font-medium rounded-xl bg-red-50 text-red-600 hover:bg-red-100 transition-all duration-200"
-              >
-                {logoutItem?.icon &&
-                  logoutItem.icon({ className: "w-5 h-5 mr-3" })}
-                <span>Logout</span>
-              </button>
-            </li>
-          ) : (
+          {/* Auth buttons with enhanced null checks */}
+          {isClient && (
             <>
-              <li>
-                <a
-                  href="/Auth/Login"
-                  onClick={() => setSidebarOpen(false)}
-                  className="w-full flex items-center px-4 py-3 text-sm font-medium rounded-xl border border-gray-300 text-gray-700 hover:bg-gray-50 transition-all duration-200"
-                >
-                  {loginItem?.icon &&
-                    loginItem.icon({ className: "w-5 h-5 mr-3" })}
-                  <span>Login</span>
-                </a>
-              </li>
-              <li>
-                <a
-                  href="/Auth/Register"
-                  onClick={() => setSidebarOpen(false)}
-                  className="w-full flex items-center px-4 py-3 text-sm font-medium rounded-xl bg-[#00b1a5] text-white hover:bg-[#008a80] transition-all duration-200"
-                >
-                  {registerItem?.icon &&
-                    registerItem.icon({ className: "w-5 h-5 mr-3" })}
-                  <span>Register</span>
-                </a>
-              </li>
+              {user ? (
+                <li>
+                  <button
+                    onClick={() => {
+                      if (logoutHandler) logoutHandler();
+                      setSidebarOpen(false);
+                    }}
+                    className="w-full flex items-center px-4 py-3 text-sm font-medium rounded-xl bg-red-50 text-red-600 hover:bg-red-100 transition-all duration-200"
+                  >
+                    {logoutItem?.icon && (
+                      <logoutItem.icon className="w-5 h-5 mr-3" />
+                    )}
+                    <span>Logout</span>
+                  </button>
+                </li>
+              ) : (
+                <>
+                  <li>
+                    <a
+                      href="/Auth/Login"
+                      onClick={() => setSidebarOpen(false)}
+                      className="w-full flex items-center px-4 py-3 text-sm font-medium rounded-xl border border-gray-300 text-gray-700 hover:bg-gray-50 transition-all duration-200"
+                    >
+                      {loginItem?.icon && (
+                        <loginItem.icon className="w-5 h-5 mr-3" />
+                      )}
+                      <span>Login</span>
+                    </a>
+                  </li>
+                  <li>
+                    <a
+                      href="/Auth/Register"
+                      onClick={() => setSidebarOpen(false)}
+                      className="w-full flex items-center px-4 py-3 text-sm font-medium rounded-xl bg-[#00b1a5] text-white hover:bg-[#008a80] transition-all duration-200"
+                    >
+                      {registerItem?.icon && (
+                        <registerItem.icon className="w-5 h-5 mr-3" />
+                      )}
+                      <span>Register</span>
+                    </a>
+                  </li>
+                </>
+              )}
             </>
           )}
         </ul>
       </nav>
 
-      {/* Footer */}
+      {/* Footer (unchanged) */}
       <div className="absolute bottom-0 w-full p-4 border-t border-gray-200 bg-gradient-to-r from-gray-50 to-white">
         <div className="text-center">
           <div className="text-xs font-medium text-gray-600 mb-1">

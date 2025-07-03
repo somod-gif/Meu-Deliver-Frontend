@@ -9,7 +9,7 @@ import { useIsMobile } from "./hooks/media-hook";
 export default function HomePage() {
   const [isScrolled, setIsScrolled] = useState(false);
   const { isLoggedIn } = useContext(AuthContext);
-  const isMobile = useIsMobile()
+  const isMobile = useIsMobile();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -219,8 +219,16 @@ export default function HomePage() {
   const currentTestimonial = testimonials[currentIndex];
   return (
     <main className="bg-white">
+      {isMobile && (
+        <div className="flex items-center px-4 sm:px-6 py-4">
+          <SearchBar
+            placeholder="Search for products..."
+            // onSearch={handleSearch}
+          />
+        </div>
+      )}
+      
       {/* --------- Hero Section --------- */}
-
       <section className="bg-gray-50 ">
         <div className="max-w-7xl mx-auto flex flex-col-reverse lg:flex-row items-center px-6 lg:px-8 ">
           {/* Text Content */}
@@ -269,15 +277,6 @@ export default function HomePage() {
           </div>
         </div>
       </section>
-
-      {isMobile && (
-        <div className="flex items-center px-4 sm:px-6 py-4">
-          <SearchBar
-            placeholder="Search for products..."
-            // onSearch={handleSearch}
-          />
-        </div>
-      )}
 
       <CategoriesAndProducts />
 

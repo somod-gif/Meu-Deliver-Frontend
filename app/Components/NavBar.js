@@ -9,8 +9,11 @@ import SearchBar from "./UI/search-bar";
 import { useIsTablet, useIsMobile } from "../hooks/media-hook";
 import { AuthContext } from "../hooks/authContext";
 import { UserPlus, LogIn, ShoppingBag } from "lucide-react";
+import { toast } from "react-toastify";
+import { useRouter } from "next/navigation";
 
 export default function NavBar({ user }) {
+  const router = useRouter()
   const [cartCount, setCartCount] = useState(0);
   const [notificationCount, setNotificationCount] = useState(3);
   const [showUserDropdown, setShowUserDropdown] = useState(false);
@@ -18,7 +21,8 @@ export default function NavBar({ user }) {
   const [currentSection, setCurrentSection] = useState();
   const isTablet = useIsTablet();
   const isMobile = useIsMobile();
-  const { isLoggedIn, verifiedUser } = useContext(AuthContext);
+  const { isLoggedIn, verifiedUser, setVerifiedUser, setIsLoggedIn, loading } =
+    useContext(AuthContext);
 
   const navigation = [
     // 🛍️ Shopping
@@ -172,11 +176,34 @@ export default function NavBar({ user }) {
     setShowUserDropdown(!showUserDropdown);
   };
 
-  const handleLogout = () => {
-    // Add logout functionality here
-    console.log("Logout clicked");
-    setShowUserDropdown(false);
+  const logoutHandler = async () => {
+    try {
+      const logout = await fetch(
+        `${process.env.NEXT_PUBLIC_API_URL}/auth/logout`,
+        {
+          method: "POST",
+          credentials: "include",
+        }
+      );
+
+      if (logout.ok) {
+        toast.success("You have been logged out");
+        setIsLoggedIn(false);
+        setVerifiedUser(null);
+        router.push('/')
+        if (setShowUserDropdown) {
+          setShowUserDropdown(false);
+          return;
+        }
+        if (setSidebarOpen) {
+          setSidebarOpen(false);
+        }
+      }
+    } catch (error) {
+      toast.error("Error signing out user");
+    }
   };
+
   const [hasMounted, setHasMounted] = useState(false);
 
   useEffect(() => {
@@ -193,6 +220,8 @@ export default function NavBar({ user }) {
           currentSection={currentSection}
           setCurrentSection={setCurrentSection}
           user={verifiedUser}
+          logoutHandler={logoutHandler}
+          loading={loading}
         />
       )}
 
@@ -211,7 +240,6 @@ export default function NavBar({ user }) {
             </Link>
           </div>
 
-          
           {!isMobile && (
             <div className="flex items-center px-4 sm:px-6 py-4">
               <SearchBar
@@ -314,7 +342,7 @@ export default function NavBar({ user }) {
             </div>
 
             {/* User Profile - Desktop only */}
-            {isLoggedIn ? (
+            {!loading && isLoggedIn ? (
               <div className="hidden lg:flex items-center space-x-3 pl-4 border-l border-gray-200">
                 {user ? (
                   <div className="relative user-dropdown-container">
@@ -413,7 +441,7 @@ export default function NavBar({ user }) {
                           </div>
                         </Link>
                         <button
-                          onClick={handleLogout}
+                          onClick={logoutHandler}
                           className="block w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-red-50 transition-colors duration-200"
                         >
                           <div className="flex items-center space-x-2">

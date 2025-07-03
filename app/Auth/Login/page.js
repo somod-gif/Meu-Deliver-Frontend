@@ -9,7 +9,7 @@ import { AuthContext } from "@/app/hooks/authContext";
 
 export default function LoginPage() {
   const router = useRouter();
-  const { setIsLoggedIn, setVerifiedUser } = useContext(AuthContext);
+  const { verifyUser } = useContext(AuthContext);
   const [formData, setFormData] = useState({
     email: "",
     phone: "",
@@ -69,26 +69,18 @@ export default function LoginPage() {
     setIsLoading(true);
 
     try {
-      // Validate identifier
       const identifier = formData.email.trim()
         ? formData.email
         : formData.phone;
-      if (!identifier) {
-        throw new Error("Email or phone number is required");
-      }
-
-      // Validate password
-      if (!formData.password) {
-        throw new Error("Password is required");
-      }
+      if (!identifier) throw new Error("Email or phone number is required");
+      if (!formData.password) throw new Error("Password is required");
 
       const response = await fetch(
         `${process.env.NEXT_PUBLIC_API_URL}/auth/signin/client`,
         {
           method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
+          headers: { "Content-Type": "application/json" },
+          credentials: "include",
           body: JSON.stringify({
             [formData.email.trim() ? "email" : "phone"]: identifier,
             password: formData.password,
@@ -96,49 +88,32 @@ export default function LoginPage() {
         }
       );
 
-      // Check for network errors
       if (!response.ok) {
         const errorData = await response.json().catch(() => ({}));
-        const errorMessage =
+        throw new Error(
           errorData?.message || response.status === 401
             ? "Invalid credentials"
             : response.status === 500
               ? "Server error"
-              : "Login failed. Please try again.";
-        throw new Error(errorMessage);
+              : "Login failed. Please try again."
+        );
       }
 
       const data = await response.json();
+      if (!data?.user) throw new Error("Invalid server response");
 
-      // Validate response structure
-      if (!data?.access_token || !data?.user) {
-        throw new Error(
-          "Invalid response from server. Please contact support."
-        );
+      // Store minimal client-side state
+      if (rememberMe) {
+        localStorage.setItem("rememberMe", "true");
+      } else {
+        localStorage.removeItem("rememberMe");
       }
 
-      // Store token and user data securely
-      try {
-        setIsLoggedIn(true);
-        setVerifiedUser(data.user);
-        localStorage.setItem("userToken", data.access_token);
-        localStorage.setItem("user", JSON.stringify(data.user));
+      // Verify the session immediately after login
+      await verifyUser();
+      toast.success('Sign in successfully')
 
-        if (rememberMe) {
-          localStorage.setItem("rememberMe", "true");
-        } else {
-          localStorage.removeItem("rememberMe");
-        }
-      } catch (storageError) {
-        console.error("LocalStorage error:", storageError);
-        throw new Error(
-          "Failed to save session data. Check your browser settings."
-        );
-      }
-
-      // toast.success("Login successful! Welcome to Meu Deliver!");
-
-      // Redirect based on user role with fallback
+      // Redirect
       const redirectPath =
         {
           vendor: "/Portal/Vendor/Dashboard/",
@@ -149,27 +124,16 @@ export default function LoginPage() {
       router.push(redirectPath);
     } catch (error) {
       console.error("Login error:", error);
-
-      // More user-friendly error messages
-      const displayMessage = error.message.includes("Failed to fetch")
-        ? "Network error. Please check your connection."
-        : error.message;
-
-      toast.error(displayMessage || "Signing in failed. Please try again.");
-
-      // Clear sensitive data on error
-      // if (
-      //   error.message.includes("Invalid credentials") ||
-      //   error.message.includes("Unauthorized")
-      // ) {
-      //   localStorage.removeItem("userToken");
-      //   localStorage.removeItem("user");
-      // }
+      toast.error(
+        error.message.includes("Failed to fetch")
+          ? "Network error. Please check your connection."
+          : error.message || "Signing in failed. Please try again."
+      );
     } finally {
       setIsLoading(false);
     }
   };
-  
+
   const handleGoogleSignIn = () => {
     try {
       toast.success("Redirecting to Google Sign-In...");
