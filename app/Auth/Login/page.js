@@ -79,8 +79,10 @@ export default function LoginPage() {
         `${process.env.NEXT_PUBLIC_API_URL}/auth/signin/client`,
         {
           method: "POST",
-          headers: { "Content-Type": "application/json" },
-          credentials: "include",
+          headers:{
+            "Content-Type": "application/json"
+          },
+          credentials: 'include',
           body: JSON.stringify({
             [formData.email.trim() ? "email" : "phone"]: identifier,
             password: formData.password,
@@ -101,6 +103,7 @@ export default function LoginPage() {
 
       const data = await response.json();
       if (!data?.user) throw new Error("Invalid server response");
+      localStorage.setItem('user', data.user)
 
       // Store minimal client-side state
       if (rememberMe) {

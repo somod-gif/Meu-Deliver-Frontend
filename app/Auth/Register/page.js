@@ -91,44 +91,48 @@ export default function RegisterPage() {
     return Object.keys(newErrors).length === 0;
   };
 
-  const handleSubmit = async () => {
-    if (!validateForm()) return;
+const handleSubmit = async () => {
+  if (!validateForm()) return;
 
-    setIsLoading(true);
-    try {
-      const payload = {
-        name: formData.fullName,
-        email: formData.email,
-        phone: formData.phone,
-        password: formData.password,
-      };
+  setIsLoading(true);
+  try {
+    const payload = {
+      name:  formData.fullName,
+      email: formData.email,
+      phone: formData.phone,
+      password: formData.password,
+    };
 
-      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/auth/signup`, {
+    const response = await fetch(
+      `${process.env.NEXT_PUBLIC_API_URL}/auth/signup`,
+      {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(payload),
-      });
+        body: JSON.stringify(payload),   // ✅ stringify!
+        credentials: 'include',          // ✅ receive/set cookies
+      },
+    );
 
-      if (!response.ok) {
-        const error = await response.json();
-        throw new Error(error.message || 'Registration failed');
-      }
-
-      const data = await response.json();
-      localStorage.setItem('userToken', data.access_token);
-      localStorage.setItem('user', JSON.stringify(data.user));
-
-      toast.success('Registration successful!');
-      router.push('/Portal/Clients/Dashboard');
-    } catch (error) {
-      console.error('Registration error:', error);
-      toast.error(error.message || 'Something went wrong');
-    } finally {
-      setIsLoading(false);
+    if (!response.ok) {
+      const { message } = await response.json();
+      throw new Error(
+        Array.isArray(message) ? message.join(', ') : message || 'Registration failed',
+      );
     }
-  };
+    const data = response.json()
+    localStorage.setItem('user', JSON.stringify(data))
+
+    toast.success('Registration successful!');
+    router.push('/Portal/Clients/Dashboard');
+  } catch (err) {
+    console.error('Registration error:', err);
+    toast.error(err.message || 'Something went wrong');
+  } finally {
+    setIsLoading(false);
+  }
+};
 
   const handleGoogleSignUp = () => {
     try {
