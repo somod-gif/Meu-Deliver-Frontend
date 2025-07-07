@@ -16,6 +16,7 @@ export default function AuthContextProvider({ children }) {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [verifiedUser, setVerifiedUser] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [role, setRole] = useState(null)
 
   const verifyUser = async () => {
     try {
@@ -35,6 +36,7 @@ export default function AuthContextProvider({ children }) {
       if (res.ok && resData.valid) {
         setIsLoggedIn(true);
         setVerifiedUser(resData.user);
+        setRole(resData.user.role)
         
         // Store minimal non-sensitive user data
         localStorage.setItem(
@@ -79,7 +81,8 @@ export default function AuthContextProvider({ children }) {
         setVerifiedUser,
         loading,
         logoutUser,
-        verifyUser
+        verifyUser,
+        role
       }}
     >
       {children}

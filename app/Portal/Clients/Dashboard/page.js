@@ -553,7 +553,7 @@ export default function ClientDashboard() {
   // }
 
   return (
-    <div className="min-h-screen bg-gray-50 flex z-50 overflow-hidden mt-10">
+    <div className="min-h-screen bg-gray-50 flex z-50 overflow-hidden">
       {/* Integrated LoginHeader */}
       {/* <LoginHeader 
         user={user}
@@ -584,7 +584,7 @@ export default function ClientDashboard() {
       />
 
       {/* Main content area */}
-      <div className="flex-1 flex flex-col mt-16">
+      <div className="flex-1 flex flex-col">
         {/* <Header 
           user={user}
           setSidebarOpen={setSidebarOpen}

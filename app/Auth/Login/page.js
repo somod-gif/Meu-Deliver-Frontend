@@ -9,7 +9,7 @@ import { AuthContext } from "@/app/hooks/authContext";
 
 export default function LoginPage() {
   const router = useRouter();
-  const { verifyUser } = useContext(AuthContext);
+  const { verifyUser, setIsLoggedIn, setVerifiedUser } = useContext(AuthContext);
   const [formData, setFormData] = useState({
     email: "",
     phone: "",
@@ -103,6 +103,8 @@ export default function LoginPage() {
 
       const data = await response.json();
       if (!data?.user) throw new Error("Invalid server response");
+      setIsLoggedIn(true)
+      setVerifiedUser(data.user);
       localStorage.setItem('user', data.user)
 
       // Store minimal client-side state
@@ -113,7 +115,6 @@ export default function LoginPage() {
       }
 
       // Verify the session immediately after login
-      await verifyUser();
       toast.success('Sign in successfully')
 
       // Redirect

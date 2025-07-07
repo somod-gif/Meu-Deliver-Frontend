@@ -141,7 +141,7 @@ export default function Footer() {
                   <li key={service.name}>
                     <Link
                       href={service.href}
-                      className="flex items-center text-gray-600 hover:text-[#00b1a5] transition-colors duration-200 text-sm font-medium hover:pl-2 transition-all duration-200 group"
+                      className="flex items-center text-gray-600 hover:text-[#00b1a5] text-sm font-medium hover:pl-2 transition-all duration-200 group"
                     >
                       <span className="w-1.5 h-1.5 bg-[#a3d900] rounded-full mr-2 opacity-0 group-hover:opacity-100 transition-opacity duration-200"></span>
                       {service.name}
@@ -162,7 +162,7 @@ export default function Footer() {
                   <li key={item.name}>
                     <Link
                       href={item.href}
-                      className="flex items-center text-gray-600 hover:text-[#00b1a5] transition-colors duration-200 text-sm font-medium hover:pl-2 transition-all duration-200 group"
+                      className="flex items-center text-gray-600 hover:text-[#00b1a5] text-sm font-medium hover:pl-2 transition-all duration-200 group"
                     >
                       <span className="w-1.5 h-1.5 bg-[#a3d900] rounded-full mr-2 opacity-0 group-hover:opacity-100 transition-opacity duration-200"></span>
                       {item.name}
@@ -184,7 +184,7 @@ export default function Footer() {
                 <li key={item.name}>
                   <Link
                     href={item.href}
-                    className="flex items-center text-gray-600 hover:text-[#00b1a5] transition-colors duration-200 text-sm font-medium hover:pl-2 transition-all duration-200 group"
+                    className="flex items-center text-gray-600 hover:text-[#00b1a5] text-sm font-medium hover:pl-2 transition-all duration-200 group"
                   >
                     <span className="w-1.5 h-1.5 bg-[#a3d900] rounded-full mr-2 opacity-0 group-hover:opacity-100 transition-opacity duration-200"></span>
                     {item.name}

@@ -311,7 +311,7 @@ export default function Sidebar({
           <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-teal-500 to-teal-600 flex items-center justify-center text-white font-bold shadow-md group-hover:shadow-lg transition-shadow duration-200">
             {safeUser.initial}
           </div>
-          <div className="hidden sm:block text-left">
+          <div className="sm:block text-left">
             <p className="text-sm font-medium text-gray-900 group-hover:text-teal-600 transition-colors duration-200">
               {safeUser.name}
             </p>
