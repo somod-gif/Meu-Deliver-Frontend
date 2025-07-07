@@ -3,8 +3,8 @@ import { useState, useEffect, useContext } from "react";
 import Image from "next/image";
 import { AuthContext } from "./hooks/authContext";
 import CategoriesAndProducts from "./UI/ProCat.js";
-import SearchBar from "./Components/UI/search-bar";
-import { useIsMobile } from "./hooks/media-hook";
+import SearchBar from "./Components/UI/search-bar.js";
+import { useIsMobile } from "./hooks/media-hook.js";
 
 export default function HomePage() {
   const [isScrolled, setIsScrolled] = useState(false);
