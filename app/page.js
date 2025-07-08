@@ -149,7 +149,6 @@ export default function HomePage() {
 
   const HERO_IMG =
     "https://thumbs.dreamstime.com/b/delivery-man-customer-door-can-use-web-banner-infographics-hero-images-flat-modern-vector-illustration-198679901.jpg";
-  const ANGOLA_RATE = 921.23;
 
   const [currentIndex, setCurrentIndex] = useState(0);
 
