@@ -1,12 +1,14 @@
 "use client";
 
 import { useState, useEffect, useContext } from "react";
+import { Bars3Icon } from "@heroicons/react/24/outline";
 import Link from "next/link";
 import GoogleTranslate from "./GoogleTranslate";
 import Sidebar from "./sideabar";
 import SearchBar from "./UI/search-bar";
 import { useIsTablet, useIsMobile } from "../hooks/media-hook";
 import { AuthContext } from "../hooks/authContext";
+import { useTheme } from "../Context/ThemeProvider";
 import { 
   UserPlus, 
   LogIn, 
@@ -27,17 +29,15 @@ import {
 } from "lucide-react";
 import { toast } from "react-toastify";
 import { useRouter } from "next/navigation";
-import { useTheme } from "next-themes";
 
 export default function NavBar({ user }) {
   const router = useRouter();
-  const { theme, setTheme } = useTheme();
-  const [mounted, setMounted] = useState(false);
   const [cartCount, setCartCount] = useState(0);
   const [notificationCount, setNotificationCount] = useState(3);
   const [showUserDropdown, setShowUserDropdown] = useState(false);
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [currentSection, setCurrentSection] = useState();
+  const { darkMode, toggleDarkMode } = useTheme();
   const isTablet = useIsTablet();
   const isMobile = useIsMobile();
   const { isLoggedIn, verifiedUser, setVerifiedUser, setIsLoggedIn, loading } =
@@ -76,10 +76,6 @@ export default function NavBar({ user }) {
     },
   ];
 
-  useEffect(() => {
-    setMounted(true);
-  }, []);
-
   // Handle click outside to close dropdown
   useEffect(() => {
     const handleClickOutside = (event) => {
@@ -95,8 +91,7 @@ export default function NavBar({ user }) {
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (
-        sidebarOpen && 
-        !event.target.closest("aside") &&
+        sidebarOpen & !event.target.closest("aside") &&
         !event.target.closest('[aria-label="Open menu"]')
       ) {
         setSidebarOpen(false);
@@ -133,16 +128,26 @@ export default function NavBar({ user }) {
         setIsLoggedIn(false);
         setVerifiedUser(null);
         router.push('/');
-        if (setShowUserDropdown) setShowUserDropdown(false);
-        if (setSidebarOpen) setSidebarOpen(false);
+        if (setShowUserDropdown) {
+          setShowUserDropdown(false);
+          return;
+        }
+        if (setSidebarOpen) {
+          setSidebarOpen(false);
+        }
       }
     } catch (error) {
       toast.error("Error signing out user");
     }
   };
 
-  if (!mounted) return null;
+  const [hasMounted, setHasMounted] = useState(false);
 
+  useEffect(() => {
+    setHasMounted(true);
+  }, []);
+
+  if (!hasMounted) return null;
   return (
     <>
       {isTablet && (
@@ -157,7 +162,7 @@ export default function NavBar({ user }) {
         />
       )}
 
-      <header className="sticky top-0 z-40 bg-white/95 dark:bg-gray-900/95 backdrop-blur-sm shadow-sm border-b border-gray-200 dark:border-gray-700">
+      <header className="sticky top-0 z-40 bg-[var(--navbar-bg)] backdrop-blur-sm shadow-sm border-b border-[var(--navbar-border)]">
         <div className="flex items-center justify-between h-20 px-4 sm:px-6">
           {/* Left Side - Logo */}
           <div className="flex items-center space-x-4">
@@ -165,9 +170,9 @@ export default function NavBar({ user }) {
               <img
                 src="/images/m_logo.png"
                 alt="Meu Deliver Logo"
+                className=""
                 width={110}
                 height={110}
-                className="dark:invert"
               />
             </Link>
           </div>
@@ -179,7 +184,7 @@ export default function NavBar({ user }) {
               />
             </div>
           )}
-
+          
           {/* Center Nav Buttons */}
           {!isTablet && (
             <nav className="flex flex-wrap justify-center gap-4 px-4 py-2">
@@ -189,8 +194,8 @@ export default function NavBar({ user }) {
                   onClick={() => setCurrentSection(item.key)}
                   className={`inline-flex items-center px-3 py-2 text-sm font-medium rounded-lg transition-all duration-200 ${
                     currentSection === item.key
-                      ? "bg-teal-600 text-white shadow"
-                      : "bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 hover:bg-teal-100 dark:hover:bg-teal-900/30"
+                      ? "bg-[var(--primary-color)] text-white shadow"
+                      : "bg-[var(--button-bg)] text-[var(--text-color)] hover:bg-[var(--button-hover)]"
                   }`}
                 >
                   <item.icon className="w-5 h-5 mr-2" />
@@ -202,45 +207,45 @@ export default function NavBar({ user }) {
 
           {/* Right Side Controls */}
           <div className="flex items-center space-x-4">
-            {/* Theme Toggle */}
+            {/* Dark/Light Mode Toggle */}
             <button
-              onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
-              className="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors duration-200"
-              aria-label="Toggle dark mode"
+              onClick={toggleDarkMode}
+              className="p-2 rounded-lg hover:bg-[var(--button-hover)] transition-colors duration-200"
+              aria-label={darkMode ? "Switch to light mode" : "Switch to dark mode"}
             >
-              {theme === 'dark' ? (
-                <Sun className="w-5 h-5 text-gray-600 dark:text-gray-300" />
+              {darkMode ? (
+                <Sun className="w-5 h-5 text-yellow-400" />
               ) : (
-                <Moon className="w-5 h-5 text-gray-600 dark:text-gray-300" />
+                <Moon className="w-5 h-5 text-[var(--text-color)]" />
               )}
             </button>
 
-            {/* Google Translate - Compact */}
-            <div className="hidden lg:block w-32">
+            {/* Google Translate - Desktop */}
+            <div className="hidden lg:block w-40">
               <GoogleTranslate variant="compact" />
             </div>
 
             {/* Notification Bell */}
             <button
               onClick={handleNotificationClick}
-              className="relative p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors duration-200"
+              className="relative p-2 rounded-lg hover:bg-[var(--button-hover)] transition-colors duration-200"
               aria-label="Notifications"
             >
-              <Bell className="w-5 h-5 text-gray-600 dark:text-gray-300" />
+              <Bell className="w-5 h-5 text-[var(--text-color)]" />
               {notificationCount > 0 && (
-                <div className="absolute -top-1 -right-1 w-3 h-3 bg-red-500 rounded-full border-2 border-white dark:border-gray-900"></div>
+                <div className="absolute -top-1 -right-1 w-3 h-3 bg-red-500 rounded-full border-2 border-[var(--navbar-bg)]"></div>
               )}
             </button>
 
             {/* Cart Icon - Desktop */}
             <button
               onClick={handleCartClick}
-              className="hidden lg:block p-2 hover:bg-gray-50 dark:hover:bg-gray-800 rounded-lg transition-colors duration-200 relative"
+              className="hidden lg:block p-2 hover:bg-[var(--button-hover)] rounded-lg transition-colors duration-200 relative"
               aria-label="Shopping cart"
             >
-              <ShoppingBag className="w-6 h-6 text-gray-600 dark:text-gray-300 hover:text-[#00b1a5]" />
+              <ShoppingBag className="w-6 h-6 text-[var(--text-color)] hover:text-[var(--primary-color)]" />
               {cartCount > 0 && (
-                <span className="absolute -top-1 -right-1 bg-[#00b1a5] text-white text-xs rounded-full w-5 h-5 flex items-center justify-center font-medium">
+                <span className="absolute -top-1 -right-1 bg-[var(--primary-color)] text-white text-xs rounded-full w-5 h-5 flex items-center justify-center font-medium">
                   {cartCount > 99 ? "99+" : cartCount}
                 </span>
               )}
@@ -256,12 +261,12 @@ export default function NavBar({ user }) {
               {/* Cart Icon - Mobile */}
               <button
                 onClick={handleCartClick}
-                className="p-2 hover:bg-gray-50 dark:hover:bg-gray-800 rounded-lg transition-colors duration-200 relative"
+                className="p-2 hover:bg-[var(--button-hover)] rounded-lg transition-colors duration-200 relative"
                 aria-label="Shopping cart"
               >
-                <ShoppingBag className="w-6 h-6 text-gray-600 dark:text-gray-300 hover:text-[#00b1a5]" />
+                <ShoppingBag className="w-6 h-6 text-[var(--text-color)] hover:text-[var(--primary-color)]" />
                 {cartCount > 0 && (
-                  <span className="absolute -top-1 -right-1 bg-[#00b1a5] text-white text-xs rounded-full w-5 h-5 flex items-center justify-center font-medium">
+                  <span className="absolute -top-1 -right-1 bg-[var(--primary-color)] text-white text-xs rounded-full w-5 h-5 flex items-center justify-center font-medium">
                     {cartCount > 99 ? "99+" : cartCount}
                   </span>
                 )}
@@ -270,53 +275,53 @@ export default function NavBar({ user }) {
               {/* Mobile Menu Button */}
               <button
                 onClick={() => setSidebarOpen(true)}
-                className="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors duration-200"
+                className="p-2 rounded-lg hover:bg-[var(--button-hover)] transition-colors duration-200"
                 aria-label="Open menu"
               >
-                <Menu className="w-6 h-6 text-gray-600 dark:text-gray-300" />
+                <Menu className="w-6 h-6 text-[var(--text-color)]" />
               </button>
             </div>
 
             {/* User Profile - Desktop only */}
             {!loading && isLoggedIn ? (
-              <div className="hidden lg:flex items-center space-x-3 pl-4 border-l border-gray-200 dark:border-gray-700">
+              <div className="hidden lg:flex items-center space-x-3 pl-4 border-l border-[var(--navbar-border)]">
                 {user ? (
                   <div className="relative user-dropdown-container">
                     <button
                       onClick={handleUserProfileClick}
-                      className="flex items-center space-x-3 group cursor-pointer p-1 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors duration-200"
+                      className="flex items-center space-x-3 group cursor-pointer p-1 rounded-lg hover:bg-[var(--button-hover)] transition-colors duration-200"
                       aria-label="User menu"
                     >
-                      <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-teal-500 to-teal-600 flex items-center justify-center text-white font-bold shadow-md group-hover:shadow-lg transition-shadow duration-200">
+                      <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-[var(--primary-color)] to-[var(--primary-dark)] flex items-center justify-center text-white font-bold shadow-md group-hover:shadow-lg transition-shadow duration-200">
                         {user.name ? user.name.charAt(0).toUpperCase() : "U"}
                       </div>
                       <div className="hidden sm:block text-left">
-                        <p className="text-sm font-medium text-gray-900 dark:text-gray-100 group-hover:text-teal-600 dark:group-hover:text-teal-500 transition-colors duration-200">
+                        <p className="text-sm font-medium text-[var(--text-color)] group-hover:text-[var(--primary-color)] transition-colors duration-200">
                           {user.name || "User"}
                         </p>
-                        <p className="text-xs text-gray-500 dark:text-gray-400">
+                        <p className="text-xs text-[var(--text-secondary)]">
                           {user.email || "user@example.com"}
                         </p>
                       </div>
-                      <div className="hidden sm:block w-4 h-4 text-gray-400 dark:text-gray-500 group-hover:text-gray-600 dark:group-hover:text-gray-300 transition-colors duration-200">
+                      <div className="hidden sm:block w-4 h-4 text-[var(--text-secondary)] group-hover:text-[var(--text-color)] transition-colors duration-200">
                         <ChevronDown className={`transform transition-transform duration-200 ${showUserDropdown ? "rotate-180" : ""}`} />
                       </div>
                     </button>
 
                     {/* User Dropdown Menu */}
                     {showUserDropdown && (
-                      <div className="absolute right-0 mt-2 w-48 bg-white dark:bg-gray-800 rounded-lg shadow-lg border border-gray-200 dark:border-gray-700 py-1 z-50">
-                        <div className="px-4 py-2 border-b border-gray-100 dark:border-gray-700">
-                          <p className="text-sm font-medium text-gray-900 dark:text-gray-100">
+                      <div className="absolute right-0 mt-2 w-48 bg-[var(--dropdown-bg)] rounded-lg shadow-lg border border-[var(--navbar-border)] py-1 z-50">
+                        <div className="px-4 py-2 border-b border-[var(--dropdown-border)]">
+                          <p className="text-sm font-medium text-[var(--text-color)]">
                             {user.name || "User"}
                           </p>
-                          <p className="text-xs text-gray-500 dark:text-gray-400">
+                          <p className="text-xs text-[var(--text-secondary)]">
                             {user.email || "user@example.com"}
                           </p>
                         </div>
                         <Link
                           href="/profile"
-                          className="block px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors duration-200"
+                          className="block px-4 py-2 text-sm text-[var(--text-color)] hover:bg-[var(--dropdown-hover)] transition-colors duration-200"
                           onClick={() => setShowUserDropdown(false)}
                         >
                           <div className="flex items-center space-x-2">
@@ -326,7 +331,7 @@ export default function NavBar({ user }) {
                         </Link>
                         <Link
                           href="/settings"
-                          className="block px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors duration-200"
+                          className="block px-4 py-2 text-sm text-[var(--text-color)] hover:bg-[var(--dropdown-hover)] transition-colors duration-200"
                           onClick={() => setShowUserDropdown(false)}
                         >
                           <div className="flex items-center space-x-2">
@@ -336,7 +341,7 @@ export default function NavBar({ user }) {
                         </Link>
                         <button
                           onClick={logoutHandler}
-                          className="block w-full text-left px-4 py-2 text-sm text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/20 transition-colors duration-200"
+                          className="block w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-[var(--dropdown-hover)] transition-colors duration-200"
                         >
                           <div className="flex items-center space-x-2">
                             <LogOut className="w-4 h-4" />
@@ -348,10 +353,10 @@ export default function NavBar({ user }) {
                   </div>
                 ) : (
                   <div className="flex items-center space-x-3">
-                    <div className="w-9 h-9 rounded-xl bg-gray-300 dark:bg-gray-700 animate-pulse" />
+                    <div className="w-9 h-9 rounded-xl bg-[var(--button-bg)] animate-pulse" />
                     <div className="hidden sm:block space-y-1">
-                      <div className="w-20 h-3 bg-gray-300 dark:bg-gray-700 rounded animate-pulse"></div>
-                      <div className="w-24 h-2 bg-gray-200 dark:bg-gray-600 rounded animate-pulse"></div>
+                      <div className="w-20 h-3 bg-[var(--button-bg)] rounded animate-pulse"></div>
+                      <div className="w-24 h-2 bg-[var(--button-hover)] rounded animate-pulse"></div>
                     </div>
                   </div>
                 )}
@@ -366,8 +371,8 @@ export default function NavBar({ user }) {
                       href={link.path}
                       className={`px-4 py-2 rounded-lg font-medium flex items-center space-x-2 ${
                         link.style === "primary"
-                          ? "bg-[#00b1a5] text-white hover:bg-[#008a80]"
-                          : "border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800"
+                          ? "bg-[var(--primary-color)] text-white hover:bg-[var(--primary-dark)]"
+                          : "border border-[var(--navbar-border)] text-[var(--text-color)] hover:bg-[var(--button-hover)]"
                       }`}
                     >
                       <link.icon className="w-5 h-5" />
@@ -384,7 +389,7 @@ export default function NavBar({ user }) {
       {/* Overlay for mobile */}
       {sidebarOpen && (
         <div
-          className="fixed inset-0 bg-black bg-opacity-20 dark:bg-opacity-40 z-40 lg:hidden"
+          className="fixed inset-0 bg-black bg-opacity-20 z-40 lg:hidden"
           onClick={() => setSidebarOpen(false)}
         />
       )}

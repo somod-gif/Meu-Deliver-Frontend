@@ -49,23 +49,21 @@ export default function GoogleTranslate({
 
       .goog-te-gadget-simple {
         background: transparent !important;
-        border: 1px solid teal !important;
-        padding: 8px 12px !important;
+        border: 1px solid var(--translate-border) !important;
         cursor: pointer !important;
         display: flex !important;
         align-items: center !important;
-        gap: 6px !important;
         border-radius: 8px !important;
         transition: all 0.2s ease !important;
         width: fit-content !important;
         height: fit-content !important;
-        min-width: 120px !important;
+        min-width: ${variant === 'compact' ? '120px' : '160px'} !important;
         min-height: 40px !important;
       }
 
       .goog-te-gadget-simple:hover {
-        border-color: teal !important;
-        background-color: #F9FAFB !important;
+        border-color: var(--translate-border-hover) !important;
+        background-color: var(--translate-bg-hover) !important;
       }
 
       .goog-te-menu-value {
@@ -74,33 +72,33 @@ export default function GoogleTranslate({
         align-items: center !important;
         justify-content: space-between !important;
         flex: 1 !important;
+        padding: 0 12px !important;
       }
 
       .goog-te-menu-value span:first-child { display: none !important; }
 
       .goog-te-menu-value span:last-child {
-        color: teal !important;
+        color: var(--translate-text) !important;
         font-size: ${variant === "icon-only" ? "0" : "0.875rem"} !important;
         font-weight: 500 !important;
         white-space: nowrap !important;
       }
 
       .goog-te-menu-frame {
-        box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1),
-                    0 4px 6px -2px rgba(0, 0, 0, 0.05) !important;
+        box-shadow: var(--translate-shadow) !important;
         border-radius: 8px !important;
-        border: 1px solid teal !important;
+        border: 1px solid var(--translate-border) !important;
         margin-top: 8px !important;
         width: fit-content !important;
         min-width: 160px !important;
         max-width: 200px !important;
         z-index: 9999 !important;
         position: absolute !important;
-        background-color: white !important;
+        background-color: var(--translate-dropdown-bg) !important;
       }
 
       .goog-te-menu2 {
-        background-color: white !important;
+        background-color: var(--translate-dropdown-bg) !important;
         border-radius: 8px !important;
         max-height: 300px !important;
         padding: 4px 0 !important;
@@ -111,18 +109,18 @@ export default function GoogleTranslate({
       .goog-te-menu2-item {
         padding: 8px 16px !important;
         font-size: 0.875rem !important;
-        color: teal !important;
+        color: var(--translate-text) !important;
         cursor: pointer !important;
         transition: background-color 0.15s ease !important;
         white-space: nowrap !important;
       }
 
       .goog-te-menu2-item:hover {
-        background-color: #e0f2f1 !important;
+        background-color: var(--translate-item-hover) !important;
       }
 
       .goog-te-menu2-item-selected {
-        background-color: teal !important;
+        background-color: var(--translate-item-selected) !important;
         color: white !important;
       }
 
@@ -178,20 +176,21 @@ export default function GoogleTranslate({
       }
     };
   }, []);
+
   return (
     <div className={`flex items-center ${className}`}>
       {variant === "icon-only" ? (
         <button
-          className="p-2 hover:bg-gray-50 rounded-lg"
+          className="p-2 hover:bg-[var(--button-hover)] rounded-lg"
           aria-label="Change language"
           onClick={() =>
             document.querySelector(".goog-te-gadget-simple")?.click()
           }
         >
-          <Globe className="w-6 h-6 text-[#00b1a5]" />
+          <Globe className="w-6 h-6 text-[var(--primary-color)]" />
         </button>
       ) : (
-        <div id="google-translate-element" className="min-w-[60px]"></div>
+        <div id="google-translate-element" className="min-w-[120px]"></div>
       )}
     </div>
   );

@@ -1,26 +1,77 @@
 @import "tailwindcss";
 
 :root {
+  /* Light mode colors */
+  --navbar-bg: rgba(255, 255, 255, 0.95);
+  --navbar-border: #e5e7eb;
+  --text-color: #333333;
+  --text-secondary: #6b7280;
+  --button-bg: #f3f4f6;
+  --button-hover: #e5e7eb;
+  --dropdown-bg: #ffffff;
+  --dropdown-border: #e5e7eb;
+  --dropdown-hover: #f9fafb;
+  --primary-color: #00b1a5;
+  --primary-dark: #008a80;
+  --translate-border: #e0e0e0;
+  --translate-border-hover: #00b1a5;
+  --translate-bg-hover: #f5f5f5;
+  --translate-text: #333333;
+  --translate-dropdown-bg: #ffffff;
+  --translate-item-hover: #e0f2f1;
+  --translate-item-selected: #00b1a5;
+  --translate-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  
+  /* Global page colors */
   --background: #ffffff;
-  --foreground: #171717;
+  --foreground: #000000;
+  --card-bg: #f9fafb;
+  --card-border: #e5e7eb;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+.dark {
+  /* Dark mode colors */
+  --navbar-bg: rgba(26, 26, 26, 0.95);
+  --navbar-border: #374151;
+  --text-color: #f3f4f6;
+  --text-secondary: #9ca3af;
+  --button-bg: #1f2937;
+  --button-hover: #374151;
+  --dropdown-bg: #1f2937;
+  --dropdown-border: #374151;
+  --dropdown-hover: #111827;
+  --primary-color: #00b1a5;
+  --primary-dark: #00d1c5;
+  --translate-border: #374151;
+  --translate-border-hover: #00d1c5;
+  --translate-bg-hover: #1f2937;
+  --translate-text: #f3f4f6;
+  --translate-dropdown-bg: #1f2937;
+  --translate-item-hover: #374151;
+  --translate-item-selected: #00b1a5;
+  --translate-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+  
+  /* Global page colors */
+  --background: #1a1a1a;
+  --foreground: #ffffff;
+  --card-bg: #1f2937;
+  --card-border: #374151;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
-}
-
+/* Apply global styles */
 body {
-  background: var(--background);
+  background-color: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+}
+
+/* Optional: Add these classes for easy use */
+.bg-primary {
+  background-color: var(--primary-color);
+}
+.text-primary {
+  color: var(--primary-color);
+}
+.bg-card {
+  background-color: var(--card-bg);
+  border-color: var(--card-border);
 }
