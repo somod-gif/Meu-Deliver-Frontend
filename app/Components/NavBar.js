@@ -25,7 +25,10 @@ import {
   List,
   Grid,
   Sun,
-  Moon
+  Moon,
+  Layers,
+  Box,
+  Truck
 } from "lucide-react";
 import { toast } from "react-toastify";
 import { useRouter } from "next/navigation";
@@ -47,17 +50,17 @@ export default function NavBar({ user }) {
     {
       name: "Categories",
       key: "categories",
-      icon: List,
+      icon: Layers,
     },
     {
       name: "Products",
       key: "products",
-      icon: Grid,
+      icon: Box,
     },
     {
-      name: "FAQ",
-      key: "faq",
-      icon: HelpCircle,
+      name: "Track Order",
+      key: "track-order",
+      icon: Truck,
     },
   ];
   
@@ -91,7 +94,7 @@ export default function NavBar({ user }) {
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (
-        sidebarOpen & !event.target.closest("aside") &&
+        sidebarOpen && !event.target.closest("aside") &&
         !event.target.closest('[aria-label="Open menu"]')
       ) {
         setSidebarOpen(false);
@@ -148,6 +151,7 @@ export default function NavBar({ user }) {
   }, []);
 
   if (!hasMounted) return null;
+  
   return (
     <>
       {isTablet && (
@@ -177,6 +181,7 @@ export default function NavBar({ user }) {
             </Link>
           </div>
 
+          {/* Center - Search Bar for Desktop */}
           {!isMobile && (
             <div className="flex items-center px-4 sm:px-6 py-4">
               <SearchBar
@@ -185,14 +190,14 @@ export default function NavBar({ user }) {
             </div>
           )}
           
-          {/* Center Nav Buttons */}
+          {/* Center Nav Buttons - Desktop Only */}
           {!isTablet && (
             <nav className="flex flex-wrap justify-center gap-4 px-4 py-2">
               {navigation.map((item) => (
                 <button
                   key={item.key}
                   onClick={() => setCurrentSection(item.key)}
-                  className={`inline-flex items-center px-3 py-2 text-sm font-medium rounded-lg transition-all duration-200 ${
+                  className={`inline-flex items-center px-4 py-2 text-sm font-medium rounded-lg transition-all duration-200 ${
                     currentSection === item.key
                       ? "bg-[var(--primary-color)] text-white shadow"
                       : "bg-[var(--button-bg)] text-[var(--text-color)] hover:bg-[var(--button-hover)]"
@@ -206,36 +211,11 @@ export default function NavBar({ user }) {
           )}
 
           {/* Right Side Controls */}
-          <div className="flex items-center space-x-4">
-            {/* Dark/Light Mode Toggle */}
-            <button
-              onClick={toggleDarkMode}
-              className="p-2 rounded-lg hover:bg-[var(--button-hover)] transition-colors duration-200"
-              aria-label={darkMode ? "Switch to light mode" : "Switch to dark mode"}
-            >
-              {darkMode ? (
-                <Sun className="w-5 h-5 text-yellow-400" />
-              ) : (
-                <Moon className="w-5 h-5 text-[var(--text-color)]" />
-              )}
-            </button>
-
+          <div className="flex items-center space-x-2">
             {/* Google Translate - Desktop */}
-            <div className="hidden lg:block w-40">
-              <GoogleTranslate variant="compact" />
+            <div className="hidden lg:block relative">
+              <GoogleTranslate variant="icon-only" />
             </div>
-
-            {/* Notification Bell */}
-            <button
-              onClick={handleNotificationClick}
-              className="relative p-2 rounded-lg hover:bg-[var(--button-hover)] transition-colors duration-200"
-              aria-label="Notifications"
-            >
-              <Bell className="w-5 h-5 text-[var(--text-color)]" />
-              {notificationCount > 0 && (
-                <div className="absolute -top-1 -right-1 w-3 h-3 bg-red-500 rounded-full border-2 border-[var(--navbar-bg)]"></div>
-              )}
-            </button>
 
             {/* Cart Icon - Desktop */}
             <button
@@ -252,9 +232,9 @@ export default function NavBar({ user }) {
             </button>
 
             {/* Mobile Controls */}
-            <div className="lg:hidden flex items-center space-x-3">
-              {/* Mobile Google Translate - Icon only */}
-              <div className="lg:hidden">
+            <div className="lg:hidden flex items-center space-x-2">
+              {/* Mobile Google Translate */}
+              <div className="relative">
                 <GoogleTranslate variant="icon-only" />
               </div>
 
@@ -319,16 +299,7 @@ export default function NavBar({ user }) {
                             {user.email || "user@example.com"}
                           </p>
                         </div>
-                        <Link
-                          href="/profile"
-                          className="block px-4 py-2 text-sm text-[var(--text-color)] hover:bg-[var(--dropdown-hover)] transition-colors duration-200"
-                          onClick={() => setShowUserDropdown(false)}
-                        >
-                          <div className="flex items-center space-x-2">
-                            <User className="w-4 h-4" />
-                            <span>Your Profile</span>
-                          </div>
-                        </Link>
+                        
                         <Link
                           href="/settings"
                           className="block px-4 py-2 text-sm text-[var(--text-color)] hover:bg-[var(--dropdown-hover)] transition-colors duration-200"
@@ -369,7 +340,7 @@ export default function NavBar({ user }) {
                     <Link
                       key={link.name}
                       href={link.path}
-                      className={`px-4 py-2 rounded-lg font-medium flex items-center space-x-2 ${
+                      className={`px-4 py-2 rounded-lg font-medium flex items-center space-x-2 transition-colors duration-200 ${
                         link.style === "primary"
                           ? "bg-[var(--primary-color)] text-white hover:bg-[var(--primary-dark)]"
                           : "border border-[var(--navbar-border)] text-[var(--text-color)] hover:bg-[var(--button-hover)]"

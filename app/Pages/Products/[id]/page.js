@@ -46,7 +46,7 @@ export default function ProductDetailsPage() {
                 setLoading(true);
                 setError(null);
                 
-                console.log('Fetching product with ID:', productId);
+                // console.log('Fetching product with ID:', productId);
                 
                 // Fetch the products data
                 const response = await fetch('/Products/products.json');
@@ -55,7 +55,7 @@ export default function ProductDetailsPage() {
                 }
                 
                 const data = await response.json();
-                console.log('Fetched data:', data);
+                // console.log('Fetched data:', data);
                 
                 // Find the product by ID across all categories
                 let foundProduct = null;
@@ -76,8 +76,8 @@ export default function ProductDetailsPage() {
                     }
                 }
                 
-                console.log('Found product:', foundProduct);
-                console.log('Product category:', productCategory);
+                // console.log('Found product:', foundProduct);
+                // console.log('Product category:', productCategory);
                 
                 if (!foundProduct) {
                     throw new Error('Product not found');
@@ -119,7 +119,7 @@ export default function ProductDetailsPage() {
                 setRelatedProducts(related);
                 
             } catch (err) {
-                console.error('Error fetching product details:', err);
+                // console.error('Error fetching product details:', err);
                 setError(err.message);
             } finally {
                 setLoading(false);
@@ -137,7 +137,7 @@ export default function ProductDetailsPage() {
 
     const handleAddToCart = () => {
         // Here you would typically add to cart logic
-        console.log('Adding to cart:', { productId: product.id, quantity });
+        // console.log('Adding to cart:', { productId: product.id, quantity });
         setAddedToCart(true);
         setTimeout(() => setAddedToCart(false), 2000);
     };
@@ -265,98 +265,100 @@ export default function ProductDetailsPage() {
             <div className="max-w-7xl mx-auto px-4 sm:px-6 py-8">
                 <div className="grid lg:grid-cols-2 gap-8 lg:gap-12">
                     {/* Product Images */}
-                    <div className="space-y-4">
-                        {/* Main Image */}
-                        <div className="relative aspect-square bg-gradient-to-br from-gray-50 to-gray-100 rounded-2xl overflow-hidden group">
-                            <img
-                                src={productImages[selectedImage] || product.image || '/api/placeholder/400/400'}
-                                alt={product.name || 'Product image'}
-                                className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
-                                onError={(e) => {
-                                    e.target.src = '/api/placeholder/400/400';
-                                }}
-                            />
-                            
-                            {/* Navigation Arrows */}
-                            {productImages.length > 1 && (
-                                <>
-                                    <button
-                                        onClick={handlePrevImage}
-                                        className="absolute left-4 top-1/2 -translate-y-1/2 p-2 bg-white/80 hover:bg-white rounded-full shadow-lg transition-all opacity-0 group-hover:opacity-100"
-                                    >
-                                        <ChevronLeft className="w-5 h-5 text-gray-700" />
-                                    </button>
-                                    <button
-                                        onClick={handleNextImage}
-                                        className="absolute right-4 top-1/2 -translate-y-1/2 p-2 bg-white/80 hover:bg-white rounded-full shadow-lg transition-all opacity-0 group-hover:opacity-100"
-                                    >
-                                        <ChevronRight className="w-5 h-5 text-gray-700" />
-                                    </button>
-                                </>
-                            )}
-                            
-                            {/* Badges */}
-                            <div className="absolute top-4 left-4 flex flex-col gap-2">
-                                {product.badge && (
-                                    <span className={`px-3 py-1 text-xs font-bold text-white rounded-full ${getBadgeColor(product.badge)}`}>
-                                        {product.badge}
-                                    </span>
+                    <div className="w-full max-w-lg mx-auto lg:max-w-none">
+                        <div className="space-y-4">
+                            {/* Main Image */}
+                            <div className="relative w-full h-0 pb-[100%] bg-gradient-to-br from-gray-50 to-gray-100 rounded-2xl overflow-hidden group">
+                                <img
+                                    src={productImages[selectedImage] || product.image || '/api/placeholder/400/400'}
+                                    alt={product.name || 'Product image'}
+                                    className="absolute inset-0 w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
+                                    onError={(e) => {
+                                        e.target.src = '/api/placeholder/400/400';
+                                    }}
+                                />
+                                
+                                {/* Navigation Arrows */}
+                                {productImages.length > 1 && (
+                                    <>
+                                        <button
+                                            onClick={handlePrevImage}
+                                            className="absolute left-4 top-1/2 -translate-y-1/2 p-2 bg-white/80 hover:bg-white rounded-full shadow-lg transition-all opacity-0 group-hover:opacity-100"
+                                        >
+                                            <ChevronLeft className="w-5 h-5 text-gray-700" />
+                                        </button>
+                                        <button
+                                            onClick={handleNextImage}
+                                            className="absolute right-4 top-1/2 -translate-y-1/2 p-2 bg-white/80 hover:bg-white rounded-full shadow-lg transition-all opacity-0 group-hover:opacity-100"
+                                        >
+                                            <ChevronRight className="w-5 h-5 text-gray-700" />
+                                        </button>
+                                    </>
                                 )}
-                                {discount > 0 && (
-                                    <span className="px-3 py-1 text-xs font-bold text-white rounded-full bg-red-500">
-                                        -{discount}% OFF
-                                    </span>
+                                
+                                {/* Badges */}
+                                <div className="absolute top-4 left-4 flex flex-col gap-2">
+                                    {product.badge && (
+                                        <span className={`px-3 py-1 text-xs font-bold text-white rounded-full ${getBadgeColor(product.badge)}`}>
+                                            {product.badge}
+                                        </span>
+                                    )}
+                                    {discount > 0 && (
+                                        <span className="px-3 py-1 text-xs font-bold text-white rounded-full bg-red-500">
+                                            -{discount}% OFF
+                                        </span>
+                                    )}
+                                </div>
+
+                                {/* Favorite Button */}
+                                <button
+                                    onClick={() => setIsFavorite(!isFavorite)}
+                                    className={`absolute top-4 right-4 p-3 rounded-full backdrop-blur-sm transition-all ${
+                                        isFavorite ? 'bg-red-500 text-white' : 'bg-white/80 text-gray-600 hover:bg-red-500 hover:text-white'
+                                    }`}
+                                >
+                                    <Heart className={`w-5 h-5 ${isFavorite ? 'fill-current' : ''}`} />
+                                </button>
+
+                                {/* Image Counter */}
+                                {productImages.length > 1 && (
+                                    <div className="absolute bottom-4 right-4 px-3 py-1 bg-black/50 text-white text-sm rounded-full">
+                                        {selectedImage + 1} / {productImages.length}
+                                    </div>
                                 )}
                             </div>
 
-                            {/* Favorite Button */}
-                            <button
-                                onClick={() => setIsFavorite(!isFavorite)}
-                                className={`absolute top-4 right-4 p-3 rounded-full backdrop-blur-sm transition-all ${
-                                    isFavorite ? 'bg-red-500 text-white' : 'bg-white/80 text-gray-600 hover:bg-red-500 hover:text-white'
-                                }`}
-                            >
-                                <Heart className={`w-5 h-5 ${isFavorite ? 'fill-current' : ''}`} />
-                            </button>
-
-                            {/* Image Counter */}
+                            {/* Thumbnail Gallery */}
                             {productImages.length > 1 && (
-                                <div className="absolute bottom-4 right-4 px-3 py-1 bg-black/50 text-white text-sm rounded-full">
-                                    {selectedImage + 1} / {productImages.length}
+                                <div className="flex gap-2 overflow-x-auto pb-2">
+                                    {productImages.map((image, index) => (
+                                        <button
+                                            key={index}
+                                            onClick={() => handleImageSelect(index)}
+                                            className={`relative flex-shrink-0 w-16 h-16 rounded-xl overflow-hidden border-2 transition-all ${
+                                                selectedImage === index
+                                                    ? 'border-[#00b1a5] shadow-lg scale-105'
+                                                    : 'border-gray-200 hover:border-gray-300'
+                                            }`}
+                                        >
+                                            <img
+                                                src={image || '/api/placeholder/400/400'}
+                                                alt={`${product.name} view ${index + 1}`}
+                                                className="w-full h-full object-cover"
+                                                onError={(e) => {
+                                                    e.target.src = '/api/placeholder/400/400';
+                                                }}
+                                            />
+                                            {selectedImage === index && (
+                                                <div className="absolute inset-0 bg-[#00b1a5]/20 flex items-center justify-center">
+                                                    <div className="w-2 h-2 bg-[#00b1a5] rounded-full"></div>
+                                                </div>
+                                            )}
+                                        </button>
+                                    ))}
                                 </div>
                             )}
                         </div>
-
-                        {/* Thumbnail Gallery */}
-                        {productImages.length > 1 && (
-                            <div className="flex gap-2 overflow-x-auto pb-2">
-                                {productImages.map((image, index) => (
-                                    <button
-                                        key={index}
-                                        onClick={() => handleImageSelect(index)}
-                                        className={`relative flex-shrink-0 w-20 h-20 rounded-xl overflow-hidden border-2 transition-all ${
-                                            selectedImage === index
-                                                ? 'border-[#00b1a5] shadow-lg scale-105'
-                                                : 'border-gray-200 hover:border-gray-300'
-                                        }`}
-                                    >
-                                        <img
-                                            src={image || '/api/placeholder/400/400'}
-                                            alt={`${product.name} view ${index + 1}`}
-                                            className="w-full h-full object-cover"
-                                            onError={(e) => {
-                                                e.target.src = '/api/placeholder/400/400';
-                                            }}
-                                        />
-                                        {selectedImage === index && (
-                                            <div className="absolute inset-0 bg-[#00b1a5]/20 flex items-center justify-center">
-                                                <div className="w-2 h-2 bg-[#00b1a5] rounded-full"></div>
-                                            </div>
-                                        )}
-                                    </button>
-                                ))}
-                            </div>
-                        )}
                     </div>
 
                     {/* Product Info */}
@@ -377,7 +379,7 @@ export default function ProductDetailsPage() {
                         </div>
 
                         {/* Product Name */}
-                        <h1 className="text-3xl lg:text-4xl font-bold text-gray-900">
+                        <h1 className="text-2xl lg:text-3xl font-bold text-gray-900 leading-tight">
                             {product.name}
                         </h1>
 
@@ -404,11 +406,11 @@ export default function ProductDetailsPage() {
                         {/* Price */}
                         <div className="space-y-2">
                             <div className="flex items-center gap-4">
-                                <span className="text-3xl font-bold text-gray-900">
+                                <span className="text-2xl lg:text-3xl font-bold text-gray-900">
                                     AOA {Math.round(finalPrice).toLocaleString()}
                                 </span>
                                 {discount > 0 && (
-                                    <span className="text-xl text-gray-500 line-through">
+                                    <span className="text-lg lg:text-xl text-gray-500 line-through">
                                         AOA {Math.round(originalPrice).toLocaleString()}
                                     </span>
                                 )}
@@ -529,7 +531,7 @@ export default function ProductDetailsPage() {
                 {relatedProducts.length > 0 && (
                     <div className="mt-16">
                         <h2 className="text-2xl font-bold text-gray-900 mb-8">You might also like</h2>
-                        <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
                             {relatedProducts.map((relatedProduct) => {
                                 const relatedFinalPrice = relatedProduct.price * ANGOLA_RATE * (relatedProduct.discount ? (1 - relatedProduct.discount / 100) : 1);
                                 
@@ -539,13 +541,13 @@ export default function ProductDetailsPage() {
                                         className="group bg-white rounded-xl overflow-hidden shadow-sm border border-gray-100 hover:shadow-md hover:border-[#00b1a5]/20 transition-all duration-300 cursor-pointer"
                                         onClick={() => handleRelatedProductClick(relatedProduct.id)}
                                     >
-                                        <div className="relative aspect-square bg-gradient-to-br from-gray-50 to-gray-100 overflow-hidden">
+                                        <div className="relative w-full h-0 pb-[100%] bg-gradient-to-br from-gray-50 to-gray-100 overflow-hidden">
                                             <img
                                                 src={relatedProduct.image}
                                                 alt={relatedProduct.name}
-                                                className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                                                className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                                                 onError={(e) => {
-                                                    e.target.src = "";
+                                                    e.target.src = '/api/placeholder/400/400';
                                                 }}
                                             />
                                             {relatedProduct.discount > 0 && (

@@ -1,275 +1,95 @@
 "use client";
 import { XMarkIcon } from "@heroicons/react/24/outline";
 import { useState, useEffect } from "react";
+import { 
+  Home, 
+  Grid3X3, 
+  Package, 
+  ShoppingCart, 
+  MapPin, 
+  User, 
+  Settings, 
+  HelpCircle, 
+  MessageCircle, 
+  UserPlus, 
+  LogIn, 
+  LogOut,
+  BarChart3
+} from "lucide-react";
 
 const navigation = [
   // 🏠 Home & Discovery
   {
     name: "Home",
     key: "home",
-    icon: ({ className }) => (
-      <svg
-        className={className}
-        fill="none"
-        stroke="currentColor"
-        viewBox="0 0 24 24"
-      >
-        <path
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          strokeWidth={2}
-          d="M3 12l2-2m0 0l7-7 7 7m-9 2v6m0 0H5a2 2 0 01-2-2v-4a2 2 0 012-2h1"
-        />
-      </svg>
-    ),
+    icon: Home,
+  },
+  
+  // 📊 Dashboard
+  {
+    name: "Dashboard",
+    key: "dashboard",
+    icon: BarChart3,
   },
 
   // 🛍️ Shopping
   {
     name: "Categories",
     key: "categories",
-    icon: ({ className }) => (
-      <svg
-        className={className}
-        fill="none"
-        stroke="currentColor"
-        viewBox="0 0 24 24"
-      >
-        <path
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          strokeWidth={2}
-          d="M4 6h16M4 10h16M4 14h16M4 18h16"
-        />
-      </svg>
-    ),
+    icon: Grid3X3,
   },
   {
     name: "Products",
     key: "products",
-    icon: ({ className }) => (
-      <svg
-        className={className}
-        fill="none"
-        stroke="currentColor"
-        viewBox="0 0 24 24"
-      >
-        <path
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          strokeWidth={2}
-          d="M20 12H4M4 6h16M4 18h16"
-        />
-      </svg>
-    ),
+    icon: Package,
   },
 
   // 📦 Orders
   {
     name: "Orders",
     key: "orders",
-    icon: ({ className }) => (
-      <svg
-        className={className}
-        fill="none"
-        stroke="currentColor"
-        viewBox="0 0 24 24"
-      >
-        <path
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          strokeWidth={2}
-          d="M9 17v-6a2 2 0 012-2h2a2 2 0 012 2v6m0 0v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2m6 0H9"
-        />
-      </svg>
-    ),
+    icon: ShoppingCart,
   },
   {
     name: "Track Order",
     key: "track-order",
-    icon: ({ className }) => (
-      <svg
-        className={className}
-        fill="none"
-        stroke="currentColor"
-        viewBox="0 0 24 24"
-      >
-        <path
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          strokeWidth={2}
-          d="M12 8c1.104 0 2 .672 2 1.5S13.104 11 12 11s-2-.672-2-1.5S10.896 8 12 8zm0 0v10m-8-2a8 8 0 1116 0 8 8 0 01-16 0z"
-        />
-      </svg>
-    ),
+    icon: MapPin,
   },
 
-  // ⭐ Reviews
-  {
-    name: "Reviews",
-    key: "reviews",
-    icon: ({ className }) => (
-      <svg
-        className={className}
-        fill="none"
-        stroke="currentColor"
-        viewBox="0 0 24 24"
-      >
-        <path
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          strokeWidth={2}
-          d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.338 4.126a1 1 0 00.95.69h4.36c.969 0 1.371 1.24.588 1.81l-3.53 2.57a1 1 0 00-.364 1.118l1.338 4.127c.3.921-.755 1.688-1.538 1.118l-3.53-2.57a1 1 0 00-1.176 0l-3.53 2.57c-.783.57-1.838-.197-1.538-1.118l1.338-4.127a1 1 0 00-.364-1.118L2.174 9.553c-.783-.57-.38-1.81.588-1.81h4.36a1 1 0 00.95-.69l1.338-4.126z"
-        />
-      </svg>
-    ),
-  },
-
-  // 🧾 Profile & Settings
-  {
-    name: "Profile",
-    key: "profile",
-    icon: ({ className }) => (
-      <svg
-        className={className}
-        fill="none"
-        stroke="currentColor"
-        viewBox="0 0 24 24"
-      >
-        <path
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          strokeWidth={2}
-          d="M5.121 17.804A7.5 7.5 0 0112 15a7.5 7.5 0 016.879 2.804M15 11a3 3 0 11-6 0 3 3 0 016 0z"
-        />
-      </svg>
-    ),
-  },
+  // 👤 Settings
   {
     name: "Settings",
     key: "settings",
-    icon: ({ className }) => (
-      <svg
-        className={className}
-        fill="none"
-        stroke="currentColor"
-        viewBox="0 0 24 24"
-      >
-        <path
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          strokeWidth={2}
-          d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066..."
-        />
-        <path
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          strokeWidth={2}
-          d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
-        />
-      </svg>
-    ),
+    icon: Settings,
   },
 
   // ❓ Help & Support
   {
     name: "FAQ",
     key: "faq",
-    icon: ({ className }) => (
-      <svg
-        className={className}
-        fill="none"
-        stroke="currentColor"
-        viewBox="0 0 24 24"
-      >
-        <path
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          strokeWidth={2}
-          d="M8 10h.01M12 14h.01M16 10h.01..."
-        />
-      </svg>
-    ),
+    icon: HelpCircle,
   },
   {
-    name: "Contact",
+    name: "Contact Us",
     key: "contact",
-    icon: ({ className }) => (
-      <svg
-        className={className}
-        fill="none"
-        stroke="currentColor"
-        viewBox="0 0 24 24"
-      >
-        <path
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          strokeWidth={2}
-          d="M21 10c0 6.627-9 12-9 12S3 16.627 3 10a9 9 0 1118 0z"
-        />
-      </svg>
-    ),
+    icon: MessageCircle,
   },
 
-  // 🔐 Register
+  // 🔐 Authentication
   {
     name: "Register",
     key: "register",
-    icon: ({ className }) => (
-      <svg
-        className={className}
-        fill="none"
-        stroke="currentColor"
-        viewBox="0 0 24 24"
-      >
-        <path
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          strokeWidth={2}
-          d="M12 11c1.656 0 3-1.567 3-3.5S13.656 4 12 4s-3 1.567-3 3.5S10.344 11 12 11zm0 2c-2.5 0-6 1.172-6 3.5V19h6m6-2v2m0 0v2m0-2h2m-2 0h-2"
-        />
-      </svg>
-    ),
+    icon: UserPlus,
   },
-  // 🔐 Sign In
   {
     name: "Sign in",
     key: "signin",
-    icon: ({ className }) => (
-      <svg
-        className={className}
-        fill="none"
-        stroke="currentColor"
-        viewBox="0 0 24 24"
-      >
-        <path
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          strokeWidth={2}
-          d="M15 12H3m0 0l4-4m-4 4l4 4m13-10v16"
-        />
-      </svg>
-    ),
+    icon: LogIn,
   },
-  // 🔐 Logout
   {
     name: "Sign Out",
     key: "signout",
-    icon: ({ className }) => (
-      <svg
-        className={className}
-        fill="none"
-        stroke="currentColor"
-        viewBox="0 0 24 24"
-      >
-        <path
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          strokeWidth={2}
-          d="M9 12h12m0 0l-4-4m4 4l-4 4M3 4v16"
-        />
-      </svg>
-    ),
+    icon: LogOut,
   },
 ];
 
