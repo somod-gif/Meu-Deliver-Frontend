@@ -1,4 +1,5 @@
 "use client";
+import Link from "next/link";
 import { XMarkIcon } from "@heroicons/react/24/outline";
 import { useState, useEffect } from "react";
 import { 
@@ -23,6 +24,7 @@ const navigation = [
     name: "Home",
     key: "home",
     icon: Home,
+    href: "/",
   },
   
   // 📊 Dashboard
@@ -30,72 +32,83 @@ const navigation = [
     name: "Dashboard",
     key: "dashboard",
     icon: BarChart3,
+    href: "/Clients/Dashboard",
   },
-
+  
   // 🛍️ Shopping
   {
     name: "Categories",
     key: "categories",
     icon: Grid3X3,
+    href: "/Pages/Categories",
   },
   {
     name: "Products",
     key: "products",
     icon: Package,
+    href: "/Pages/Products",
   },
-
+  
   // 📦 Orders
   {
     name: "Orders",
     key: "orders",
     icon: ShoppingCart,
+    href: "/orders",
   },
   {
     name: "Track Order",
     key: "track-order",
     icon: MapPin,
+    href: "/track-order",
   },
-
+  
   // 👤 Settings
   {
     name: "Settings",
     key: "settings",
     icon: Settings,
+    href: "/settings",
   },
-
+  
   // ❓ Help & Support
   {
     name: "FAQ",
     key: "faq",
     icon: HelpCircle,
+    href: "/faq",
   },
   {
     name: "Contact Us",
     key: "contact",
     icon: MessageCircle,
+    href: "/contact",
   },
-
+  
   // 🔐 Authentication
   {
     name: "Register",
     key: "register",
     icon: UserPlus,
+    href: "/auth/register",
   },
   {
     name: "Sign in",
     key: "signin",
     icon: LogIn,
+    href: "/auth/login",
   },
   {
     name: "Sign Out",
     key: "signout",
     icon: LogOut,
+    href: "#",
   },
 ];
 
 const registerItem = navigation.find((item) => item.key === "register");
-const logoutItem = navigation.find((item) => item.key === "signin");
-const loginItem = navigation.find((item) => item.key === "signout");
+const loginItem = navigation.find((item) => item.key === "signin");
+const logoutItem = navigation.find((item) => item.key === "signout");
 
 export default function Sidebar({
   sidebarOpen,
@@ -118,6 +131,20 @@ export default function Sidebar({
     initial: user?.name?.charAt(0)?.toUpperCase() || "G",
   };
 
+  const handleNavigation = (item) => {
+    if (setCurrentSection) {
+      setCurrentSection(item.key);
+    }
+    setSidebarOpen(false);
+  };
+
+  const handleLogout = () => {
+    if (logoutHandler) {
+      logoutHandler();
+    }
+    setSidebarOpen(false);
+  };
+
   return (
     <>
       {/* Backdrop for mobile */}
@@ -138,9 +165,8 @@ export default function Sidebar({
           flex flex-col
         `}
         style={{
-          // Ensure proper viewport height handling for mobile browsers
           height: '100vh',
-          height: '100dvh', // Dynamic viewport height for better mobile support
+          height: '100dvh',
         }}
       >
         {/* Header - Fixed at top */}
@@ -181,11 +207,9 @@ export default function Sidebar({
                 )
                 .map((item) => (
                   <li key={item.name}>
-                    <button
-                      onClick={() => {
-                        setCurrentSection(item.key);
-                        setSidebarOpen(false);
-                      }}
+                    <Link
+                      href={item.href}
+                      onClick={() => handleNavigation(item)}
                       className={`w-full flex items-center px-4 py-3 text-sm font-medium rounded-xl transition-all duration-200 group ${
                         currentSection === item.key
                           ? "bg-gradient-to-r from-teal-500 to-teal-600 text-white shadow-md transform scale-[1.02]"
@@ -205,7 +229,7 @@ export default function Sidebar({
                       {currentSection === item.key && (
                         <div className="w-2 h-2 bg-white rounded-full opacity-80 flex-shrink-0 ml-2"></div>
                       )}
-                    </button>
+                    </Link>
                   </li>
                 ))}
 
@@ -220,10 +244,7 @@ export default function Sidebar({
                   {user ? (
                     <li>
                       <button
-                        onClick={() => {
-                          if (logoutHandler) logoutHandler();
-                          setSidebarOpen(false);
-                        }}
+                        onClick={handleLogout}
                         className="w-full flex items-center px-4 py-3 text-sm font-medium rounded-xl bg-red-50 text-red-600 hover:bg-red-100 transition-all duration-200"
                       >
                         {logoutItem?.icon && (
@@ -235,8 +256,8 @@ export default function Sidebar({
                   ) : (
                     <>
                       <li>
-                        <a
-                          href="/Auth/Login"
+                        <Link
+                          href={loginItem?.href || "/auth/login"}
                           onClick={() => setSidebarOpen(false)}
                           className="w-full flex items-center px-4 py-3 text-sm font-medium rounded-xl border border-gray-300 text-gray-700 hover:bg-gray-50 transition-all duration-200"
                         >
@@ -244,11 +265,11 @@ export default function Sidebar({
                             <loginItem.icon className="w-5 h-5 mr-3 flex-shrink-0" />
                           )}
                           <span className="flex-1 text-left">Login</span>
-                        </a>
+                        </Link>
                       </li>
                       <li>
-                        <a
-                          href="/Auth/Register"
+                        <Link
+                          href={registerItem?.href || "/auth/register"}
                           onClick={() => setSidebarOpen(false)}
                           className="w-full flex items-center px-4 py-3 text-sm font-medium rounded-xl bg-[#00b1a5] text-white hover:bg-[#008a80] transition-all duration-200"
                         >
@@ -256,7 +277,7 @@ export default function Sidebar({
                             <registerItem.icon className="w-5 h-5 mr-3 flex-shrink-0" />
                           )}
                           <span className="flex-1 text-left">Register</span>
-                        </a>
+                        </Link>
                       </li>
                     </>
                   )}

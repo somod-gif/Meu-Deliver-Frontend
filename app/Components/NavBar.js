@@ -50,16 +50,19 @@ export default function NavBar({ user }) {
       name: "Categories",
       key: "categories",
       icon: Layers,
+      href: "/Pages/Categories",
     },
     {
       name: "Products",
       key: "products",
       icon: Box,
+      href: "/products",
     },
     {
       name: "Tracking",
       key: "track-order",
       icon: Truck,
+      href: "/track-order",
     },
   ];
 
@@ -123,7 +126,7 @@ export default function NavBar({ user }) {
           
           // Reverse geocoding to get address
           const response = await fetch(
-            `https://api.opencagedata.com/geocode/v1/json?q=${latitude}+${longitude}&key=${process.env.NEXT_PUBLIC_OPENCAGE_API_KEY}`
+            `https://api.opencagedata.com/geocode/v1/json?q=${latitude}+${longitude}&key=${process.env.NEXT_PUBLIC_OPENCAGE_API}`
           );
           
           if (!response.ok) {
@@ -412,20 +415,21 @@ export default function NavBar({ user }) {
 
           {/* Center Nav Buttons - Desktop Only */}
           {!isTablet && (
-            <nav className="flex  justify-center gap-3 px-3 py-2">
+            <nav className="flex justify-center gap-3 px-3 py-2">
               {navigation.map((item) => (
-                <button
+                <Link
                   key={item.key}
-                  onClick={() => setCurrentSection(item.key)}
+                  href={item.href}
                   className={`inline-flex items-center px-4 py-2 text-sm font-medium rounded-lg transition-all duration-200 ${
                     currentSection === item.key
                       ? "bg-[var(--primary-color)] text-white shadow"
                       : "bg-[var(--button-bg)] text-[var(--text-color)] hover:bg-[var(--button-hover)]"
                   }`}
+                  onClick={() => setCurrentSection(item.key)}
                 >
                   <item.icon className="w-5 h-5 mr-2" />
                   <span>{item.name}</span>
-                </button>
+                </Link>
               ))}
             </nav>
           )}

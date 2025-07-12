@@ -24,7 +24,7 @@ export default function LocationSelector({ onLocationSelect }) {
 
     try {
       const response = await fetch(
-        `https://api.opencagedata.com/geocode/v1/json?q=${encodeURIComponent(query)}&key=${process.env.NEXT_PUBLIC_OPENCAGE_API_KEY}&limit=5&countrycode=ng&language=en`
+        `https://api.opencagedata.com/geocode/v1/json?q=${encodeURIComponent(query)}&key=${process.env.NEXT_PUBLIC_OPENCAGE_API}&limit=5&countrycode=ng&language=en`
       );
 
       if (!response.ok) {
