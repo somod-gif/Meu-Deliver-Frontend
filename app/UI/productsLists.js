@@ -75,7 +75,7 @@ export default function ProductLists({
               {/* Quick Action Overlay */}
               <div className="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors duration-300 flex items-center justify-center opacity-0 group-hover:opacity-100">
                 <button
-                  onClick={() => router.push(`/products/${product.id}`)}
+                  onClick={() => router.push(`/Pages/Products/${product.id}`)}
                   className="bg-[#00b1a5] hover:bg-[#008a80] text-white p-2 rounded-full shadow-lg transform scale-90 group-hover:scale-100 transition-all duration-200"
                 >
                   <svg
