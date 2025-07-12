@@ -56,7 +56,7 @@ export default function NavBar({ user }) {
       name: "Products",
       key: "products",
       icon: Box,
-      href: "/products",
+      href: "/Pages/Products",
     },
     {
       name: "Tracking",
