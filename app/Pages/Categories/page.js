@@ -1,18 +1,27 @@
+// Pages/Categories/page.js
+// This file is part of the Meu Deliver project, a frontend application for managing categories, vendors, and products.
+// It includes functionality for displaying categories, filtering products by category and vendor, and managing a shopping cart.
 "use client";
 import { useState, useEffect } from "react";
+import { useRouter } from "next/navigation";
+import { Eye, Star, Heart } from "lucide-react";
 
 export default function CategoriesPage() {
+  const router = useRouter();
   const [categories, setCategories] = useState([]);
   const [vendors, setVendors] = useState([]);
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [favorites, setFavorites] = useState(new Set());
   
   // State for filters and selections
   const [selectedCategory, setSelectedCategory] = useState("all");
   const [selectedVendor, setSelectedVendor] = useState("all");
   const [viewMode, setViewMode] = useState("categories"); // categories, vendors, products
   const [cart, setCart] = useState([]);
+
+  const ANGOLA_RATE = 850;
 
   // Fetch data from JSON files
   useEffect(() => {
@@ -87,7 +96,34 @@ export default function CategoriesPage() {
     return filteredProducts;
   };
 
-  // Add to cart function
+  // Navigate to product details
+  const handleViewProduct = (productId) => {
+    router.push(`/Pages/Products/${productId}`);
+  };
+
+  // Toggle favorite
+  const toggleFavorite = (productId) => {
+    const newFavorites = new Set(favorites);
+    if (favorites.has(productId)) {
+      newFavorites.delete(productId);
+    } else {
+      newFavorites.add(productId);
+    }
+    setFavorites(newFavorites);
+  };
+
+  // Get badge color
+  const getBadgeColor = (badge) => {
+    switch (badge?.toLowerCase()) {
+      case 'best seller': return 'bg-[#00b1a5]';
+      case 'new': return 'bg-[#a3d900]';
+      case 'eco': case 'organic': return 'bg-[#c6d90d]';
+      case 'smart': return 'bg-[#00b1a5]';
+      default: return 'bg-gray-600';
+    }
+  };
+
+  // Add to cart function (keeping for cart functionality)
   const addToCart = (product) => {
     const existingItem = cart.find(item => item.id === product.id);
     if (existingItem) {
@@ -148,7 +184,7 @@ export default function CategoriesPage() {
               <div className="flex items-center space-x-4">
                 <div className="bg-[#00b1a5] text-white px-4 py-2 rounded-lg shadow-md">
                   <span className="font-medium">
-                    {getCartItemCount()} items - ${getCartTotal().toFixed(2)}
+                    {getCartItemCount()} items - AOA {(getCartTotal() * ANGOLA_RATE).toFixed(0)}
                   </span>
                 </div>
               </div>
@@ -321,20 +357,56 @@ export default function CategoriesPage() {
               {selectedVendor !== "all" && ` from ${getVendorsByCategory(selectedCategory).find(v => v.id === selectedVendor)?.businessName}`}
             </h2>
             
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
               {getFilteredProducts().map((product) => (
-                <div key={product.id} className="bg-white rounded-xl shadow-sm hover:shadow-md transition-all duration-200 overflow-hidden border-2 border-transparent hover:border-[#a3d900]">
-                  <div className="relative">
+                <div key={product.id} className="group bg-white rounded-xl overflow-hidden shadow-sm border border-gray-100 hover:shadow-md hover:border-[#00b1a5]/20 transition-all duration-300">
+                  <div className="relative aspect-square bg-gradient-to-br from-gray-50 to-gray-100 overflow-hidden">
                     <img
                       src={product.imageUrl || product.image || "https://images.unsplash.com/photo-1560472354-b33ff0c44a43?w=400&h=300&fit=crop"}
                       alt={product.name}
-                      className="w-full h-48 object-cover"
+                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                     />
-                    {product.badge && (
-                      <span className="absolute top-2 left-2 bg-[#c6d90d] text-black text-xs px-2 py-1 rounded-full font-medium">
-                        {product.badge}
-                      </span>
-                    )}
+                    
+                    {/* Badges */}
+                    <div className="absolute top-2 left-2 flex flex-col gap-1">
+                      {product.badge && (
+                        <span className={`px-2 py-1 text-xs font-bold text-white rounded-full ${getBadgeColor(product.badge)}`}>
+                          {product.badge}
+                        </span>
+                      )}
+                      {product.discount > 0 && (
+                        <span className="px-2 py-1 text-xs font-bold text-white rounded-full bg-red-500">
+                          -{product.discount}%
+                        </span>
+                      )}
+                    </div>
+
+                    {/* Favorite Button */}
+                    <button
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        toggleFavorite(product.id);
+                      }}
+                      className={`absolute top-2 right-2 p-2 rounded-full backdrop-blur-sm transition-all ${
+                        favorites.has(product.id)
+                          ? 'bg-red-500 text-white'
+                          : 'bg-white/80 text-gray-600 hover:bg-red-500 hover:text-white'
+                      }`}
+                    >
+                      <Heart className={`w-4 h-4 ${favorites.has(product.id) ? 'fill-current' : ''}`} />
+                    </button>
+
+                    {/* View Product Overlay */}
+                    <div 
+                      onClick={() => handleViewProduct(product.id)}
+                      className="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors duration-300 flex items-center justify-center opacity-0 group-hover:opacity-100 cursor-pointer"
+                    >
+                      <div className="bg-[#00b1a5] hover:bg-[#008a80] text-white p-3 rounded-full shadow-lg transform scale-90 group-hover:scale-100 transition-all duration-200">
+                        <Eye className="w-5 h-5" />
+                      </div>
+                    </div>
+
+                    {/* Out of Stock Overlay */}
                     {product.isAvailable === false && (
                       <div className="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center">
                         <span className="text-white font-medium">Out of Stock</span>
@@ -342,31 +414,37 @@ export default function CategoriesPage() {
                     )}
                   </div>
                   
-                  <div className="p-4">
-                    <h3 className="font-semibold text-black mb-2 line-clamp-2">{product.name}</h3>
-                    <p className="text-sm text-gray-600 mb-3 line-clamp-2">{product.description}</p>
+                  <div className="p-3">
+                    <h3 className="font-semibold text-sm text-black mb-1 line-clamp-2">{product.name}</h3>
                     
+                    {/* Vendor */}
+                    <p className="text-xs text-gray-500 mb-2 truncate">
+                      {product.vendor || vendors.find(v => v.id === product.vendorId)?.businessName || "Unknown Vendor"}
+                    </p>
+                    
+                    {/* Rating */}
+                    {product.rating && (
+                      <div className="flex items-center mb-2">
+                        <Star className="w-3 h-3 text-[#c6d90d] fill-current" />
+                        <span className="text-xs text-gray-600 ml-1">{product.rating}</span>
+                      </div>
+                    )}
+                    
+                    {/* Price */}
                     <div className="flex items-center justify-between mb-3">
-                      <span className="text-xl font-bold text-[#00b1a5]">AOA{product.price}</span>
-                      {product.rating && (
-                        <div className="flex items-center space-x-1">
-                          <span className="text-yellow-400">★</span>
-                          <span className="text-sm text-gray-600">{product.rating}</span>
-                        </div>
-                      )}
-                    </div>
-                    
-                    <div className="flex items-center justify-between mb-4">
-                      <span className="text-sm text-gray-600">
-                        {product.vendor || vendors.find(v => v.id === product.vendorId)?.businessName || "Unknown Vendor"}
+                      <span className="text-lg font-bold text-[#00b1a5]">
+                        AOA {Math.round((product.price || 0) * ANGOLA_RATE * (product.discount ? (1 - product.discount / 100) : 1)).toLocaleString()}
                       </span>
-                      {product.deliveryTime && (
-                        <span className="text-sm text-gray-500">{product.deliveryTime}</span>
+                      {product.discount > 0 && (
+                        <span className="text-xs text-gray-500 line-through">
+                          AOA {Math.round((product.price || 0) * ANGOLA_RATE).toLocaleString()}
+                        </span>
                       )}
                     </div>
                     
+                    {/* View Product Button */}
                     <button
-                      onClick={() => addToCart(product)}
+                      onClick={() => handleViewProduct(product.id)}
                       disabled={product.isAvailable === false}
                       className={`
                         w-full py-2 px-4 rounded-lg font-medium transition-all duration-200
@@ -376,7 +454,7 @@ export default function CategoriesPage() {
                         }
                       `}
                     >
-                      {product.isAvailable === false ? "Out of Stock" : "Add to Cart"}
+                      {product.isAvailable === false ? "Out of Stock" : "View Product"}
                     </button>
                   </div>
                 </div>
@@ -403,7 +481,7 @@ export default function CategoriesPage() {
                 {getCartItemCount()}
               </div>
               <div>
-                <p className="font-bold text-black text-lg">${getCartTotal().toFixed(2)}</p>
+                <p className="font-bold text-black text-lg">AOA {(getCartTotal() * ANGOLA_RATE).toFixed(0)}</p>
                 <p className="text-sm text-gray-600">
                   {getCartItemCount()} item{getCartItemCount() > 1 ? 's' : ''} in cart
                 </p>
