@@ -1,326 +1,326 @@
 
-{
-  "categories": [
-    
-    { "name": "Bar", "icon": "🍺" },
-    { "name": "Store", "icon": "🛍️" },
-    { "name": "Supermarket", "icon": "🛒" },
-    { "name": "Pharmacy", "icon": "💊" },
-    { "name": "Post Office", "icon": "🏤" },
-    { "name": "Restaurant", "icon": "🍽️" }
-  ],
-  "productsByCategory": {
-    "Bar": [
-      {
-        "id": 21,
-        "name": "Craft Beer Selection",
-        "price": 16.99,
-        "vendor": "Brew Masters",
-        "rating": 4.7,
-        "deliveryTime": "25-40 min",
-        "image": "https://images.unsplash.com/photo-1535958636474-b021ee887b13?w=400&h=300&fit=crop",
-        "badge": "Local"
-      },
-      {
-        "id": 22,
-        "name": "Premium Wine Collection",
-        "price": 29.99,
-        "vendor": "Vino Delight",
-        "rating": 4.8,
-        "deliveryTime": "30-45 min",
-        "image": "https://images.unsplash.com/photo-1559496417-e7f25cb247f3?w=400&h=300&fit=crop",
-        "badge": "Exclusive"
-      },
-      {
-        "id": 23,
-        "name": "Cold Pressed Juices",
-        "price": 12.50,
-        "vendor": "Juice Bar",
-        "rating": 4.6,
-        "deliveryTime": "20-30 min",
-        "image": "https://images.unsplash.com/photo-1603569283847-aa295f0d016a?w=400&h=300&fit=crop",
-        "badge": "Healthy"
-      }
+  {
+    "categories": [
+      
+      { "name": "Bar", "icon": "🍺" },
+      { "name": "Store", "icon": "🛍️" },
+      { "name": "Supermarket", "icon": "🛒" },
+      { "name": "Pharmacy", "icon": "💊" },
+      { "name": "Post Office", "icon": "🏤" },
+      { "name": "Restaurant", "icon": "🍽️" }
     ],
-    "Store": [
-      {
-        "id": 5,
-        "name": "Fashion T-Shirt",
-        "price": 19.99,
-        "vendor": "Fashion Hub",
-        "rating": 4.4,
-        "deliveryTime": "35-50 min",
-        "image": "https://images.unsplash.com/photo-1489987707025-afc232f7ea0f?w=400&h=300&fit=crop",
-        "badge": ""
-      },
-      {
-        "id": 18,
-        "name": "Denim Jeans",
-        "price": 39.99,
-        "vendor": "Urban Style",
-        "rating": 4.5,
-        "deliveryTime": "40-55 min",
-        "image": "https://images.unsplash.com/photo-1473966968600-fa801b869a1a?w=400&h=300&fit=crop",
-        "badge": "Trending"
-      },
-      {
-        "id": 19,
-        "name": "Leather Wallet",
-        "price": 24.99,
-        "vendor": "LeatherCraft",
-        "rating": 4.7,
-        "deliveryTime": "30-45 min",
-        "image": "https://images.unsplash.com/photo-1548032885-b5e38734688a?w=400&h=300&fit=crop",
-        "badge": ""
-      },
-      {
-        "id": 20,
-        "name": "Running Shoes",
-        "price": 69.99,
-        "vendor": "SportLife",
-        "rating": 4.8,
-        "deliveryTime": "35-50 min",
-        "image": "https://images.unsplash.com/photo-1491553895911-0055eca6402d?w=400&h=300&fit=crop",
-        "badge": "Best Seller"
-      },
-      {
-        "id": 4,
-        "name": "Smartphone X200",
-        "price": 299.99,
-        "vendor": "TechZone",
-        "rating": 4.5,
-        "deliveryTime": "30-45 min",
-        "image": "https://images.unsplash.com/photo-1518770660439-4636190af475?w=400&h=300&fit=crop",
-        "badge": ""
-      },
-      {
-        "id": 15,
-        "name": "Wireless Earbuds",
-        "price": 79.99,
-        "vendor": "AudioTech",
-        "rating": 4.6,
-        "deliveryTime": "25-40 min",
-        "image": "https://images.unsplash.com/photo-1590658268037-6bf12165a8df?w=400&h=300&fit=crop",
-        "badge": "Popular"
-      },
-      {
-        "id": 16,
-        "name": "Smart Watch Pro",
-        "price": 149.99,
-        "vendor": "TechZone",
-        "rating": 4.7,
-        "deliveryTime": "30-50 min",
-        "image": "https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=400&h=300&fit=crop",
-        "badge": "New"
-      },
-      {
-        "id": 17,
-        "name": "Bluetooth Speaker",
-        "price": 59.99,
-        "vendor": "SoundMaster",
-        "rating": 4.4,
-        "deliveryTime": "20-35 min",
-        "image": "https://images.unsplash.com/photo-1572569511254-d8f925fe2cbb?w=400&h=300&fit=crop",
-        "badge": ""
-      },
-      {
-        "id": 24,
-        "name": "Scented Candles Set",
-        "price": 22.99,
-        "vendor": "Home Comfort",
-        "rating": 4.7,
-        "deliveryTime": "30-45 min",
-        "image": "https://images.unsplash.com/photo-1585320806297-9794b3e4eeae?w=400&h=300&fit=crop",
-        "badge": "Cozy"
-      },
-      {
-        "id": 25,
-        "name": "Throw Blanket",
-        "price": 34.99,
-        "vendor": "Cozy Living",
-        "rating": 4.5,
-        "deliveryTime": "35-50 min",
-        "image": "https://images.unsplash.com/photo-1576566588028-4147f3842f27?w=400&h=300&fit=crop",
-        "badge": ""
-      },
-      {
-        "id": 26,
-        "name": "Ceramic Dinner Set",
-        "price": 49.99,
-        "vendor": "Table Art",
-        "rating": 4.8,
-        "deliveryTime": "40-55 min",
-        "image": "https://images.unsplash.com/photo-1581578731548-c64695cc6952?w=400&h=300&fit=crop",
-        "badge": "Premium"
-      }
-    ],
-    "Supermarket": [
-      {
-        "id": 2,
-        "name": "Fresh Fruits Basket",
-        "price": 20.5,
-        "vendor": "FreshMart",
-        "rating": 4.6,
-        "deliveryTime": "20-30 min",
-        "image": "https://images.unsplash.com/photo-1586985289688-ca3cf47d3e6e?w=400&h=300&fit=crop",
-        "badge": ""
-      },
-      {
-        "id": 9,
-        "name": "Organic Vegetables Pack",
-        "price": 15.99,
-        "vendor": "GreenGrocer",
-        "rating": 4.7,
-        "deliveryTime": "25-40 min",
-        "image": "https://images.unsplash.com/photo-1518977676601-b53f82aba655?w=400&h=300&fit=crop",
-        "badge": "Organic"
-      },
-      {
-        "id": 10,
-        "name": "Dairy Essentials Bundle",
-        "price": 12.75,
-        "vendor": "Milk & More",
-        "rating": 4.5,
-        "deliveryTime": "15-25 min",
-        "image": "https://images.unsplash.com/photo-1550583724-b2692b85b150?w=400&h=300&fit=crop",
-        "badge": ""
-      },
-      {
-        "id": 11,
-        "name": "Premium Coffee Beans",
-        "price": 14.99,
-        "vendor": "Bean There",
-        "rating": 4.8,
-        "deliveryTime": "30-45 min",
-        "image": "https://images.unsplash.com/photo-1515442261605-65987783cb6a?w=400&h=300&fit=crop",
-        "badge": "Exclusive"
-      }
-    ],
-    "Pharmacy": [
-      {
-        "id": 3,
-        "name": "Pain Relief Tablets",
-        "price": 8.99,
-        "vendor": "MediCare",
-        "rating": 4.9,
-        "deliveryTime": "10-20 min",
-        "image": "https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?w=400&h=300&fit=crop",
-        "badge": ""
-      },
-      {
-        "id": 12,
-        "name": "Multivitamin Supplement",
-        "price": 12.49,
-        "vendor": "HealthPlus",
-        "rating": 4.7,
-        "deliveryTime": "15-25 min",
-        "image": "https://images.unsplash.com/photo-1587854692152-cbe660dbde88?w=400&h=300&fit=crop",
-        "badge": "Best Value"
-      },
-      {
-        "id": 13,
-        "name": "First Aid Kit",
-        "price": 19.99,
-        "vendor": "SafeLife",
-        "rating": 4.8,
-        "deliveryTime": "20-30 min",
-        "image": "https://images.unsplash.com/photo-1579684385127-1ef15d508118?w=400&h=300&fit=crop",
-        "badge": "Essential"
-      },
-      {
-        "id": 14,
-        "name": "Allergy Relief",
-        "price": 10.25,
-        "vendor": "MediCare",
-        "rating": 4.6,
-        "deliveryTime": "10-15 min",
-        "image": "https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?w=400&h=300&fit=crop",
-        "badge": "Fast Acting"
-      }
-    ],
-    "Post Office": [
-      {
-        "id": 27,
-        "name": "Express Shipping Service",
-        "price": 12.99,
-        "vendor": "QuickPost",
-        "rating": 4.5,
-        "deliveryTime": "24-48 hrs",
-        "image": "https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?w=400&h=300&fit=crop",
-        "badge": "Fast"
-      },
-      {
-        "id": 28,
-        "name": "Document Printing & Binding",
-        "price": 8.50,
-        "vendor": "Print Pro",
-        "rating": 4.6,
-        "deliveryTime": "30-45 min",
-        "image": "https://images.unsplash.com/photo-1586953208448-b95a79798f07?w=400&h=300&fit=crop",
-        "badge": "Professional"
-      },
-      {
-        "id": 29,
-        "name": "Packaging Materials Kit",
-        "price": 15.99,
-        "vendor": "Pack It Right",
-        "rating": 4.4,
-        "deliveryTime": "20-35 min",
-        "image": "https://images.unsplash.com/photo-1578662996442-48f60103fc96?w=400&h=300&fit=crop",
-        "badge": "Complete Set"
-      },
-      {
-        "id": 30,
-        "name": "Postage Stamps Collection",
-        "price": 25.00,
-        "vendor": "Postal Services",
-        "rating": 4.8,
-        "deliveryTime": "15-30 min",
-        "image": "https://images.unsplash.com/photo-1586953208448-b95a79798f07?w=400&h=300&fit=crop",
-        "badge": "Official"
-      }
-    ],
-    "Restaurant": [
-      {
-        "id": 1,
-        "name": "Cheeseburger Meal",
-        "price": 12.99,
-        "vendor": "Burger Palace",
-        "rating": 4.8,
-        "deliveryTime": "15-25 min",
-        "image": "https://images.unsplash.com/photo-1568901346375-23c9450c58cd?w=400&h=300&fit=crop",
-        "badge": "Best Seller"
-      },
-      {
-        "id": 6,
-        "name": "Pepperoni Pizza",
-        "price": 14.99,
-        "vendor": "Pizza Heaven",
-        "rating": 4.7,
-        "deliveryTime": "20-30 min",
-        "image": "https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?w=400&h=300&fit=crop",
-        "badge": "New"
-      },
-      {
-        "id": 7,
-        "name": "Chicken Tacos",
-        "price": 9.99,
-        "vendor": "Taco Fiesta",
-        "rating": 4.5,
-        "deliveryTime": "15-20 min",
-        "image": "https://images.unsplash.com/photo-1565299585323-38d6b0865b47?w=400&h=300&fit=crop",
-        "badge": ""
-      },
-      {
-        "id": 8,
-        "name": "Sushi Combo",
-        "price": 18.50,
-        "vendor": "Tokyo Sushi",
-        "rating": 4.9,
-        "deliveryTime": "25-35 min",
-        "image": "https://images.unsplash.com/photo-1611143669185-af224c5e3252?w=400&h=300&fit=crop",
-        "badge": "Chef's Choice"
-      }
-    ]
+    "productsByCategory": {
+      "Bar": [
+        {
+          "id": 21,
+          "name": "Craft Beer Selection",
+          "price": 16.99,
+          "vendor": "Brew Masters",
+          "rating": 4.7,
+          "deliveryTime": "25-40 min",
+          "image": "https://images.unsplash.com/photo-1535958636474-b021ee887b13?w=400&h=300&fit=crop",
+          "badge": "Local"
+        },
+        {
+          "id": 22,
+          "name": "Premium Wine Collection",
+          "price": 29.99,
+          "vendor": "Vino Delight",
+          "rating": 4.8,
+          "deliveryTime": "30-45 min",
+          "image": "https://images.unsplash.com/photo-1559496417-e7f25cb247f3?w=400&h=300&fit=crop",
+          "badge": "Exclusive"
+        },
+        {
+          "id": 23,
+          "name": "Cold Pressed Juices",
+          "price": 12.50,
+          "vendor": "Juice Bar",
+          "rating": 4.6,
+          "deliveryTime": "20-30 min",
+          "image": "https://images.unsplash.com/photo-1603569283847-aa295f0d016a?w=400&h=300&fit=crop",
+          "badge": "Healthy"
+        }
+      ],
+      "Store": [
+        {
+          "id": 5,
+          "name": "Fashion T-Shirt",
+          "price": 19.99,
+          "vendor": "Fashion Hub",
+          "rating": 4.4,
+          "deliveryTime": "35-50 min",
+          "image": "https://images.unsplash.com/photo-1489987707025-afc232f7ea0f?w=400&h=300&fit=crop",
+          "badge": ""
+        },
+        {
+          "id": 18,
+          "name": "Denim Jeans",
+          "price": 39.99,
+          "vendor": "Urban Style",
+          "rating": 4.5,
+          "deliveryTime": "40-55 min",
+          "image": "https://images.unsplash.com/photo-1473966968600-fa801b869a1a?w=400&h=300&fit=crop",
+          "badge": "Trending"
+        },
+        {
+          "id": 19,
+          "name": "Leather Wallet",
+          "price": 24.99,
+          "vendor": "LeatherCraft",
+          "rating": 4.7,
+          "deliveryTime": "30-45 min",
+          "image": "https://images.unsplash.com/photo-1548032885-b5e38734688a?w=400&h=300&fit=crop",
+          "badge": ""
+        },
+        {
+          "id": 20,
+          "name": "Running Shoes",
+          "price": 69.99,
+          "vendor": "SportLife",
+          "rating": 4.8,
+          "deliveryTime": "35-50 min",
+          "image": "https://images.unsplash.com/photo-1491553895911-0055eca6402d?w=400&h=300&fit=crop",
+          "badge": "Best Seller"
+        },
+        {
+          "id": 4,
+          "name": "Smartphone X200",
+          "price": 299.99,
+          "vendor": "TechZone",
+          "rating": 4.5,
+          "deliveryTime": "30-45 min",
+          "image": "https://images.unsplash.com/photo-1518770660439-4636190af475?w=400&h=300&fit=crop",
+          "badge": ""
+        },
+        {
+          "id": 15,
+          "name": "Wireless Earbuds",
+          "price": 79.99,
+          "vendor": "AudioTech",
+          "rating": 4.6,
+          "deliveryTime": "25-40 min",
+          "image": "https://images.unsplash.com/photo-1590658268037-6bf12165a8df?w=400&h=300&fit=crop",
+          "badge": "Popular"
+        },
+        {
+          "id": 16,
+          "name": "Smart Watch Pro",
+          "price": 149.99,
+          "vendor": "TechZone",
+          "rating": 4.7,
+          "deliveryTime": "30-50 min",
+          "image": "https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=400&h=300&fit=crop",
+          "badge": "New"
+        },
+        {
+          "id": 17,
+          "name": "Bluetooth Speaker",
+          "price": 59.99,
+          "vendor": "SoundMaster",
+          "rating": 4.4,
+          "deliveryTime": "20-35 min",
+          "image": "https://images.unsplash.com/photo-1572569511254-d8f925fe2cbb?w=400&h=300&fit=crop",
+          "badge": ""
+        },
+        {
+          "id": 24,
+          "name": "Scented Candles Set",
+          "price": 22.99,
+          "vendor": "Home Comfort",
+          "rating": 4.7,
+          "deliveryTime": "30-45 min",
+          "image": "https://images.unsplash.com/photo-1585320806297-9794b3e4eeae?w=400&h=300&fit=crop",
+          "badge": "Cozy"
+        },
+        {
+          "id": 25,
+          "name": "Throw Blanket",
+          "price": 34.99,
+          "vendor": "Cozy Living",
+          "rating": 4.5,
+          "deliveryTime": "35-50 min",
+          "image": "https://images.unsplash.com/photo-1576566588028-4147f3842f27?w=400&h=300&fit=crop",
+          "badge": ""
+        },
+        {
+          "id": 26,
+          "name": "Ceramic Dinner Set",
+          "price": 49.99,
+          "vendor": "Table Art",
+          "rating": 4.8,
+          "deliveryTime": "40-55 min",
+          "image": "https://images.unsplash.com/photo-1581578731548-c64695cc6952?w=400&h=300&fit=crop",
+          "badge": "Premium"
+        }
+      ],
+      "Supermarket": [
+        {
+          "id": 2,
+          "name": "Fresh Fruits Basket",
+          "price": 20.5,
+          "vendor": "FreshMart",
+          "rating": 4.6,
+          "deliveryTime": "20-30 min",
+          "image": "https://images.unsplash.com/photo-1586985289688-ca3cf47d3e6e?w=400&h=300&fit=crop",
+          "badge": ""
+        },
+        {
+          "id": 9,
+          "name": "Organic Vegetables Pack",
+          "price": 15.99,
+          "vendor": "GreenGrocer",
+          "rating": 4.7,
+          "deliveryTime": "25-40 min",
+          "image": "https://images.unsplash.com/photo-1518977676601-b53f82aba655?w=400&h=300&fit=crop",
+          "badge": "Organic"
+        },
+        {
+          "id": 10,
+          "name": "Dairy Essentials Bundle",
+          "price": 12.75,
+          "vendor": "Milk & More",
+          "rating": 4.5,
+          "deliveryTime": "15-25 min",
+          "image": "https://images.unsplash.com/photo-1550583724-b2692b85b150?w=400&h=300&fit=crop",
+          "badge": ""
+        },
+        {
+          "id": 11,
+          "name": "Premium Coffee Beans",
+          "price": 14.99,
+          "vendor": "Bean There",
+          "rating": 4.8,
+          "deliveryTime": "30-45 min",
+          "image": "https://images.unsplash.com/photo-1515442261605-65987783cb6a?w=400&h=300&fit=crop",
+          "badge": "Exclusive"
+        }
+      ],
+      "Pharmacy": [
+        {
+          "id": 3,
+          "name": "Pain Relief Tablets",
+          "price": 8.99,
+          "vendor": "MediCare",
+          "rating": 4.9,
+          "deliveryTime": "10-20 min",
+          "image": "https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?w=400&h=300&fit=crop",
+          "badge": ""
+        },
+        {
+          "id": 12,
+          "name": "Multivitamin Supplement",
+          "price": 12.49,
+          "vendor": "HealthPlus",
+          "rating": 4.7,
+          "deliveryTime": "15-25 min",
+          "image": "https://images.unsplash.com/photo-1587854692152-cbe660dbde88?w=400&h=300&fit=crop",
+          "badge": "Best Value"
+        },
+        {
+          "id": 13,
+          "name": "First Aid Kit",
+          "price": 19.99,
+          "vendor": "SafeLife",
+          "rating": 4.8,
+          "deliveryTime": "20-30 min",
+          "image": "https://images.unsplash.com/photo-1579684385127-1ef15d508118?w=400&h=300&fit=crop",
+          "badge": "Essential"
+        },
+        {
+          "id": 14,
+          "name": "Allergy Relief",
+          "price": 10.25,
+          "vendor": "MediCare",
+          "rating": 4.6,
+          "deliveryTime": "10-15 min",
+          "image": "https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?w=400&h=300&fit=crop",
+          "badge": "Fast Acting"
+        }
+      ],
+      "Post Office": [
+        {
+          "id": 27,
+          "name": "Express Shipping Service",
+          "price": 12.99,
+          "vendor": "QuickPost",
+          "rating": 4.5,
+          "deliveryTime": "24-48 hrs",
+          "image": "https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?w=400&h=300&fit=crop",
+          "badge": "Fast"
+        },
+        {
+          "id": 28,
+          "name": "Document Printing & Binding",
+          "price": 8.50,
+          "vendor": "Print Pro",
+          "rating": 4.6,
+          "deliveryTime": "30-45 min",
+          "image": "https://images.unsplash.com/photo-1586953208448-b95a79798f07?w=400&h=300&fit=crop",
+          "badge": "Professional"
+        },
+        {
+          "id": 29,
+          "name": "Packaging Materials Kit",
+          "price": 15.99,
+          "vendor": "Pack It Right",
+          "rating": 4.4,
+          "deliveryTime": "20-35 min",
+          "image": "https://images.unsplash.com/photo-1578662996442-48f60103fc96?w=400&h=300&fit=crop",
+          "badge": "Complete Set"
+        },
+        {
+          "id": 30,
+          "name": "Postage Stamps Collection",
+          "price": 25.00,
+          "vendor": "Postal Services",
+          "rating": 4.8,
+          "deliveryTime": "15-30 min",
+          "image": "https://images.unsplash.com/photo-1586953208448-b95a79798f07?w=400&h=300&fit=crop",
+          "badge": "Official"
+        }
+      ],
+      "Restaurant": [
+        {
+          "id": 1,
+          "name": "Cheeseburger Meal",
+          "price": 12.99,
+          "vendor": "Burger Palace",
+          "rating": 4.8,
+          "deliveryTime": "15-25 min",
+          "image": "https://images.unsplash.com/photo-1568901346375-23c9450c58cd?w=400&h=300&fit=crop",
+          "badge": "Best Seller"
+        },
+        {
+          "id": 6,
+          "name": "Pepperoni Pizza",
+          "price": 14.99,
+          "vendor": "Pizza Heaven",
+          "rating": 4.7,
+          "deliveryTime": "20-30 min",
+          "image": "https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?w=400&h=300&fit=crop",
+          "badge": "New"
+        },
+        {
+          "id": 7,
+          "name": "Chicken Tacos",
+          "price": 9.99,
+          "vendor": "Taco Fiesta",
+          "rating": 4.5,
+          "deliveryTime": "15-20 min",
+          "image": "https://images.unsplash.com/photo-1565299585323-38d6b0865b47?w=400&h=300&fit=crop",
+          "badge": ""
+        },
+        {
+          "id": 8,
+          "name": "Sushi Combo",
+          "price": 18.50,
+          "vendor": "Tokyo Sushi",
+          "rating": 4.9,
+          "deliveryTime": "25-35 min",
+          "image": "https://images.unsplash.com/photo-1611143669185-af224c5e3252?w=400&h=300&fit=crop",
+          "badge": "Chef's Choice"
+        }
+      ]
+    }
   }
-}

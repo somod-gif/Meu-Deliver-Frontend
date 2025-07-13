@@ -4,6 +4,7 @@ import "react-toastify/dist/ReactToastify.css";
 import AuthContextProvider from "./hooks/authContext";
 import LayoutContent from "./layoutContent";
 import { ThemeProvider } from './Context/ThemeProvider';
+import { CartProvider } from './Context/CartContext';
 
 export const metadata = {
   title: 'MeuDeliver - Angola\'s All-in-One Delivery',
@@ -16,7 +17,9 @@ export default function RootLayout({ children }) {
       <body>
         <ThemeProvider>
           <AuthContextProvider>
-            <LayoutContent>{children}</LayoutContent>
+            <CartProvider>
+              <LayoutContent>{children}</LayoutContent>
+            </CartProvider>
           </AuthContextProvider>
         </ThemeProvider>
       </body>

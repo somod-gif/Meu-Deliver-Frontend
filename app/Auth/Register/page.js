@@ -10,9 +10,6 @@ import {
   Lock,
   Check,
   Camera,
-  ShoppingBag,
-  ShoppingCart,
-  Bike,
 } from "lucide-react";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -67,7 +64,14 @@ export default function RegisterPage() {
     const file = e.target.files[0];
     if (file) {
       if (file.size > 5 * 1024 * 1024) {
-        toast.error("Image size should be less than 5MB");
+        toast.error("Image size should be less than 5MB", {
+          position: "top-right",
+          autoClose: 3000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+        });
         return;
       }
 
@@ -77,7 +81,15 @@ export default function RegisterPage() {
         setFormData((prev) => ({ ...prev, profileImage: file }));
       };
       reader.readAsDataURL(file);
-      toast.success("Profile image uploaded successfully!");
+      
+      toast.success("Profile image uploaded successfully!", {
+        position: "top-right",
+        autoClose: 2000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+      });
     }
   };
 
@@ -132,8 +144,8 @@ export default function RegisterPage() {
           headers: {
             "Content-Type": "application/json",
           },
-          body: JSON.stringify(payload), // ✅ stringify!
-          credentials: "include", // ✅ receive/set cookies
+          body: JSON.stringify(payload),
+          credentials: "include",
         }
       );
 
@@ -145,16 +157,39 @@ export default function RegisterPage() {
             : message || "Registration failed"
         );
       }
-      const data = response.json();
+      
+      const data = await response.json(); // Fixed: Added await here
       setIsLoggedIn(true);
       setVerifiedUser(data.user);
       localStorage.setItem("user", JSON.stringify(data.user));
 
-      toast.success("Registration successful!");
-      router.push("/Portal/Clients/Dashboard");
+      toast.success("Registration successful! Redirecting...", {
+        position: "top-right",
+        autoClose: 2000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        onClose: () => {
+          router.push("/Portal/Clients/Dashboard");
+        }
+      });
+      
+      // Alternative: Use setTimeout if you don't want to use onClose
+      // setTimeout(() => {
+      //   router.push("/Portal/Clients/Dashboard");
+      // }, 2000);
+      
     } catch (err) {
       console.error("Registration error:", err);
-      toast.error(err.message || "Something went wrong");
+      toast.error(err.message || "Something went wrong", {
+        position: "top-right",
+        autoClose: 4000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+      });
     } finally {
       setIsLoading(false);
     }
@@ -162,22 +197,39 @@ export default function RegisterPage() {
 
   const handleGoogleSignUp = () => {
     try {
-      toast.success("Redirecting to Google Sign-In...");
-      window.location.href = `${process.env.NEXT_PUBLIC_API_URL}/auth/google`;
+      toast.info("Redirecting to Google Sign-In...", {
+        position: "top-right",
+        autoClose: 2000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+      });
+      
+      setTimeout(() => {
+        window.location.href = `${process.env.NEXT_PUBLIC_API_URL}/auth/google`;
+      }, 1000);
     } catch (error) {
       console.error("Google Sign-In error:", error);
-      toast.error("Failed to sign in with Google. Please try again later.");
+      toast.error("Failed to sign in with Google. Please try again later.", {
+        position: "top-right",
+        autoClose: 4000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+      });
     }
   };
 
   return (
     <>
-      <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100 flex items-center justify-center p-4 ">
+      <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100 flex items-center justify-center p-4">
         <ToastContainer
           position="top-right"
           autoClose={3000}
           hideProgressBar={false}
-          newestOnTop={false}
+          newestOnTop={true}
           closeOnClick
           rtl={false}
           pauseOnFocusLoss
@@ -185,6 +237,9 @@ export default function RegisterPage() {
           pauseOnHover
           theme="light"
           className="mt-16"
+          toastClassName="relative flex p-1 min-h-10 rounded-md justify-between overflow-hidden cursor-pointer"
+          bodyClassName="flex text-sm font-white font-med block p-3"
+          progressClassName="bg-gradient-to-r from-teal-500 to-lime-500"
         />
 
         <div className="w-full max-w-lg">
@@ -194,7 +249,7 @@ export default function RegisterPage() {
               <img
                 src="/images/m_logo.png"
                 alt="Meu Deliver Logo"
-                className=" "
+                className=""
                 width={110}
                 height={110}
               />
@@ -210,63 +265,6 @@ export default function RegisterPage() {
           {/* Registration Form */}
           <div className="bg-white rounded-3xl shadow-xl p-8 border border-gray-100">
             <div className="space-y-6">
-              {/* Role Selection */}
-              {/* <div>
-                <label className="block text-sm font-semibold text-gray-700 mb-2">
-                  Register As
-                </label>
-                <div className="grid grid-cols-3 gap-3">
-                  <button
-                    type="button"
-                    onClick={() => setFormData(prev => ({ ...prev, role: 'client' }))}
-                    className={`flex flex-col items-center justify-center p-4 rounded-xl border-2 transition-all duration-300 ${
-                      formData.role === 'client' 
-                        ? 'border-teal-500 bg-teal-50' 
-                        : 'border-gray-200 hover:border-teal-300'
-                    }`}
-                  >
-                    <ShoppingCart className={`w-6 h-6 mb-2 ${
-                      formData.role === 'client' ? 'text-teal-600' : 'text-gray-500'
-                    }`} />
-                    <span className={`text-sm font-medium ${
-                      formData.role === 'client' ? 'text-teal-700' : 'text-gray-600'
-                    }`}>Customer</span>
-                  </button>
-                  <button
-                    type="button"
-                    onClick={() => setFormData(prev => ({ ...prev, role: 'vendor' }))}
-                    className={`flex flex-col items-center justify-center p-4 rounded-xl border-2 transition-all duration-300 ${
-                      formData.role === 'vendor' 
-                        ? 'border-teal-500 bg-teal-50' 
-                        : 'border-gray-200 hover:border-teal-300'
-                    }`}
-                  >
-                    <ShoppingBag className={`w-6 h-6 mb-2 ${
-                      formData.role === 'vendor' ? 'text-teal-600' : 'text-gray-500'
-                    }`} />
-                    <span className={`text-sm font-medium ${
-                      formData.role === 'vendor' ? 'text-teal-700' : 'text-gray-600'
-                    }`}>Vendor</span>
-                  </button>
-                  <button
-                    type="button"
-                    onClick={() => setFormData(prev => ({ ...prev, role: 'rider' }))}
-                    className={`flex flex-col items-center justify-center p-4 rounded-xl border-2 transition-all duration-300 ${
-                      formData.role === 'rider' 
-                        ? 'border-teal-500 bg-teal-50' 
-                        : 'border-gray-200 hover:border-teal-300'
-                    }`}
-                  >
-                    <Bike className={`w-6 h-6 mb-2 ${
-                      formData.role === 'rider' ? 'text-teal-600' : 'text-gray-500'
-                    }`} />
-                    <span className={`text-sm font-medium ${
-                      formData.role === 'rider' ? 'text-teal-700' : 'text-gray-600'
-                    }`}>Rider</span>
-                  </button>
-                </div>
-              </div> */}
-
               {/* Profile Image Upload */}
               <div className="flex flex-col items-center">
                 <div className="relative">
@@ -308,7 +306,7 @@ export default function RegisterPage() {
                     name="fullName"
                     value={formData.fullName}
                     onChange={handleInputChange}
-                    className={`w-full pl-12 pr-4 py-4 border-2 rounded-xl focus:outline-none transition-all duration-300 text-gray-400 ${
+                    className={`w-full pl-12 pr-4 py-4 border-2 rounded-xl focus:outline-none transition-all duration-300 text-gray-700 ${
                       errors.fullName
                         ? "border-red-300 focus:border-red-500"
                         : "border-gray-200 focus:border-teal-500"
@@ -333,7 +331,7 @@ export default function RegisterPage() {
                     name="email"
                     value={formData.email}
                     onChange={handleInputChange}
-                    className={`w-full pl-12 pr-4 py-4 border-2 rounded-xl focus:outline-none transition-all duration-300 ${
+                    className={`w-full pl-12 pr-4 py-4 border-2 rounded-xl focus:outline-none transition-all duration-300 text-gray-700 ${
                       errors.email
                         ? "border-red-300 focus:border-red-500"
                         : "border-gray-200 focus:border-teal-500"
@@ -358,7 +356,7 @@ export default function RegisterPage() {
                     name="phone"
                     value={formData.phone}
                     onChange={handleInputChange}
-                    className={`w-full pl-12 pr-4 py-4 border-2 rounded-xl focus:outline-none transition-all duration-300 ${
+                    className={`w-full pl-12 pr-4 py-4 border-2 rounded-xl focus:outline-none transition-all duration-300 text-gray-700 ${
                       errors.phone
                         ? "border-red-300 focus:border-red-500"
                         : "border-gray-200 focus:border-teal-500"
@@ -383,7 +381,7 @@ export default function RegisterPage() {
                     name="password"
                     value={formData.password}
                     onChange={handleInputChange}
-                    className={`w-full pl-12 pr-12 py-4 border-2 rounded-xl focus:outline-none transition-all duration-300 ${
+                    className={`w-full pl-12 pr-12 py-4 border-2 rounded-xl focus:outline-none transition-all duration-300 text-gray-700 ${
                       errors.password
                         ? "border-red-300 focus:border-red-500"
                         : "border-gray-200 focus:border-teal-500"
@@ -424,7 +422,7 @@ export default function RegisterPage() {
                           e.target.value
                         )
                       }
-                      className={`w-full px-4 py-4 border-2 rounded-xl focus:outline-none transition-all duration-300 ${
+                      className={`w-full px-4 py-4 border-2 rounded-xl focus:outline-none transition-all duration-300 text-gray-700 ${
                         errors.businessName
                           ? "border-red-300 focus:border-red-500"
                           : "border-gray-200 focus:border-teal-500"
@@ -451,7 +449,7 @@ export default function RegisterPage() {
                           e.target.value
                         )
                       }
-                      className={`w-full px-4 py-4 border-2 rounded-xl focus:outline-none transition-all duration-300 ${
+                      className={`w-full px-4 py-4 border-2 rounded-xl focus:outline-none transition-all duration-300 text-gray-700 ${
                         errors.businessType
                           ? "border-red-300 focus:border-red-500"
                           : "border-gray-200 focus:border-teal-500"
@@ -478,7 +476,7 @@ export default function RegisterPage() {
                           e.target.value
                         )
                       }
-                      className={`w-full px-4 py-4 border-2 rounded-xl focus:outline-none transition-all duration-300 ${
+                      className={`w-full px-4 py-4 border-2 rounded-xl focus:outline-none transition-all duration-300 text-gray-700 ${
                         errors.address
                           ? "border-red-300 focus:border-red-500"
                           : "border-gray-200 focus:border-teal-500"
@@ -510,7 +508,7 @@ export default function RegisterPage() {
                           e.target.value
                         )
                       }
-                      className={`w-full px-4 py-4 border-2 rounded-xl focus:outline-none transition-all duration-300 ${
+                      className={`w-full px-4 py-4 border-2 rounded-xl focus:outline-none transition-all duration-300 text-gray-700 ${
                         errors.vehicleType
                           ? "border-red-300 focus:border-red-500"
                           : "border-gray-200 focus:border-teal-500"
@@ -542,7 +540,7 @@ export default function RegisterPage() {
                           e.target.value
                         )
                       }
-                      className={`w-full px-4 py-4 border-2 rounded-xl focus:outline-none transition-all duration-300 ${
+                      className={`w-full px-4 py-4 border-2 rounded-xl focus:outline-none transition-all duration-300 text-gray-700 ${
                         errors.licenseNumber
                           ? "border-red-300 focus:border-red-500"
                           : "border-gray-200 focus:border-teal-500"

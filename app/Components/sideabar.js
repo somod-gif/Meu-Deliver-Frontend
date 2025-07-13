@@ -90,13 +90,13 @@ const navigation = [
     name: "Register",
     key: "register",
     icon: UserPlus,
-    href: "/auth/register",
+    href: "/Auth/Register",
   },
   {
     name: "Sign in",
     key: "signin",
     icon: LogIn,
-    href: "/auth/login",
+    href: "/Auth/Login",
   },
   {
     name: "Sign Out",

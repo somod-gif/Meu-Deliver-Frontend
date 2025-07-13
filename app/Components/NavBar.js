@@ -8,6 +8,7 @@ import SearchBar from "./UI/search-bar";
 import LocationSelector from "./LocationSelector";
 import { useIsTablet, useIsMobile } from "../hooks/media-hook";
 import { AuthContext } from "../hooks/authContext";
+import { useCart } from "../Context/CartContext";
 
 import {
   UserPlus,
@@ -28,12 +29,12 @@ import { useRouter } from "next/navigation";
 
 export default function NavBar({ user }) {
   const router = useRouter();
-  const [cartCount, setCartCount] = useState(0);
+  const { totalQuantity } = useCart();
   const [showUserDropdown, setShowUserDropdown] = useState(false);
   const [showLocationDropdown, setShowLocationDropdown] = useState(false);
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [currentSection, setCurrentSection] = useState();
-  
+
   // Location state
   const [currentLocation, setCurrentLocation] = useState(null);
   const [isDetectingLocation, setIsDetectingLocation] = useState(false);
@@ -83,12 +84,12 @@ export default function NavBar({ user }) {
 
   // Load saved locations on component mount
   useEffect(() => {
-    const saved = localStorage.getItem('meu-deliver-locations');
+    const saved = localStorage.getItem("meu-deliver-locations");
     if (saved) {
       setSavedLocations(JSON.parse(saved));
     }
-    
-    const currentLoc = localStorage.getItem('meu-deliver-current-location');
+
+    const currentLoc = localStorage.getItem("meu-deliver-current-location");
     if (currentLoc) {
       setCurrentLocation(JSON.parse(currentLoc));
     }
@@ -97,14 +98,20 @@ export default function NavBar({ user }) {
   // Save locations to localStorage whenever they change
   useEffect(() => {
     if (savedLocations.length > 0) {
-      localStorage.setItem('meu-deliver-locations', JSON.stringify(savedLocations));
+      localStorage.setItem(
+        "meu-deliver-locations",
+        JSON.stringify(savedLocations)
+      );
     }
   }, [savedLocations]);
 
   // Save current location to localStorage
   useEffect(() => {
     if (currentLocation) {
-      localStorage.setItem('meu-deliver-current-location', JSON.stringify(currentLocation));
+      localStorage.setItem(
+        "meu-deliver-current-location",
+        JSON.stringify(currentLocation)
+      );
     }
   }, [currentLocation]);
 
@@ -123,36 +130,40 @@ export default function NavBar({ user }) {
       async (position) => {
         try {
           const { latitude, longitude } = position.coords;
-          
+
           // Reverse geocoding to get address
           const response = await fetch(
             `https://api.opencagedata.com/geocode/v1/json?q=${latitude}+${longitude}&key=${process.env.NEXT_PUBLIC_OPENCAGE_API}`
           );
-          
+
           if (!response.ok) {
-            throw new Error('Failed to get address from coordinates');
+            throw new Error("Failed to get address from coordinates");
           }
-          
+
           const data = await response.json();
-          
+
           if (data.results && data.results.length > 0) {
             const result = data.results[0];
             const location = {
               id: Date.now(),
               address: result.formatted,
-              shortAddress: result.components.neighbourhood || result.components.suburb || result.components.city || 'Current Location',
+              shortAddress:
+                result.components.neighbourhood ||
+                result.components.suburb ||
+                result.components.city ||
+                "Current Location",
               coordinates: { latitude, longitude },
               isCurrentLocation: true,
-              timestamp: new Date().toISOString()
+              timestamp: new Date().toISOString(),
             };
-            
+
             setCurrentLocation(location);
             toast.success("Location detected successfully!");
           } else {
-            throw new Error('No address found for current location');
+            throw new Error("No address found for current location");
           }
         } catch (error) {
-          console.error('Error getting address:', error);
+          console.error("Error getting address:", error);
           setLocationError(error.message);
           toast.error("Failed to get address for current location");
         } finally {
@@ -162,7 +173,7 @@ export default function NavBar({ user }) {
       (error) => {
         setIsDetectingLocation(false);
         let errorMessage = "Failed to get your location";
-        
+
         switch (error.code) {
           case error.PERMISSION_DENIED:
             errorMessage = "Location access denied by user";
@@ -174,14 +185,14 @@ export default function NavBar({ user }) {
             errorMessage = "Location request timed out";
             break;
         }
-        
+
         setLocationError(errorMessage);
         toast.error(errorMessage);
       },
       {
         enableHighAccuracy: true,
         timeout: 10000,
-        maximumAge: 300000 // 5 minutes
+        maximumAge: 300000, // 5 minutes
       }
     );
   };
@@ -190,15 +201,15 @@ export default function NavBar({ user }) {
   const handleLocationSelect = (location) => {
     setCurrentLocation(location);
     setShowLocationDropdown(false);
-    
+
     // Add to saved locations if not already there
-    if (!savedLocations.find(loc => loc.address === location.address)) {
+    if (!savedLocations.find((loc) => loc.address === location.address)) {
       const newLocation = {
         ...location,
         id: Date.now(),
-        isCurrentLocation: false
+        isCurrentLocation: false,
       };
-      setSavedLocations(prev => [newLocation, ...prev.slice(0, 4)]); // Keep only 5 recent locations
+      setSavedLocations((prev) => [newLocation, ...prev.slice(0, 4)]); // Keep only 5 recent locations
     }
   };
 
@@ -211,7 +222,7 @@ export default function NavBar({ user }) {
       ) {
         setShowUserDropdown(false);
       }
-      
+
       if (
         showLocationDropdown &&
         !event.target.closest(".location-dropdown-container")
@@ -313,7 +324,7 @@ export default function NavBar({ user }) {
                 height={110}
               />
             </Link>
-            
+
             {/* Location Selector - Desktop */}
             {!isMobile && (
               <div className="relative location-dropdown-container">
@@ -330,8 +341,8 @@ export default function NavBar({ user }) {
                           {currentLocation.shortAddress}
                         </div>
                         <div className="text-xs text-[var(--text-secondary)] truncate">
-                          {currentLocation.address.length > 30 
-                            ? `${currentLocation.address.substring(0, 30)}...` 
+                          {currentLocation.address.length > 30
+                            ? `${currentLocation.address.substring(0, 30)}...`
                             : currentLocation.address}
                         </div>
                       </>
@@ -341,7 +352,9 @@ export default function NavBar({ user }) {
                       </div>
                     )}
                   </div>
-                  <ChevronDown className={`w-4 h-4 text-[var(--text-secondary)] transition-transform duration-200 ${showLocationDropdown ? 'rotate-180' : ''}`} />
+                  <ChevronDown
+                    className={`w-4 h-4 text-[var(--text-secondary)] transition-transform duration-200 ${showLocationDropdown ? "rotate-180" : ""}`}
+                  />
                 </button>
 
                 {/* Location Dropdown */}
@@ -362,7 +375,9 @@ export default function NavBar({ user }) {
                       </div>
                       <div className="flex-1">
                         <div className="text-sm font-medium text-[var(--primary-color)]">
-                          {isDetectingLocation ? 'Detecting location...' : 'Use current location'}
+                          {isDetectingLocation
+                            ? "Detecting location..."
+                            : "Use current location"}
                         </div>
                         <div className="text-xs text-[var(--text-secondary)]">
                           GPS will be used to find your location
@@ -398,7 +413,9 @@ export default function NavBar({ user }) {
 
                     {/* Add Location Button */}
                     <div className="border-t border-[var(--dropdown-border)] pt-2">
-                      <LocationSelector onLocationSelect={handleLocationSelect} />
+                      <LocationSelector
+                        onLocationSelect={handleLocationSelect}
+                      />
                     </div>
                   </div>
                 )}
@@ -443,14 +460,14 @@ export default function NavBar({ user }) {
 
             {/* Cart Icon - Desktop */}
             <button
-              onClick={handleCartClick}
+              onClick={() => router.push("/Pages/Cart")} // Navigate to cart page
               className="hidden lg:block p-2 hover:bg-[var(--button-hover)] rounded-lg transition-colors duration-200 relative"
               aria-label="Shopping cart"
             >
               <ShoppingBag className="w-6 h-6 text-[var(--text-color)] hover:text-[var(--primary-color)]" />
-              {cartCount > 0 && (
+              {totalQuantity > 0 && ( // Use totalQuantity from context
                 <span className="absolute -top-1 -right-1 bg-[var(--primary-color)] text-white text-xs rounded-full w-5 h-5 flex items-center justify-center font-medium">
-                  {cartCount > 99 ? "99+" : cartCount}
+                  {totalQuantity > 99 ? "99+" : totalQuantity}
                 </span>
               )}
             </button>
@@ -464,14 +481,14 @@ export default function NavBar({ user }) {
 
               {/* Cart Icon - Mobile */}
               <button
-                onClick={handleCartClick}
+                onClick={() => router.push("/Pages/Cart")} // Navigate to cart page
                 className="p-2 hover:bg-[var(--button-hover)] rounded-lg transition-colors duration-200 relative"
                 aria-label="Shopping cart"
               >
                 <ShoppingBag className="w-6 h-6 text-[var(--text-color)] hover:text-[var(--primary-color)]" />
-                {cartCount > 0 && (
+                {totalQuantity > 0 && ( // Use totalQuantity from context
                   <span className="absolute -top-1 -right-1 bg-[var(--primary-color)] text-white text-xs rounded-full w-5 h-5 flex items-center justify-center font-medium">
-                    {cartCount > 99 ? "99+" : cartCount}
+                    {totalQuantity > 99 ? "99+" : totalQuantity}
                   </span>
                 )}
               </button>
@@ -581,7 +598,7 @@ export default function NavBar({ user }) {
             )}
           </div>
         </div>
-        
+
         {/* Mobile Location Bar */}
         {isMobile && (
           <div className="px-4 pb-3 border-t border-[var(--navbar-border)]">
@@ -599,8 +616,8 @@ export default function NavBar({ user }) {
                         {currentLocation.shortAddress}
                       </div>
                       <div className="text-xs text-[var(--text-secondary)] truncate">
-                        {currentLocation.address.length > 40 
-                          ? `${currentLocation.address.substring(0, 40)}...` 
+                        {currentLocation.address.length > 40
+                          ? `${currentLocation.address.substring(0, 40)}...`
                           : currentLocation.address}
                       </div>
                     </>
@@ -610,7 +627,9 @@ export default function NavBar({ user }) {
                     </div>
                   )}
                 </div>
-                <ChevronDown className={`w-4 h-4 text-[var(--text-secondary)] transition-transform duration-200 ${showLocationDropdown ? 'rotate-180' : ''}`} />
+                <ChevronDown
+                  className={`w-4 h-4 text-[var(--text-secondary)] transition-transform duration-200 ${showLocationDropdown ? "rotate-180" : ""}`}
+                />
               </button>
 
               {/* Mobile Location Dropdown */}
@@ -631,7 +650,9 @@ export default function NavBar({ user }) {
                     </div>
                     <div className="flex-1">
                       <div className="text-sm font-medium text-[var(--primary-color)]">
-                        {isDetectingLocation ? 'Detecting location...' : 'Use current location'}
+                        {isDetectingLocation
+                          ? "Detecting location..."
+                          : "Use current location"}
                       </div>
                       <div className="text-xs text-[var(--text-secondary)]">
                         GPS will be used to find your location

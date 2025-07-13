@@ -62,7 +62,7 @@ export default function LoginPage() {
 
   const handleSubmit = async () => {
     if (!validateForm()) {
-      toast.error("Please fix the errors below");
+      toast.error("Please fix the errors below", { autoClose: 2000 });
       return;
     }
 
@@ -115,7 +115,7 @@ export default function LoginPage() {
       }
 
       // Verify the session immediately after login
-      toast.success('Sign in successfully')
+      toast.success('Sign in successfully', { autoClose: 2000 })
 
       // Redirect
       const redirectPath =
@@ -131,7 +131,8 @@ export default function LoginPage() {
       toast.error(
         error.message.includes("Failed to fetch")
           ? "Network error. Please check your connection."
-          : error.message || "Signing in failed. Please try again."
+          : error.message || "Signing in failed. Please try again.",
+        { autoClose: 2000 }
       );
     } finally {
       setIsLoading(false);
@@ -140,22 +141,22 @@ export default function LoginPage() {
 
   const handleGoogleSignIn = () => {
     try {
-      toast.success("Redirecting to Google Sign-In...");
+      toast.success("Redirecting to Google Sign-In...", { autoClose: 2000 });
       window.location.href = `${process.env.NEXT_PUBLIC_API_URL}/auth/google`;
     } catch (error) {
       console.error("Google Sign-In error:", error);
-      toast.error("Failed to sign in with Google. Please try again later.");
+      toast.error("Failed to sign in with Google. Please try again later.", { autoClose: 2000 });
     }
   };
 
   const handleForgotPassword = () => {
     if (!formData.email && !formData.phone) {
-      toast.error("Please enter your email or phone number first");
+      toast.error("Please enter your email or phone number first", { autoClose: 2000 });
       return;
     }
 
     // Here you would typically make an API call to send a reset link
-    toast.info("Password reset link would be sent to your email or phone");
+    toast.info("Password reset link would be sent to your email or phone", { autoClose: 2000 });
     // router.push('/Auth/ForgotPassword');
   };
 
@@ -164,7 +165,7 @@ export default function LoginPage() {
       <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100 flex items-center justify-center p-4">
         <ToastContainer
           position="top-right"
-          autoClose={3000}
+          autoClose={2000}
           hideProgressBar={false}
           newestOnTop={false}
           closeOnClick

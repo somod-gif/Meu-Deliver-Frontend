@@ -72,8 +72,8 @@ export default function ModernProductsPage() {
         }
     };
 
-    const handleViewProduct = (ProductId) => {
-        router.push(`/Pages/Products/${ProductId}`);
+    const handleViewProduct = (productId) => {
+        router.push(`/Pages/Products/${productId}`);
     };
 
     if (loading) {
@@ -290,7 +290,7 @@ export default function ModernProductsPage() {
                                     </div>
 
                                     <button
-                                        onClick={() => handleViewProduct(Product.id)}
+                                        onClick={() => handleViewProduct(product.id)}
                                         className={`w-full text-xs py-1.5 px-2 rounded-lg font-medium transition-all ${product.inStock !== false
                                                 ? 'bg-[#00b1a5] hover:bg-[#008a80] text-white'
                                                 : 'bg-gray-200 text-gray-500 cursor-not-allowed'

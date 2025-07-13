@@ -2,6 +2,7 @@
 'use client';
 import React, { useState, useEffect } from 'react';
 import { useRouter, useParams } from 'next/navigation';
+import { useCart } from '../../../Context/CartContext';
 import { 
     ArrowLeft, 
     Star, 
@@ -22,11 +23,13 @@ import {
     ChevronLeft,
     ChevronRight
 } from 'lucide-react';
+import { toast } from 'react-toastify';
 
 export default function ProductDetailsPage() {
     const router = useRouter();
     const params = useParams();
     const productId = params?.id;
+    const { addToCart } = useCart();
     
     const [product, setProduct] = useState(null);
     const [loading, setLoading] = useState(true);
@@ -46,28 +49,21 @@ export default function ProductDetailsPage() {
                 setLoading(true);
                 setError(null);
                 
-                // console.log('Fetching product with ID:', productId);
-                
-                // Fetch the products data
                 const response = await fetch('/Products/products.json');
                 if (!response.ok) {
                     throw new Error(`HTTP error! status: ${response.status}`);
                 }
                 
                 const data = await response.json();
-                // console.log('Fetched data:', data);
                 
-                // Find the product by ID across all categories
                 let foundProduct = null;
                 let productCategory = null;
                 
-                // Convert productId to both string and number for comparison
                 const idAsString = String(productId);
                 const idAsNumber = parseInt(productId, 10);
                 
                 for (const [categoryName, categoryProducts] of Object.entries(data.productsByCategory || {})) {
                     foundProduct = categoryProducts.find(p => {
-                        // Check both string and number comparison
                         return String(p.id) === idAsString || p.id === idAsNumber;
                     });
                     if (foundProduct) {
@@ -76,37 +72,29 @@ export default function ProductDetailsPage() {
                     }
                 }
                 
-                // console.log('Found product:', foundProduct);
-                // console.log('Product category:', productCategory);
-                
                 if (!foundProduct) {
                     throw new Error('Product not found');
                 }
                 
-                // Add category to product object if it doesn't exist
                 if (!foundProduct.category) {
                     foundProduct.category = productCategory;
                 }
                 
                 setProduct(foundProduct);
                 
-                // Setup product images - use multiple images if available, otherwise create variants of the main image
                 const images = [];
                 if (foundProduct.images && foundProduct.images.length > 0) {
                     images.push(...foundProduct.images);
                 } else if (foundProduct.image) {
-                    // If only one image, create multiple placeholder variants
                     images.push(foundProduct.image);
-                    // Add some placeholder variants for demonstration
                     for (let i = 1; i < 5; i++) {
                         images.push(foundProduct.image);
                     }
                 }
                 
                 setProductImages(images);
-                setSelectedImage(0); // Reset to first image
+                setSelectedImage(0);
                 
-                // Get related products from the same category
                 const allProducts = Object.values(data.productsByCategory || {}).flat();
                 const related = allProducts
                     .filter(p => {
@@ -119,7 +107,6 @@ export default function ProductDetailsPage() {
                 setRelatedProducts(related);
                 
             } catch (err) {
-                // console.error('Error fetching product details:', err);
                 setError(err.message);
             } finally {
                 setLoading(false);
@@ -136,10 +123,29 @@ export default function ProductDetailsPage() {
     };
 
     const handleAddToCart = () => {
-        // Here you would typically add to cart logic
-        // console.log('Adding to cart:', { productId: product.id, quantity });
-        setAddedToCart(true);
-        setTimeout(() => setAddedToCart(false), 2000);
+        if (!product) return;
+        
+        try {
+            addToCart(product, quantity);
+            setAddedToCart(true);
+            
+            toast.success(`${product.name} added to cart!`, {
+                position: "top-right",
+                autoClose: 3000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                style: {
+                    background: '#00b1a5',
+                    color: 'white'
+                }
+            });
+            
+            setTimeout(() => setAddedToCart(false), 2000);
+        } catch (error) {
+            toast.error('Failed to add item to cart');
+        }
     };
 
     const handleImageSelect = (index) => {
@@ -200,7 +206,6 @@ export default function ProductDetailsPage() {
     };
 
     const handleRelatedProductClick = (relatedProductId) => {
-        // Navigate to the related product
         router.push(`/Pages/Products/${relatedProductId}`);
     };
 
@@ -241,7 +246,6 @@ export default function ProductDetailsPage() {
         );
     }
 
-    // Safe price calculations with fallbacks
     const basePrice = product.price || 0;
     const discount = product.discount || 0;
     const finalPrice = basePrice * ANGOLA_RATE * (discount ? (1 - discount / 100) : 1);
@@ -249,7 +253,6 @@ export default function ProductDetailsPage() {
 
     return (
         <div className="min-h-screen bg-gradient-to-br from-gray-50 to-white">
-            {/* Header */}
             <div className="bg-white shadow-sm border-b">
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 py-4">
                     <button
@@ -264,10 +267,8 @@ export default function ProductDetailsPage() {
 
             <div className="max-w-7xl mx-auto px-4 sm:px-6 py-8">
                 <div className="grid lg:grid-cols-2 gap-8 lg:gap-12">
-                    {/* Product Images */}
                     <div className="w-full max-w-lg mx-auto lg:max-w-none">
                         <div className="space-y-4">
-                            {/* Main Image */}
                             <div className="relative w-full h-0 pb-[100%] bg-gradient-to-br from-gray-50 to-gray-100 rounded-2xl overflow-hidden group">
                                 <img
                                     src={productImages[selectedImage] || product.image || '/api/placeholder/400/400'}
@@ -278,7 +279,6 @@ export default function ProductDetailsPage() {
                                     }}
                                 />
                                 
-                                {/* Navigation Arrows */}
                                 {productImages.length > 1 && (
                                     <>
                                         <button
@@ -296,7 +296,6 @@ export default function ProductDetailsPage() {
                                     </>
                                 )}
                                 
-                                {/* Badges */}
                                 <div className="absolute top-4 left-4 flex flex-col gap-2">
                                     {product.badge && (
                                         <span className={`px-3 py-1 text-xs font-bold text-white rounded-full ${getBadgeColor(product.badge)}`}>
@@ -310,7 +309,6 @@ export default function ProductDetailsPage() {
                                     )}
                                 </div>
 
-                                {/* Favorite Button */}
                                 <button
                                     onClick={() => setIsFavorite(!isFavorite)}
                                     className={`absolute top-4 right-4 p-3 rounded-full backdrop-blur-sm transition-all ${
@@ -320,7 +318,6 @@ export default function ProductDetailsPage() {
                                     <Heart className={`w-5 h-5 ${isFavorite ? 'fill-current' : ''}`} />
                                 </button>
 
-                                {/* Image Counter */}
                                 {productImages.length > 1 && (
                                     <div className="absolute bottom-4 right-4 px-3 py-1 bg-black/50 text-white text-sm rounded-full">
                                         {selectedImage + 1} / {productImages.length}
@@ -328,7 +325,6 @@ export default function ProductDetailsPage() {
                                 )}
                             </div>
 
-                            {/* Thumbnail Gallery */}
                             {productImages.length > 1 && (
                                 <div className="flex gap-2 overflow-x-auto pb-2">
                                     {productImages.map((image, index) => (
@@ -361,9 +357,7 @@ export default function ProductDetailsPage() {
                         </div>
                     </div>
 
-                    {/* Product Info */}
                     <div className="space-y-6">
-                        {/* Category & Vendor */}
                         <div className="flex items-center gap-4 text-sm">
                             {product.category && (
                                 <div className="flex items-center text-[#00b1a5] font-medium">
@@ -378,12 +372,10 @@ export default function ProductDetailsPage() {
                             )}
                         </div>
 
-                        {/* Product Name */}
                         <h1 className="text-2xl lg:text-3xl font-bold text-gray-900 leading-tight">
                             {product.name}
                         </h1>
 
-                        {/* Rating */}
                         {product.rating && (
                             <div className="flex items-center gap-2">
                                 <div className="flex items-center">
@@ -403,7 +395,6 @@ export default function ProductDetailsPage() {
                             </div>
                         )}
 
-                        {/* Price */}
                         <div className="space-y-2">
                             <div className="flex items-center gap-4">
                                 <span className="text-2xl lg:text-3xl font-bold text-gray-900">
@@ -422,7 +413,6 @@ export default function ProductDetailsPage() {
                             )}
                         </div>
 
-                        {/* Description */}
                         <div className="prose prose-gray max-w-none">
                             <p className="text-gray-700 leading-relaxed">
                                 {product.description || 
@@ -430,7 +420,6 @@ export default function ProductDetailsPage() {
                             </p>
                         </div>
 
-                        {/* Delivery Time */}
                         {product.deliveryTime && (
                             <div className="flex items-center gap-2 text-sm text-gray-600">
                                 <Truck className="w-4 h-4" />
@@ -438,7 +427,6 @@ export default function ProductDetailsPage() {
                             </div>
                         )}
 
-                        {/* Stock Status */}
                         <div className="flex items-center gap-2">
                             {product.inStock !== false ? (
                                 <>
@@ -453,7 +441,6 @@ export default function ProductDetailsPage() {
                             )}
                         </div>
 
-                        {/* Quantity & Add to Cart */}
                         {product.inStock !== false && (
                             <div className="space-y-4">
                                 <div className="flex items-center gap-4">
@@ -503,7 +490,6 @@ export default function ProductDetailsPage() {
                             </div>
                         )}
 
-                        {/* Features */}
                         <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 pt-6 border-t">
                             <div className="flex items-center gap-3 text-sm text-gray-600">
                                 <div className="p-2 bg-[#00b1a5]/10 rounded-lg">
@@ -527,7 +513,6 @@ export default function ProductDetailsPage() {
                     </div>
                 </div>
 
-                {/* Related Products */}
                 {relatedProducts.length > 0 && (
                     <div className="mt-16">
                         <h2 className="text-2xl font-bold text-gray-900 mb-8">You might also like</h2>
