@@ -34,6 +34,13 @@ const navigation = [
     icon: BarChart3,
     href: "/Clients/Dashboard",
   },
+
+  {
+    name: "Profile",
+    key: "profile",
+    icon: BarChart3,
+    href: "/Clients/Profile",
+  },
   
   // 🛍️ Shopping
   {
@@ -54,13 +61,13 @@ const navigation = [
     name: "Orders",
     key: "orders",
     icon: ShoppingCart,
-    href: "/orders",
+    href: "/Pages/Orders",
   },
   {
     name: "Track Order",
     key: "track-order",
     icon: MapPin,
-    href: "/track-order",
+    href: "/Pages/TrackOrder",
   },
   
   // 👤 Settings
@@ -68,7 +75,7 @@ const navigation = [
     name: "Settings",
     key: "settings",
     icon: Settings,
-    href: "/settings",
+    href: "/Pages/Settings",
   },
   
   // ❓ Help & Support
@@ -76,13 +83,13 @@ const navigation = [
     name: "FAQ",
     key: "faq",
     icon: HelpCircle,
-    href: "/faq",
+    href: "/Pages/FAQ",
   },
   {
     name: "Contact Us",
     key: "contact",
     icon: MessageCircle,
-    href: "/contact",
+    href: "/Pages/Contact",
   },
   
   // 🔐 Authentication

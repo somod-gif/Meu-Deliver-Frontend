@@ -5,11 +5,18 @@ import { toast } from 'react-toastify';
 
 // Initial state
 const initialState = {
-    items: [],
-    totalAmount: 0,
-    totalQuantity: 0,
-    isLoading: false,
-    error: null
+    cart: {
+        items: [],
+        totalAmount: 0,
+        totalQuantity: 0,
+        isLoading: false,
+        error: null
+    },
+    orders: {
+        list: [],
+        isLoading: false,
+        error: null
+    }
 };
 
 // Action types
@@ -18,47 +25,60 @@ const CART_ACTIONS = {
     REMOVE_ITEM: 'REMOVE_ITEM',
     UPDATE_QUANTITY: 'UPDATE_QUANTITY',
     CLEAR_CART: 'CLEAR_CART',
-    SET_LOADING: 'SET_LOADING',
-    SET_ERROR: 'SET_ERROR',
-    LOAD_CART: 'LOAD_CART'
+    SET_CART_LOADING: 'SET_CART_LOADING',
+    SET_CART_ERROR: 'SET_CART_ERROR',
+    LOAD_CART: 'LOAD_CART',
+    CREATE_ORDER: 'CREATE_ORDER',
+    SET_ORDERS_LOADING: 'SET_ORDERS_LOADING',
+    SET_ORDERS_ERROR: 'SET_ORDERS_ERROR',
+    LOAD_ORDERS: 'LOAD_ORDERS'
 };
 
 // Cart reducer
-const cartReducer = (state, action) => {
+const reducer = (state, action) => {
     switch (action.type) {
         case CART_ACTIONS.ADD_ITEM: {
             const newItem = action.payload;
-            const existingItemIndex = state.items.findIndex(item => item.id === newItem.id);
+            const existingItemIndex = state.cart.items.findIndex(item => item.id === newItem.id);
             
             let updatedItems;
             if (existingItemIndex >= 0) {
-                // Item exists, update quantity
-                updatedItems = state.items.map((item, index) => 
+                updatedItems = state.cart.items.map((item, index) => 
                     index === existingItemIndex 
                         ? { ...item, quantity: item.quantity + newItem.quantity }
                         : item
                 );
             } else {
-                // New item
-                updatedItems = [...state.items, newItem];
+                updatedItems = [...state.cart.items, newItem];
             }
+            
+            const totalQuantity = updatedItems.reduce((total, item) => total + item.quantity, 0);
+            const totalAmount = updatedItems.reduce((total, item) => total + (item.price * item.quantity), 0);
             
             return {
                 ...state,
-                items: updatedItems,
-                totalQuantity: updatedItems.reduce((total, item) => total + item.quantity, 0),
-                totalAmount: updatedItems.reduce((total, item) => total + (item.price * item.quantity), 0)
+                cart: {
+                    ...state.cart,
+                    items: updatedItems,
+                    totalQuantity,
+                    totalAmount
+                }
             };
         }
         
         case CART_ACTIONS.REMOVE_ITEM: {
-            const updatedItems = state.items.filter(item => item.id !== action.payload);
+            const updatedItems = state.cart.items.filter(item => item.id !== action.payload);
+            const totalQuantity = updatedItems.reduce((total, item) => total + item.quantity, 0);
+            const totalAmount = updatedItems.reduce((total, item) => total + (item.price * item.quantity), 0);
             
             return {
                 ...state,
-                items: updatedItems,
-                totalQuantity: updatedItems.reduce((total, item) => total + item.quantity, 0),
-                totalAmount: updatedItems.reduce((total, item) => total + (item.price * item.quantity), 0)
+                cart: {
+                    ...state.cart,
+                    items: updatedItems,
+                    totalQuantity,
+                    totalAmount
+                }
             };
         }
         
@@ -66,47 +86,109 @@ const cartReducer = (state, action) => {
             const { id, quantity } = action.payload;
             
             if (quantity <= 0) {
-                return cartReducer(state, { type: CART_ACTIONS.REMOVE_ITEM, payload: id });
+                return reducer(state, { type: CART_ACTIONS.REMOVE_ITEM, payload: id });
             }
             
-            const updatedItems = state.items.map(item =>
+            const updatedItems = state.cart.items.map(item =>
                 item.id === id ? { ...item, quantity } : item
             );
             
+            const totalQuantity = updatedItems.reduce((total, item) => total + item.quantity, 0);
+            const totalAmount = updatedItems.reduce((total, item) => total + (item.price * item.quantity), 0);
+            
             return {
                 ...state,
-                items: updatedItems,
-                totalQuantity: updatedItems.reduce((total, item) => total + item.quantity, 0),
-                totalAmount: updatedItems.reduce((total, item) => total + (item.price * item.quantity), 0)
+                cart: {
+                    ...state.cart,
+                    items: updatedItems,
+                    totalQuantity,
+                    totalAmount
+                }
             };
         }
         
         case CART_ACTIONS.CLEAR_CART:
             return {
                 ...state,
-                items: [],
-                totalAmount: 0,
-                totalQuantity: 0
+                cart: {
+                    ...state.cart,
+                    items: [],
+                    totalAmount: 0,
+                    totalQuantity: 0
+                }
             };
         
-        case CART_ACTIONS.SET_LOADING:
+        case CART_ACTIONS.SET_CART_LOADING:
             return {
                 ...state,
-                isLoading: action.payload
+                cart: {
+                    ...state.cart,
+                    isLoading: action.payload
+                }
             };
         
-        case CART_ACTIONS.SET_ERROR:
+        case CART_ACTIONS.SET_CART_ERROR:
             return {
                 ...state,
-                error: action.payload
+                cart: {
+                    ...state.cart,
+                    error: action.payload
+                }
             };
         
         case CART_ACTIONS.LOAD_CART:
             return {
                 ...state,
-                items: action.payload.items || [],
-                totalAmount: action.payload.totalAmount || 0,
-                totalQuantity: action.payload.totalQuantity || 0
+                cart: {
+                    ...state.cart,
+                    items: action.payload.items || [],
+                    totalAmount: action.payload.totalAmount || 0,
+                    totalQuantity: action.payload.totalQuantity || 0
+                }
+            };
+        
+        case CART_ACTIONS.CREATE_ORDER: {
+            const newOrder = action.payload;
+            return {
+                ...state,
+                orders: {
+                    ...state.orders,
+                    list: [newOrder, ...state.orders.list]
+                },
+                cart: {
+                    ...state.cart,
+                    items: [],
+                    totalAmount: 0,
+                    totalQuantity: 0
+                }
+            };
+        }
+        
+        case CART_ACTIONS.LOAD_ORDERS:
+            return {
+                ...state,
+                orders: {
+                    ...state.orders,
+                    list: action.payload || []
+                }
+            };
+        
+        case CART_ACTIONS.SET_ORDERS_LOADING:
+            return {
+                ...state,
+                orders: {
+                    ...state.orders,
+                    isLoading: action.payload
+                }
+            };
+        
+        case CART_ACTIONS.SET_ORDERS_ERROR:
+            return {
+                ...state,
+                orders: {
+                    ...state.orders,
+                    error: action.payload
+                }
             };
         
         default:
@@ -128,44 +210,52 @@ export const useCart = () => {
 
 // Cart provider component
 export const CartProvider = ({ children }) => {
-    const [state, dispatch] = useReducer(cartReducer, initialState);
+    const [state, dispatch] = useReducer(reducer, initialState);
+    const ANGOLA_RATE = 850;
     
-    // Load cart from localStorage on mount
+    // Load cart and orders from localStorage on mount
     useEffect(() => {
-        const loadCart = () => {
+        const loadData = () => {
             try {
                 const savedCart = localStorage.getItem('meudeliver-cart');
+                const savedOrders = localStorage.getItem('meudeliver-orders');
+                
                 if (savedCart) {
                     const cartData = JSON.parse(savedCart);
                     dispatch({ type: CART_ACTIONS.LOAD_CART, payload: cartData });
                 }
+                
+                if (savedOrders) {
+                    const ordersData = JSON.parse(savedOrders);
+                    dispatch({ type: CART_ACTIONS.LOAD_ORDERS, payload: ordersData });
+                }
             } catch (error) {
-                console.error('Error loading cart:', error);
-                toast.error('Failed to load cart data');
+                console.error('Error loading data:', error);
+                toast.error('Failed to load saved data');
             }
         };
         
-        loadCart();
+        loadData();
     }, []);
     
-    // Save cart to localStorage whenever it changes
+    // Save cart and orders to localStorage whenever they change
     useEffect(() => {
         try {
-            const cartData = {
-                items: state.items,
-                totalAmount: state.totalAmount,
-                totalQuantity: state.totalQuantity
-            };
-            localStorage.setItem('meudeliver-cart', JSON.stringify(cartData));
+            localStorage.setItem('meudeliver-cart', JSON.stringify({
+                items: state.cart.items,
+                totalAmount: state.cart.totalAmount,
+                totalQuantity: state.cart.totalQuantity
+            }));
+            
+            localStorage.setItem('meudeliver-orders', JSON.stringify(state.orders.list));
         } catch (error) {
-            console.error('Error saving cart:', error);
+            console.error('Error saving data:', error);
         }
-    }, [state.items, state.totalAmount, state.totalQuantity]);
+    }, [state.cart.items, state.cart.totalQuantity, state.orders.list]);
     
     // Cart actions
     const addToCart = (product, quantity = 1) => {
         try {
-            const ANGOLA_RATE = 850;
             const finalPrice = product.price * ANGOLA_RATE * (product.discount ? (1 - product.discount / 100) : 1);
             
             const cartItem = {
@@ -248,29 +338,82 @@ export const CartProvider = ({ children }) => {
     };
     
     const getItemQuantity = (productId) => {
-        const item = state.items.find(item => item.id === productId);
+        const item = state.cart.items.find(item => item.id === productId);
         return item ? item.quantity : 0;
     };
     
     const isInCart = (productId) => {
-        return state.items.some(item => item.id === productId);
+        return state.cart.items.some(item => item.id === productId);
+    };
+    
+    // Order actions
+    const createOrder = async (customerInfo) => {
+        try {
+            dispatch({ type: CART_ACTIONS.SET_ORDERS_LOADING, payload: true });
+            
+            await new Promise(resolve => setTimeout(resolve, 1000));
+            
+            const newOrder = {
+                id: `ORD-${Date.now()}`,
+                date: new Date().toISOString(),
+                status: 'processing',
+                items: [...state.cart.items],
+                total: state.cart.totalAmount,
+                deliveryFee: 2500,
+                address: customerInfo.address,
+                paymentMethod: customerInfo.paymentMethod,
+                customerName: customerInfo.name,
+                customerPhone: customerInfo.phone,
+                trackingNumber: `TRK-${Math.floor(Math.random() * 1000000)}`
+            };
+            
+            dispatch({ type: CART_ACTIONS.CREATE_ORDER, payload: newOrder });
+            
+            toast.success('Order created successfully!', {
+                position: "top-right",
+                autoClose: 3000,
+                style: {
+                    background: '#00b1a5',
+                    color: 'white'
+                }
+            });
+            
+            return newOrder;
+        } catch (error) {
+            console.error('Error creating order:', error);
+            dispatch({ type: CART_ACTIONS.SET_ORDERS_ERROR, payload: error.message });
+            toast.error('Failed to create order');
+            throw error;
+        } finally {
+            dispatch({ type: CART_ACTIONS.SET_ORDERS_LOADING, payload: false });
+        }
+    };
+    
+    const getOrderById = (orderId) => {
+        return state.orders.list.find(order => order.id === orderId);
     };
     
     const value = {
-        // State
-        items: state.items,
-        totalAmount: state.totalAmount,
-        totalQuantity: state.totalQuantity,
-        isLoading: state.isLoading,
-        error: state.error,
-        
-        // Actions
+        cart: {
+            items: state.cart.items,
+            totalAmount: state.cart.totalAmount,
+            totalQuantity: state.cart.totalQuantity,
+            isLoading: state.cart.isLoading,
+            error: state.cart.error,
+        },
+        orders: {
+            list: state.orders.list,
+            isLoading: state.orders.isLoading,
+            error: state.orders.error,
+        },
         addToCart,
         removeFromCart,
         updateQuantity,
         clearCart,
         getItemQuantity,
-        isInCart
+        isInCart,
+        createOrder,
+        getOrderById
     };
     
     return (

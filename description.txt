@@ -1,0 +1,43 @@
+Here’s a polished, comprehensive description of **Meu Deliver**, tailored to reflect its mission, features, and user benefits:
+
+---
+
+## 🌍 Meu Deliver – Angola’s All‑in‑One Delivery Platform
+
+**Meu Deliver** is a full-service delivery app connecting Angolan customers with local restaurants, stores, pharmacies, post offices, and more — all within one intuitive platform ([meu-deliver.vercel.app][1]).
+
+### 🚀 What We Offer
+
+* **Fast & reliable deliveries**: Average arrival time of around 15–18 minutes .
+* **Comprehensive categories**: Food, groceries, pharmacy, parcels, documents, beverages — across Angola’s major cities ([meu-deliver.vercel.app][1]).
+* **Real-time tracking**: Watch your order from confirmation to doorstep delivery ([meu-deliver.vercel.app][1]).
+
+### 🤝 For Customers
+
+* Explore top-rated vendors and trending products.
+* Transparent pricing in **AOA**, with no hidden fees.
+* Secure payments, contactless delivery, and 24/7 customer support .
+
+### 📈 For Vendors
+
+* A modern vendor dashboard for menu management, order tracking, and sales analytics ([Kody Technolab][2]).
+* Boost your visibility — vendors report up to 300% increases in reach and sales ([meu-deliver.vercel.app][1]).
+
+### 🛵 For Riders
+
+* Flexible earning opportunities — choose your schedule and get paid quickly ([meu-deliver.vercel.app][1]).
+* Real‑time route guidance and reliable support.
+
+### 🔧 Key Platform Strengths
+
+* **Lightning-fast deliveries** — driven by route optimization and a network of trusted riders ([meu-deliver.vercel.app][1]).
+* **All-in-one convenience** — shop across multiple categories with one app.
+* **User focus** — seamless onboarding, real-time updates, and no surprises at checkout ([Apple][3], [Sensor Tower][4]).
+
+---
+
+**In summary**: Meu Deliver isn’t just another delivery app — it’s a reliable bridge between Angolan customers, local businesses, and independent riders, delivering convenience, growth, and peace of mind across the country.
+
+Let me know if you'd like a shorter tagline, bullet‑point list, or have another style in mind! 😊
+
+[1]: https://meu-deliver.vercel.app/?utm_source=chatgpt.com "MeuDeliver - Angola's All-in-One Delivery"
