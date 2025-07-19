@@ -15,7 +15,12 @@ import {
   UserPlus, 
   LogIn, 
   LogOut,
-  BarChart3
+  BarChart3,
+  Bell,
+  AlertCircle,
+  CheckCircle2,
+  ShoppingBag,
+  Truck
 } from "lucide-react";
 
 const navigation = [
@@ -27,19 +32,11 @@ const navigation = [
     href: "/",
   },
   
-  // 📊 Dashboard
-  {
-    name: "Dashboard",
-    key: "dashboard",
-    icon: BarChart3,
-    href: "/Clients/Dashboard",
-  },
-
   {
     name: "Profile",
     key: "profile",
     icon: BarChart3,
-    href: "/Clients/Profile",
+    href: "/Portal/Clients/Profile",
   },
   
   // 🛍️ Shopping
@@ -113,6 +110,50 @@ const navigation = [
   },
 ];
 
+// Mock notifications data
+const mockNotifications = [
+  {
+    id: 1,
+    type: 'order',
+    title: 'Order Shipped',
+    message: 'Your order #12345 has been shipped',
+    icon: Truck,
+    color: 'text-teal-500',
+    read: false,
+    time: '2 min ago'
+  },
+  {
+    id: 2,
+    type: 'promotion',
+    title: 'Special Offer',
+    message: 'Get 20% off on your next purchase',
+    icon: ShoppingBag,
+    color: 'text-lime-500',
+    read: false,
+    time: '1 hour ago'
+  },
+  {
+    id: 3,
+    type: 'system',
+    title: 'System Update',
+    message: 'New features available in your account',
+    icon: CheckCircle2,
+    color: 'text-yellow-500',
+    read: true,
+    time: '3 hours ago'
+  },
+  {
+    id: 4,
+    type: 'alert',
+    title: 'Important Notice',
+    message: 'Your subscription will expire soon',
+    icon: AlertCircle,
+    color: 'text-red-500',
+    read: true,
+    time: '1 day ago'
+  }
+];
+
 const registerItem = navigation.find((item) => item.key === "register");
 const loginItem = navigation.find((item) => item.key === "signin");
 const logoutItem = navigation.find((item) => item.key === "signout");
@@ -126,9 +167,15 @@ export default function Sidebar({
   logoutHandler,
 }) {
   const [isClient, setIsClient] = useState(false);
+  const [showNotifications, setShowNotifications] = useState(false);
+  const [notifications, setNotifications] = useState(mockNotifications);
+  const [unreadCount, setUnreadCount] = useState(0);
 
   useEffect(() => {
     setIsClient(true);
+    // Calculate initial unread count
+    const count = mockNotifications.filter(n => !n.read).length;
+    setUnreadCount(count);
   }, []);
 
   // Safe user data access
@@ -150,6 +197,20 @@ export default function Sidebar({
       logoutHandler();
     }
     setSidebarOpen(false);
+  };
+
+  const toggleNotifications = () => {
+    setShowNotifications(!showNotifications);
+    // Mark all as read when opening notifications
+    if (!showNotifications) {
+      setNotifications(notifications.map(n => ({ ...n, read: true })));
+      setUnreadCount(0);
+    }
+  };
+
+  const clearAllNotifications = () => {
+    setNotifications([]);
+    setUnreadCount(0);
   };
 
   return (
@@ -200,9 +261,78 @@ export default function Sidebar({
           </button>
         </div>
 
+        {/* Notifications dropdown */}
+        {showNotifications && (
+          <div className="absolute right-0 top-16 mt-2 w-72 bg-white rounded-lg shadow-lg border border-gray-200 z-50">
+            <div className="p-3 border-b border-gray-200 flex justify-between items-center">
+              <h3 className="font-medium text-gray-900">Notifications</h3>
+              <button 
+                onClick={clearAllNotifications}
+                className="text-xs text-teal-600 hover:text-teal-800"
+              >
+                Clear All
+              </button>
+            </div>
+            <div className="max-h-96 overflow-y-auto">
+              {notifications.length > 0 ? (
+                notifications.map((notification) => (
+                  <div 
+                    key={notification.id}
+                    className={`p-3 border-b border-gray-100 hover:bg-gray-50 transition-colors ${!notification.read ? 'bg-blue-50' : ''}`}
+                  >
+                    <div className="flex items-start gap-3">
+                      <div className={`mt-1 flex-shrink-0 ${notification.color}`}>
+                        <notification.icon className="w-5 h-5" />
+                      </div>
+                      <div className="flex-1 min-w-0">
+                        <h4 className="text-sm font-medium text-gray-900">{notification.title}</h4>
+                        <p className="text-xs text-gray-600 truncate">{notification.message}</p>
+                        <p className="text-xs text-gray-400 mt-1">{notification.time}</p>
+                      </div>
+                    </div>
+                  </div>
+                ))
+              ) : (
+                <div className="p-4 text-center text-gray-500 text-sm">
+                  No notifications available
+                </div>
+              )}
+            </div>
+            <div className="p-3 border-t border-gray-200 text-center">
+              <Link 
+                href="/Pages/Notifications" 
+                className="text-xs text-teal-600 hover:text-teal-800"
+                onClick={() => setShowNotifications(false)}
+              >
+                View All Notifications
+              </Link>
+            </div>
+          </div>
+        )}
+
         {/* Scrollable Navigation Area */}
         <div className="flex-1 overflow-y-auto overflow-x-hidden">
           <nav className="p-4 pb-20">
+            {/* Notifications button */}
+            <div className="mb-4">
+              <button
+                onClick={toggleNotifications}
+                className={`w-full flex items-center px-4 py-3 text-sm font-medium rounded-xl transition-all duration-200 group ${
+                  showNotifications
+                    ? "bg-gradient-to-r from-teal-500 to-teal-600 text-white shadow-md transform scale-[1.02]"
+                    : "text-gray-700 hover:bg-gray-50 hover:text-teal-600 hover:translate-x-1"
+                }`}
+              >
+                <Bell className="w-5 h-5 mr-3 flex-shrink-0" />
+                <span className="flex-1 text-left">Notifications</span>
+                {unreadCount > 0 && (
+                  <span className="bg-red-500 text-white text-xs font-bold rounded-full h-5 w-5 flex items-center justify-center">
+                    {unreadCount}
+                  </span>
+                )}
+              </button>
+            </div>
+
             <ul className="space-y-1">
               {/* Main navigation items */}
               {navigation
@@ -210,7 +340,8 @@ export default function Sidebar({
                   (item) =>
                     item.key !== "signout" &&
                     item.key !== "signin" &&
-                    item.key !== "register"
+                    item.key !== "register" &&
+                    item.key !== "profile" // Moved to top with notifications
                 )
                 .map((item) => (
                   <li key={item.name}>
