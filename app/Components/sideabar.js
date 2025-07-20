@@ -279,7 +279,7 @@ export default function Sidebar({
                     <>
                       <li>
                         <Link
-                          href={loginItem?.href || "/auth/login"}
+                          href={loginItem?.href || "/Auth/Login"}
                           onClick={() => setSidebarOpen(false)}
                           className="w-full flex items-center px-4 py-3 text-sm font-medium rounded-xl border border-gray-300 text-gray-700 hover:bg-gray-50 transition-all duration-200"
                         >
@@ -291,7 +291,7 @@ export default function Sidebar({
                       </li>
                       <li>
                         <Link
-                          href={registerItem?.href || "/auth/register"}
+                          href={registerItem?.href || "/Auth/Register"}
                           onClick={() => setSidebarOpen(false)}
                           className="w-full flex items-center px-4 py-3 text-sm font-medium rounded-xl bg-[#00b1a5] text-white hover:bg-[#008a80] transition-all duration-200"
                         >
