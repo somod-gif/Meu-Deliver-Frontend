@@ -16,6 +16,7 @@ import {
   HelpCircle,
   ShoppingCart,
     X,
+    User
 } from 'lucide-react';
 import { toast } from 'react-toastify';
 

@@ -12,155 +12,133 @@ import {
   Package,
   CreditCard,
   FileText,
-  HelpCircle
+  HelpCircle,
+  ShoppingCart
 } from 'lucide-react';
+import { useCart } from '../../Context/CartContext';
+import { useEffect, useState } from 'react';
+import { toast } from 'react-toastify';
 
-// Mock data with updated brand colors
-const notificationDetails = {
-  '1': {
-    id: '1',
-    type: 'order',
-    title: 'Order Shipped',
-    message: 'Your order #12345 has been shipped and will arrive in 2-3 business days',
-    icon: Truck,
+const notificationTypes = {
+  order: {
+    icon: ShoppingCart,
     color: 'text-[#00b1a5]',
     bgColor: 'bg-[#00b1a5]',
     lightBg: 'bg-[#00b1a5]/10',
-    borderColor: 'border-[#00b1a5]/20',
-    time: '2 min ago',
-    date: 'May 22, 2023 at 10:30 AM',
-    details: {
-      orderNumber: '#12345',
-      shippingMethod: 'Express Delivery',
-      estimatedDelivery: 'May 25, 2023',
-      trackingNumber: 'TRK123456789',
-      carrier: 'FastShip Logistics',
-      items: [
-        { name: 'Organic Cotton T-Shirt', quantity: 2, price: '$29.98', status: 'Shipped' },
-        { name: 'Wireless Earbuds', quantity: 1, price: '$59.99', status: 'Shipped' }
-      ],
-      shippingAddress: '123 Main St, Apt 4B, New York, NY 10001',
-      paymentMethod: 'Visa ending in 4242',
-      subtotal: '$89.97',
-      shipping: '$5.99',
-      tax: '$7.19',
-      total: '$103.15',
-      actions: [
-        { label: 'Track Package', href: '/track/TRK123456789' },
-        { label: 'View Order Details', href: '/orders/12345' },
-        { label: 'Contact Support', href: '/contact' }
-      ]
-    }
+    borderColor: 'border-[#00b1a5]/20'
   },
-  '2': {
-    id: '2',
-    type: 'promotion',
-    title: 'Special Offer',
-    message: 'Get 20% off on your next purchase with code SPRING20',
+  promotion: {
     icon: ShoppingBag,
     color: 'text-[#a3d900]',
     bgColor: 'bg-[#a3d900]',
     lightBg: 'bg-[#a3d900]/10',
-    borderColor: 'border-[#a3d900]/20',
-    time: '1 hour ago',
-    date: 'May 22, 2023 at 9:45 AM',
-    details: {
-      promoCode: 'SPRING20',
-      discount: '20% off',
-      validUntil: 'May 31, 2023',
-      applicableTo: 'All products excluding clearance items',
-      minimumPurchase: '$50.00',
-      terms: 'One use per customer. Cannot be combined with other offers.',
-      actions: [
-        { label: 'Shop Now', href: '/products' },
-        { label: 'View All Promotions', href: '/promotions' }
-      ]
-    }
+    borderColor: 'border-[#a3d900]/20'
   },
-  '3': {
-    id: '3',
-    type: 'system',
-    title: 'System Update',
-    message: 'New features available in your account dashboard',
+  system: {
     icon: CheckCircle2,
     color: 'text-[#c6d90d]',
     bgColor: 'bg-[#c6d90d]',
     lightBg: 'bg-[#c6d90d]/10',
-    borderColor: 'border-[#c6d90d]/20',
-    time: '3 hours ago',
-    date: 'May 22, 2023 at 8:00 AM',
-    details: {
-      version: '2.3.1',
-      releaseDate: 'May 20, 2023',
-      features: [
-        'New order tracking interface with real-time updates',
-        'Enhanced search functionality with filters',
-        'Dark mode support for better nighttime browsing',
-        'Improved checkout process with saved payment methods'
-      ],
-      actions: [
-        { label: 'View Release Notes', href: '/updates/2.3.1' },
-        { label: 'Give Feedback', href: '/feedback' }
-      ]
-    }
+    borderColor: 'border-[#c6d90d]/20'
   },
-  '4': {
-    id: '4',
-    type: 'alert',
-    title: 'Important Notice',
-    message: 'Your subscription will expire in 7 days',
+  alert: {
     icon: AlertCircle,
     color: 'text-red-500',
     bgColor: 'bg-red-500',
     lightBg: 'bg-red-50',
-    borderColor: 'border-red-200',
-    time: '1 day ago',
-    date: 'May 21, 2023 at 3:15 PM',
-    details: {
-      subscriptionType: 'Premium Membership',
-      renewalDate: 'May 27, 2023',
-      price: '$9.99/month',
-      benefits: [
-        'Free shipping on all orders',
-        'Exclusive member discounts',
-        'Early access to sales',
-        'Priority customer support'
-      ],
-      actionRequired: 'Please update your payment method to avoid interruption',
-      actions: [
-        { label: 'Renew Subscription', href: '/account/subscription' },
-        { label: 'Update Payment Method', href: '/account/payment' }
-      ]
-    }
+    borderColor: 'border-red-200'
   },
-  '5': {
-    id: '5',
-    type: 'message',
-    title: 'New Message',
-    message: 'You have a new message from customer support',
+  message: {
     icon: Mail,
     color: 'text-[#00b1a5]',
     bgColor: 'bg-[#00b1a5]',
     lightBg: 'bg-[#00b1a5]/10',
-    borderColor: 'border-[#00b1a5]/20',
-    time: '2 days ago',
-    date: 'May 20, 2023 at 11:20 AM',
-    details: {
-      from: 'Support Team',
-      subject: 'Regarding your recent inquiry',
-      message: 'Thank you for contacting us about your order #12345. We have investigated the issue and confirmed that your package was shipped on May 18. According to our tracking system, it should arrive by May 25. We apologize for any inconvenience this may have caused and have applied a 10% discount to your next purchase as a courtesy. Please don\'t hesitate to reach out if you have any further questions.',
-      responseTime: 'Typically within 24 hours',
-      actions: [
-        { label: 'Reply to Message', href: '/messages/123' },
-        { label: 'View All Messages', href: '/messages' }
-      ]
-    }
+    borderColor: 'border-[#00b1a5]/20'
   }
 };
 
 export default function NotificationDetails({ params }) {
   const router = useRouter();
-  const notification = notificationDetails[params.id];
+  const { orders } = useCart();
+  const [notification, setNotification] = useState(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchNotification = () => {
+      try {
+        // Check if it's an order notification (ID starts with 'ORD-')
+        if (params.id.startsWith('ORD-')) {
+          const order = orders.list.find(order => order.id === params.id);
+          if (order) {
+            const orderNotification = {
+              id: order.id,
+              type: 'order',
+              title: `Order ${order.status === 'processing' ? 'Processing' : 'Shipped'}`,
+              message: order.status === 'processing' 
+                ? 'We are preparing your order for shipment' 
+                : 'Your order has been shipped and will arrive soon',
+              time: new Date(order.date).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+              date: new Date(order.date).toLocaleDateString('en-US', { 
+                year: 'numeric', 
+                month: 'long', 
+                day: 'numeric',
+                hour: '2-digit',
+                minute: '2-digit'
+              }),
+              details: {
+                orderNumber: order.id,
+                status: order.status,
+                shippingMethod: 'Standard Delivery',
+                estimatedDelivery: new Date(new Date(order.date).getTime() + 3 * 24 * 60 * 60 * 1000).toLocaleDateString(),
+                trackingNumber: order.trackingNumber,
+                carrier: 'FastShip Logistics',
+                items: order.items.map(item => ({
+                  name: item.name,
+                  quantity: item.quantity,
+                  price: `AOA ${Math.round(item.price * item.quantity).toLocaleString()}`,
+                  status: order.status === 'processing' ? 'Processing' : 'Shipped'
+                })),
+                shippingAddress: `${order.address}, ${order.city}, ${order.state}`,
+                paymentMethod: order.paymentMethod === 'card' ? 'Credit Card' : 
+                              order.paymentMethod === 'transfer' ? 'Bank Transfer' : 'Cash on Delivery',
+                subtotal: `AOA ${Math.round(order.total - order.deliveryFee).toLocaleString()}`,
+                shipping: `AOA ${order.deliveryFee.toLocaleString()}`,
+                total: `AOA ${Math.round(order.total).toLocaleString()}`,
+                actions: [
+                  { label: 'Track Package', href: `/track/${order.trackingNumber}` },
+                  { label: 'View Order Details', href: `/orders/${order.id}` },
+                  { label: 'Contact Support', href: '/contact' }
+                ]
+              }
+            };
+            setNotification(orderNotification);
+          }
+        } else {
+          // Handle other notification types (you can keep your mock data here)
+          toast.error('Notification not found');
+          router.push('/Pages/Notifications');
+        }
+      } catch (error) {
+        console.error('Error fetching notification:', error);
+        toast.error('Failed to load notification');
+        router.push('/Pages/Notifications');
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchNotification();
+  }, [params.id, orders.list, router]);
+
+  if (loading) {
+    return (
+      <div className="max-w-4xl mx-auto p-6">
+        <div className="flex justify-center items-center h-64">
+          <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-[#00b1a5]"></div>
+        </div>
+      </div>
+    );
+  }
 
   if (!notification) {
     return (
@@ -183,18 +161,46 @@ export default function NotificationDetails({ params }) {
     );
   }
 
-  const renderDetails = () => {
-    switch (notification.type) {
-      case 'order':
-        return (
+  const notificationType = notificationTypes[notification.type] || notificationTypes.system;
+
+  return (
+    <div className="max-w-4xl mx-auto p-4 sm:p-6">
+      <button 
+        onClick={() => router.back()}
+        className="flex items-center text-[#00b1a5] hover:text-[#00a294] mb-4 transition-colors"
+      >
+        <ArrowLeft className="w-5 h-5 mr-1" />
+        Back to notifications
+      </button>
+
+      <div className="bg-white rounded-lg shadow border border-gray-200 overflow-hidden">
+        <div className={`p-4 border-b ${notificationType.lightBg}`}>
+          <div className="flex items-start gap-3">
+            <div className={`flex-shrink-0 mt-1 ${notificationType.color}`}>
+              <notificationType.icon className="w-5 h-5" />
+            </div>
+            <div className="flex-1 min-w-0">
+              <h2 className="text-lg font-bold text-black">{notification.title}</h2>
+              <p className="text-gray-700">{notification.message}</p>
+            </div>
+            <div className="text-sm text-gray-500 flex items-center gap-1">
+              <Clock className="w-4 h-4" />
+              {notification.time}
+            </div>
+          </div>
+        </div>
+
+        <div className="p-6">
           <div className="space-y-6">
-            <div className={`${notification.lightBg} ${notification.borderColor} border rounded-lg p-4`}>
-              <h3 className={`font-medium ${notification.color} flex items-center gap-2`}>
+            <div className={`${notificationType.lightBg} ${notificationType.borderColor} border rounded-lg p-4`}>
+              <h3 className={`font-medium ${notificationType.color} flex items-center gap-2`}>
                 <Truck className="w-5 h-5" />
-                Order Shipped
+                Order {notification.details.status === 'processing' ? 'Processing' : 'Shipped'}
               </h3>
               <p className="text-sm text-gray-700 mt-1">
-                Your order is on its way! Expected delivery: {notification.details.estimatedDelivery}
+                {notification.details.status === 'processing' 
+                  ? 'We are preparing your order for shipment' 
+                  : `Your order is on its way! Expected delivery: ${notification.details.estimatedDelivery}`}
               </p>
             </div>
 
@@ -209,6 +215,14 @@ export default function NotificationDetails({ params }) {
                   <div className="flex justify-between">
                     <span className="text-gray-600">Date:</span>
                     <span className="text-black">{notification.date}</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span className="text-gray-600">Status:</span>
+                    <span className={`font-medium ${
+                      notification.details.status === 'processing' ? 'text-yellow-600' : 'text-green-600'
+                    }`}>
+                      {notification.details.status}
+                    </span>
                   </div>
                   <div className="flex justify-between">
                     <span className="text-gray-600">Total:</span>
@@ -232,6 +246,10 @@ export default function NotificationDetails({ params }) {
                     <span className="text-gray-600">Shipping Method:</span>
                     <span className="text-black">{notification.details.shippingMethod}</span>
                   </div>
+                  <div className="flex justify-between">
+                    <span className="text-gray-600">Payment Method:</span>
+                    <span className="text-black">{notification.details.paymentMethod}</span>
+                  </div>
                 </div>
               </div>
             </div>
@@ -247,278 +265,38 @@ export default function NotificationDetails({ params }) {
                     </div>
                     <div className="text-right">
                       <p className="text-black">{item.price}</p>
-                      <p className={`text-sm ${notification.color}`}>{item.status}</p>
+                      <p className={`text-sm ${
+                        item.status === 'Processing' ? 'text-yellow-600' : 'text-green-600'
+                      }`}>
+                        {item.status}
+                      </p>
                     </div>
                   </div>
                 ))}
               </div>
             </div>
 
-            <div className="flex flex-wrap gap-3">
-              {notification.details.actions.map((action, index) => (
-                <a
-                  key={index}
-                  href={action.href}
-                  className="px-4 py-2 bg-[#00b1a5] text-white rounded-md hover:bg-[#00a294] transition-colors"
-                >
-                  {action.label}
-                </a>
-              ))}
-            </div>
-          </div>
-        );
-
-      case 'promotion':
-        return (
-          <div className="space-y-6">
-            <div className={`${notification.lightBg} ${notification.borderColor} border rounded-lg p-4`}>
-              <h3 className={`font-medium ${notification.color} flex items-center gap-2`}>
-                <ShoppingBag className="w-5 h-5" />
-                Special Promotion
-              </h3>
-              <p className="text-sm text-gray-700 mt-1">
-                Use code <span className="font-bold text-black">{notification.details.promoCode}</span> at checkout
-              </p>
-            </div>
-
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <div className="border border-gray-200 rounded-lg p-4">
-                <h4 className="font-medium text-black mb-3">Promotion Details</h4>
-                <div className="space-y-3">
-                  <div className="flex justify-between">
-                    <span className="text-gray-600">Discount:</span>
-                    <span className="font-medium text-black">{notification.details.discount}</span>
-                  </div>
-                  <div className="flex justify-between">
-                    <span className="text-gray-600">Valid Until:</span>
-                    <span className="text-black">{notification.details.validUntil}</span>
-                  </div>
-                  <div className="flex justify-between">
-                    <span className="text-gray-600">Minimum Purchase:</span>
-                    <span className="text-black">{notification.details.minimumPurchase}</span>
-                  </div>
-                </div>
-              </div>
-
-              <div className="border border-gray-200 rounded-lg p-4">
-                <h4 className="font-medium text-black mb-3">Terms & Conditions</h4>
-                <p className="text-sm text-gray-600">
-                  {notification.details.terms}
-                </p>
-              </div>
-            </div>
-
-            <div className="flex flex-wrap gap-3">
-              {notification.details.actions.map((action, index) => (
-                <a
-                  key={index}
-                  href={action.href}
-                  className="px-4 py-2 bg-[#a3d900] text-white rounded-md hover:bg-[#92c300] transition-colors"
-                >
-                  {action.label}
-                </a>
-              ))}
-            </div>
-          </div>
-        );
-
-      case 'system':
-        return (
-          <div className="space-y-6">
-            <div className={`${notification.lightBg} ${notification.borderColor} border rounded-lg p-4`}>
-              <h3 className={`font-medium ${notification.color} flex items-center gap-2`}>
-                <CheckCircle2 className="w-5 h-5" />
-                System Update Available
-              </h3>
-              <p className="text-sm text-gray-700 mt-1">
-                Version {notification.details.version} is now available with exciting new features.
-              </p>
-            </div>
-
             <div className="border border-gray-200 rounded-lg p-4">
-              <h4 className="font-medium text-black mb-3">What's New</h4>
-              <ul className="space-y-2">
-                {notification.details.features.map((feature, index) => (
-                  <li key={index} className="flex items-start gap-2">
-                    <CheckCircle2 className={`w-4 h-4 mt-0.5 ${notification.color} flex-shrink-0`} />
-                    <span className="text-gray-700">{feature}</span>
-                  </li>
-                ))}
-              </ul>
+              <h4 className="font-medium text-black mb-3">Shipping Address</h4>
+              <p className="text-gray-700">{notification.details.shippingAddress}</p>
             </div>
 
             <div className="flex flex-wrap gap-3">
               {notification.details.actions.map((action, index) => (
-                <a
+                <button
                   key={index}
-                  href={action.href}
-                  className="px-4 py-2 bg-[#c6d90d] text-black rounded-md hover:bg-[#b5c30c] transition-colors font-medium"
-                >
-                  {action.label}
-                </a>
-              ))}
-            </div>
-          </div>
-        );
-
-      case 'alert':
-        return (
-          <div className="space-y-6">
-            <div className={`${notification.lightBg} ${notification.borderColor} border rounded-lg p-4`}>
-              <h3 className={`font-medium ${notification.color} flex items-center gap-2`}>
-                <AlertCircle className="w-5 h-5" />
-                Action Required
-              </h3>
-              <p className="text-sm text-gray-700 mt-1">
-                {notification.details.actionRequired}
-              </p>
-            </div>
-
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <div className="border border-gray-200 rounded-lg p-4">
-                <h4 className="font-medium text-black mb-3">Subscription Details</h4>
-                <div className="space-y-3">
-                  <div className="flex justify-between">
-                    <span className="text-gray-600">Type:</span>
-                    <span className="font-medium text-black">{notification.details.subscriptionType}</span>
-                  </div>
-                  <div className="flex justify-between">
-                    <span className="text-gray-600">Renewal Date:</span>
-                    <span className="text-black">{notification.details.renewalDate}</span>
-                  </div>
-                  <div className="flex justify-between">
-                    <span className="text-gray-600">Price:</span>
-                    <span className="font-medium text-black">{notification.details.price}</span>
-                  </div>
-                </div>
-              </div>
-
-              <div className="border border-gray-200 rounded-lg p-4">
-                <h4 className="font-medium text-black mb-3">Member Benefits</h4>
-                <ul className="space-y-2">
-                  {notification.details.benefits.map((benefit, index) => (
-                    <li key={index} className="flex items-start gap-2">
-                      <CheckCircle2 className="w-4 h-4 mt-0.5 text-[#00b1a5] flex-shrink-0" />
-                      <span className="text-sm text-gray-700">{benefit}</span>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            </div>
-
-            <div className="flex flex-wrap gap-3">
-              {notification.details.actions.map((action, index) => (
-                <a
-                  key={index}
-                  href={action.href}
-                  className={`px-4 py-2 rounded-md transition-colors ${
+                  onClick={() => router.push(action.href)}
+                  className={`px-4 py-2 ${
                     index === 0 
-                      ? 'bg-red-500 text-white hover:bg-red-600' 
-                      : 'bg-[#00b1a5] text-white hover:bg-[#00a294]'
-                  }`}
+                      ? 'bg-[#00b1a5] text-white hover:bg-[#00a294]' 
+                      : 'bg-white text-[#00b1a5] border border-[#00b1a5] hover:bg-[#00b1a5]/10'
+                  } rounded-md transition-colors`}
                 >
                   {action.label}
-                </a>
+                </button>
               ))}
             </div>
           </div>
-        );
-
-      case 'message':
-        return (
-          <div className="space-y-6">
-            <div className={`${notification.lightBg} ${notification.borderColor} border rounded-lg p-4`}>
-              <h3 className={`font-medium ${notification.color} flex items-center gap-2`}>
-                <Mail className="w-5 h-5" />
-                Message from {notification.details.from}
-              </h3>
-              <p className="text-sm text-gray-700 mt-1">
-                Subject: {notification.details.subject}
-              </p>
-            </div>
-
-            <div className="border border-gray-200 rounded-lg p-4">
-              <h4 className="font-medium text-black mb-3">Message</h4>
-              <p className="text-gray-700 leading-relaxed">
-                {notification.details.message}
-              </p>
-              <div className="mt-4 pt-4 border-t border-gray-200">
-                <p className="text-sm text-gray-500">
-                  Response time: {notification.details.responseTime}
-                </p>
-              </div>
-            </div>
-
-            <div className="flex flex-wrap gap-3">
-              {notification.details.actions.map((action, index) => (
-                <a
-                  key={index}
-                  href={action.href}
-                  className="px-4 py-2 bg-[#00b1a5] text-white rounded-md hover:bg-[#00a294] transition-colors"
-                >
-                  {action.label}
-                </a>
-              ))}
-            </div>
-          </div>
-        );
-
-      default:
-        return (
-          <div className="space-y-4">
-            <div className="border border-gray-200 rounded-lg p-4">
-              <h4 className="font-medium text-black mb-2">Details</h4>
-              <p className="text-gray-700">
-                {notification.message}
-              </p>
-            </div>
-            {notification.details.actions && (
-              <div className="flex flex-wrap gap-3">
-                {notification.details.actions.map((action, index) => (
-                  <a
-                    key={index}
-                    href={action.href}
-                    className="px-4 py-2 bg-[#00b1a5] text-white rounded-md hover:bg-[#00a294] transition-colors"
-                  >
-                    {action.label}
-                  </a>
-                ))}
-              </div>
-            )}
-          </div>
-        );
-    }
-  };
-
-  return (
-    <div className="max-w-4xl mx-auto p-4 sm:p-6">
-      <button 
-        onClick={() => router.back()}
-        className="flex items-center text-[#00b1a5] hover:text-[#00a294] mb-4 transition-colors"
-      >
-        <ArrowLeft className="w-5 h-5 mr-1" />
-        Back to notifications
-      </button>
-
-      <div className="bg-white rounded-lg shadow border border-gray-200 overflow-hidden">
-        <div className={`p-4 border-b ${notification.lightBg}`}>
-          <div className="flex items-start gap-3">
-            <div className={`flex-shrink-0 mt-1 ${notification.color}`}>
-              <notification.icon className="w-5 h-5" />
-            </div>
-            <div className="flex-1 min-w-0">
-              <h2 className="text-lg font-bold text-black">{notification.title}</h2>
-              <p className="text-gray-700">{notification.message}</p>
-            </div>
-            <div className="text-sm text-gray-500 flex items-center gap-1">
-              <Clock className="w-4 h-4" />
-              {notification.time}
-            </div>
-          </div>
-        </div>
-
-        <div className="p-6">
-          {renderDetails()}
         </div>
       </div>
     </div>

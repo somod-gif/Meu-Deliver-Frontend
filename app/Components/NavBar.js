@@ -1,4 +1,4 @@
-"use client";
+'use client';
 
 import { useState, useEffect, useContext } from "react";
 import Link from "next/link";
@@ -29,7 +29,8 @@ import { useRouter } from "next/navigation";
 
 export default function NavBar({ user }) {
   const router = useRouter();
-  const { totalQuantity } = useCart();
+  const { cart } = useCart();
+  const { totalQuantity } = cart;
   const [showUserDropdown, setShowUserDropdown] = useState(false);
   const [showLocationDropdown, setShowLocationDropdown] = useState(false);
   const [sidebarOpen, setSidebarOpen] = useState(false);
@@ -249,14 +250,6 @@ export default function NavBar({ user }) {
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, [sidebarOpen]);
 
-  const handleCartClick = () => {
-    console.log("Cart clicked");
-  };
-
-  const handleNotificationClick = () => {
-    console.log("Notifications clicked");
-  };
-
   const handleUserProfileClick = () => {
     setShowUserDropdown(!showUserDropdown);
   };
@@ -460,12 +453,12 @@ export default function NavBar({ user }) {
 
             {/* Cart Icon - Desktop */}
             <button
-              onClick={() => router.push("/Pages/Cart")} // Navigate to cart page
+              onClick={() => router.push("/Pages/Cart")}
               className="hidden lg:block p-2 hover:bg-[var(--button-hover)] rounded-lg transition-colors duration-200 relative"
               aria-label="Shopping cart"
             >
               <ShoppingBag className="w-6 h-6 text-[var(--text-color)] hover:text-[var(--primary-color)]" />
-              {totalQuantity > 0 && ( // Use totalQuantity from context
+              {totalQuantity > 0 && (
                 <span className="absolute -top-1 -right-1 bg-[var(--primary-color)] text-white text-xs rounded-full w-5 h-5 flex items-center justify-center font-medium">
                   {totalQuantity > 99 ? "99+" : totalQuantity}
                 </span>
@@ -481,12 +474,12 @@ export default function NavBar({ user }) {
 
               {/* Cart Icon - Mobile */}
               <button
-                onClick={() => router.push("/Pages/Cart")} // Navigate to cart page
+                onClick={() => router.push("/Pages/Cart")}
                 className="p-2 hover:bg-[var(--button-hover)] rounded-lg transition-colors duration-200 relative"
                 aria-label="Shopping cart"
               >
                 <ShoppingBag className="w-6 h-6 text-[var(--text-color)] hover:text-[var(--primary-color)]" />
-                {totalQuantity > 0 && ( // Use totalQuantity from context
+                {totalQuantity > 0 && (
                   <span className="absolute -top-1 -right-1 bg-[var(--primary-color)] text-white text-xs rounded-full w-5 h-5 flex items-center justify-center font-medium">
                     {totalQuantity > 99 ? "99+" : totalQuantity}
                   </span>

@@ -1,6 +1,6 @@
 // Pages/Products/[id]/page.js
 'use client';
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useRouter, useParams } from 'next/navigation';
 import { useCart } from '../../../Context/CartContext';
 import { 
@@ -24,6 +24,7 @@ import {
     ChevronRight
 } from 'lucide-react';
 import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 export default function ProductDetailsPage() {
     const router = useRouter();
@@ -40,6 +41,7 @@ export default function ProductDetailsPage() {
     const [addedToCart, setAddedToCart] = useState(false);
     const [relatedProducts, setRelatedProducts] = useState([]);
     const [productImages, setProductImages] = useState([]);
+    const toastIdRef = useRef(null);
 
     const ANGOLA_RATE = 850;
 
@@ -123,28 +125,26 @@ export default function ProductDetailsPage() {
     };
 
     const handleAddToCart = () => {
-        if (!product) return;
+        if (!product || addedToCart) return;
         
         try {
             addToCart(product, quantity);
             setAddedToCart(true);
             
-            toast.success(`${product.name} added to cart!`, {
-                position: "top-right",
-                autoClose: 3000,
-                hideProgressBar: false,
-                closeOnClick: true,
-                pauseOnHover: true,
-                draggable: true,
-                style: {
-                    background: '#00b1a5',
-                    color: 'white'
-                }
-            });
+            // Check if there's an existing toast and dismiss it
+            if (toastIdRef.current !== null) {
+                toast.dismiss(toastIdRef.current);
+            }
             
-            setTimeout(() => setAddedToCart(false), 2000);
+            
         } catch (error) {
-            toast.error('Failed to add item to cart');
+            toast.error('Failed to add item to cart', {
+                autoClose: 3000,
+                hideProgressBar: true,
+                position: "bottom-right"
+            });
+            setAddedToCart(false);
+            toastIdRef.current = null;
         }
     };
 
@@ -253,6 +253,9 @@ export default function ProductDetailsPage() {
 
     return (
         <div className="min-h-screen bg-gradient-to-br from-gray-50 to-white">
+            {/* Toast Container - This should be included in your root layout instead */}
+            {/* <ToastContainer position="bottom-right" autoClose={3000} hideProgressBar /> */}
+            
             <div className="bg-white shadow-sm border-b">
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 py-4">
                     <button
