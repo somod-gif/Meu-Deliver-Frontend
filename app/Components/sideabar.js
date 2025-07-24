@@ -16,7 +16,8 @@ import {
   LogIn, 
   LogOut,
   BarChart3,
-  Bell
+  Bell,
+  Mail
 } from "lucide-react";
 
 const navigation = [
@@ -57,11 +58,17 @@ const navigation = [
     href: "/Pages/Orders",
   },
   {
-    name: "Track Order",
-    key: "track-order",
-    icon: MapPin,
-    href: "/Pages/TrackOrder",
+    name: "Post Office",
+    key: "post-office",
+    icon: Mail,
+    href: "/Pages/Post-Office",
   },
+  // {
+  //   name: "Track Order",
+  //   key: "track-order",
+  //   icon: MapPin,
+  //   href: "/Pages/TrackOrder",
+  // },
   
   // 👤 Settings
   {

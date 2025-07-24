@@ -1,4 +1,4 @@
-'use client';
+"use client";
 
 import { useState, useEffect, useContext } from "react";
 import Link from "next/link";
@@ -23,6 +23,7 @@ import {
   Truck,
   MapPin,
   Navigation,
+  Mail,
 } from "lucide-react";
 import { toast } from "react-toastify";
 import { useRouter } from "next/navigation";
@@ -61,11 +62,17 @@ export default function NavBar({ user }) {
       href: "/Pages/Products",
     },
     {
-      name: "Tracking",
-      key: "track-order",
-      icon: Truck,
-      href: "/track-order",
+      name: "Post Office",
+      key: "post-office",
+      icon: Mail,
+      href: "/Pages/Post-Office",
     },
+    // {
+    //   name: "Tracking",
+    //   key: "track-order",
+    //   icon: Truck,
+    //   href: "/track-order",
+    // },
   ];
 
   const authLinks = [
