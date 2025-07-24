@@ -1,14 +1,5 @@
 
   {
-    "categories": [
-      
-      { "name": "Bar", "icon": "🍺" },
-      { "name": "Store", "icon": "🛍️" },
-      { "name": "Supermarket", "icon": "🛒" },
-      { "name": "Pharmacy", "icon": "💊" },
-      { "name": "Post Office", "icon": "🏤" },
-      { "name": "Restaurant", "icon": "🍽️" }
-    ],
     "productsByCategory": {
       "Bar": [
         {

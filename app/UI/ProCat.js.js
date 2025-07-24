@@ -4,6 +4,7 @@ import React, { useState, useEffect, Suspense } from "react";
 import { useRouter } from "next/navigation"; // Note: next/navigation for app directory
 import CategoryLists from "./categoriesList";
 import ProductLists from "./productsLists";
+import { batchRequests } from "../hooks/fetch-hook";
 
 export default function CategoriesAndProducts() {
   const router = useRouter();
@@ -21,20 +22,23 @@ export default function CategoriesAndProducts() {
     const fetchProducts = async () => {
       try {
         setLoading(true);
-        const response = await fetch("/Products/products.json");
+        const response = await batchRequests([
+          {
+            url: "/Categories/data.json",
+          },
+          {
+            url:"/Products/products.json"
+          }
+        ]);
+        console.log(response)
+        const [categories, productsByCategory] = response;
 
-        if (!response.ok) {
-          throw new Error("Failed to fetch products data");
-        }
-
-        const data = await response.json();
-
-        setCategories(data.categories || []);
-        setProductsByCategory(data.productsByCategory || {});
+        setCategories(categories.data || []);
+        setProductsByCategory(productsByCategory.data.productsByCategory || {});
 
         // Create allProducts array from all categories
         const allProductsArray = Object.values(
-          data.productsByCategory || {}
+          productsByCategory.data.productsByCategory || {}
         ).flat();
         setAllProducts(allProductsArray);
       } catch (err) {

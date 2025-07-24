@@ -5,19 +5,19 @@ import { CreativeCommonsIcon, Plus, Search, TimerIcon, TrainTrack } from "lucide
 const services_list = [
   {
     title: "Create Shipment",
-    des: "Fully online, tailored to you – Meudeliver gives you a seamless way to manage shipments, whether they’re around the corner or across the country.",
+    des: "Fully online, tailored to you.Meudeliver gives you a seamless way to manage shipments.",
     icon: Plus,
     text: "Create",
   },
   {
     title: "Track Shipments",
-    des: "Stay in Control of Your Deliveries – Get real-time updates and a personalized overview of all your orders in one place.",
+    des: "Stay in Control of Your Deliveries. Get real-time updates and a personalized overview of all your orders in one place.",
     icon: Search,
     text: "Track",
   },
   {
     title: "Schedule Pickups",
-    des: "Need to adjust a pickup? No problem — easily reschedule or cancel pickups even after placing your order.",
+    des: "Need to adjust a pickup? No problem. easily reschedule or cancel pickups even after placing your order.",
     icon: TimerIcon,
     text: "Pickup",
   },

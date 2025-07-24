@@ -1,0 +1,38 @@
+[
+  {
+    "id": "bar",
+    "name": "Bar",
+    "icon": "🍺",
+    "description": "Enjoy refreshing drinks and nightlife."
+  },
+  {
+    "id": "store",
+    "name": "Store",
+    "icon": "🛍️",
+    "description": "Shop for various retail items and accessories."
+  },
+  {
+    "id": "supermarket",
+    "name": "Supermarket",
+    "icon": "🛒",
+    "description": "Get groceries and household essentials."
+  },
+  {
+    "id": "pharmacy",
+    "name": "Pharmacy",
+    "icon": "💊",
+    "description": "Find health products and prescription medicines."
+  },
+  {
+    "id": "post_office",
+    "name": "Post Office",
+    "icon": "🏤",
+    "description": "Send parcels and access postal services."
+  },
+  {
+    "id": "restaurant",
+    "name": "Restaurant",
+    "icon": "🍽️",
+    "description": "Dine in or order food from local eateries."
+  }
+]
