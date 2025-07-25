@@ -1,4 +1,5 @@
 "use client";
+import React from "react";
 import Button from "@/app/Components/UI/Button";
 import { CreativeCommonsIcon, Plus, Search, TimerIcon, TrainTrack } from "lucide-react";
 
@@ -23,7 +24,7 @@ const services_list = [
   },
 ];
 
-export default function Service({ onOpen }) {
+const Service = ({ onOpen }) => {
 
 
   return (
@@ -61,3 +62,4 @@ export default function Service({ onOpen }) {
     </div>
   );
 }
+export default Service;

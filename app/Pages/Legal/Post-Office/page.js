@@ -1,6 +1,6 @@
 "use client";
 import Modal from "@/app/Components/UI/Modal";
-import Header from "./Components/header";
+import Header from "@/app/Components/UI/header";
 import Service from "./Components/service";
 import Tracking from "./Components/tracking";
 import { useState } from "react";
@@ -64,7 +64,13 @@ const PostOffice = () => {
   };
   return (
     <>
-      <Header />
+      <Header 
+      heading="Packaging and Shipping Essentials"
+      subHeading="Post Office"
+      paragraph="Explore all you need to know about packaging and shipping supplies.
+            Use our expert tips to confidently pack and ship your items on your
+            own."
+      />
       <div className="max-w-7xl mx-auto px-4 sm:px-6 py-8">
         <div className="bg-white rounded-3xl p-6 sm:p-8 border border-gray-100">
           <Service onOpen={onOpen} />

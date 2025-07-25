@@ -1,4 +1,4 @@
-"use client"
+"use client";
 
 export default function ProductLists({
   activeCategory,
@@ -6,8 +6,13 @@ export default function ProductLists({
   productsByCategory,
   handleViewAllProducts,
   router,
-  ANGOLA_RATE
 }) {
+  const formatPrice = (value) =>
+    new Intl.NumberFormat("en-NG", {
+      style: "currency",
+      currency: "AOA",
+      maximumFractionDigits: 0,
+    }).format(value);
 
   return (
     <section className="max-w-7xl mx-auto px-4 sm:px-6 py-8 sm:py-12">
@@ -125,8 +130,7 @@ export default function ProductLists({
               <div className="space-y-2">
                 <div className="flex items-center justify-between">
                   <span className="font-bold text-sm sm:text-base text-black">
-                    AOA{" "}
-                    {Math.round(product.price * ANGOLA_RATE).toLocaleString()}
+                    {formatPrice(product.price)}
                   </span>
                 </div>
 

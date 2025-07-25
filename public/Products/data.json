@@ -1,0 +1,182 @@
+[
+  {
+    "id": 11,
+    "name": "Craft Beer Selection",
+    "price": 16.99,
+    "vendor": "Brew Masters",
+    "rating": 4.7,
+    "deliveryTime": "25-40 min",
+    "image": "https://images.unsplash.com/photo-1535958636474-b021ee887b13?w=400&h=300&fit=crop",
+    "badge": "Local"
+  },
+  {
+    "id": 12,
+    "name": "Premium Wine Collection",
+    "price": 29.99,
+    "vendor": "Vino Delight",
+    "rating": 4.8,
+    "deliveryTime": "30-45 min",
+    "image": "https://images.unsplash.com/photo-1559496417-e7f25cb247f3?w=400&h=300&fit=crop",
+    "badge": "Exclusive"
+  },
+  {
+    "id": 14,
+    "name": "Cold Pressed Juices",
+    "price": 12.5,
+    "vendor": "Juice Bar",
+    "rating": 4.6,
+    "deliveryTime": "20-30 min",
+    "image": "https://images.unsplash.com/photo-1603569283847-aa295f0d016a?w=400&h=300&fit=crop",
+    "badge": "Healthy"
+  },
+  {
+    "id": 15,
+    "name": "Craft Beer Selection",
+    "price": 16.99,
+    "vendor": "Brew Masters",
+    "rating": 4.7,
+    "deliveryTime": "25-40 min",
+    "image": "https://images.unsplash.com/photo-1535958636474-b021ee887b13?w=400&h=300&fit=crop",
+    "badge": "Local"
+  },
+  {
+    "id": 16,
+    "name": "Premium Wine Collection",
+    "price": 29.99,
+    "vendor": "Vino Delight",
+    "rating": 4.8,
+    "deliveryTime": "30-45 min",
+    "image": "https://images.unsplash.com/photo-1559496417-e7f25cb247f3?w=400&h=300&fit=crop",
+    "badge": "Exclusive"
+  },
+  {
+    "id": 17,
+    "name": "Cold Pressed Juices",
+    "price": 12.5,
+    "vendor": "Juice Bar",
+    "rating": 4.6,
+    "deliveryTime": "20-30 min",
+    "image": "https://images.unsplash.com/photo-1603569283847-aa295f0d016a?w=400&h=300&fit=crop",
+    "badge": "Healthy"
+  },
+  {
+    "id": 18,
+    "name": "Craft Beer Selection",
+    "price": 16.99,
+    "vendor": "Brew Masters",
+    "rating": 4.7,
+    "deliveryTime": "25-40 min",
+    "image": "https://images.unsplash.com/photo-1535958636474-b021ee887b13?w=400&h=300&fit=crop",
+    "badge": "Local"
+  },
+  {
+    "id": 19,
+    "name": "Premium Wine Collection",
+    "price": 29.99,
+    "vendor": "Vino Delight",
+    "rating": 4.8,
+    "deliveryTime": "30-45 min",
+    "image": "https://images.unsplash.com/photo-1559496417-e7f25cb247f3?w=400&h=300&fit=crop",
+    "badge": "Exclusive"
+  },
+  {
+    "id": 20,
+    "name": "Cold Pressed Juices",
+    "price": 12.5,
+    "vendor": "Juice Bar",
+    "rating": 4.6,
+    "deliveryTime": "20-30 min",
+    "image": "https://images.unsplash.com/photo-1603569283847-aa295f0d016a?w=400&h=300&fit=crop",
+    "badge": "Healthy"
+  },
+  {
+    "id": 21,
+    "name": "Craft Beer Selection",
+    "price": 16.99,
+    "vendor": "Brew Masters",
+    "rating": 4.7,
+    "deliveryTime": "25-40 min",
+    "image": "https://images.unsplash.com/photo-1535958636474-b021ee887b13?w=400&h=300&fit=crop",
+    "badge": "Local"
+  },
+  {
+    "id": 22,
+    "name": "Premium Wine Collection",
+    "price": 29.99,
+    "vendor": "Vino Delight",
+    "rating": 4.8,
+    "deliveryTime": "30-45 min",
+    "image": "https://images.unsplash.com/photo-1559496417-e7f25cb247f3?w=400&h=300&fit=crop",
+    "badge": "Exclusive"
+  },
+  {
+    "id": 23,
+    "name": "Cold Pressed Juices",
+    "price": 12.5,
+    "vendor": "Juice Bar",
+    "rating": 4.6,
+    "deliveryTime": "20-30 min",
+    "image": "https://images.unsplash.com/photo-1603569283847-aa295f0d016a?w=400&h=300&fit=crop",
+    "badge": "Healthy"
+  },
+  {
+    "id": 24,
+    "name": "Craft Beer Selection",
+    "price": 16.99,
+    "vendor": "Brew Masters",
+    "rating": 4.7,
+    "deliveryTime": "25-40 min",
+    "image": "https://images.unsplash.com/photo-1535958636474-b021ee887b13?w=400&h=300&fit=crop",
+    "badge": "Local"
+  },
+  {
+    "id": 25,
+    "name": "Premium Wine Collection",
+    "price": 29.99,
+    "vendor": "Vino Delight",
+    "rating": 4.8,
+    "deliveryTime": "30-45 min",
+    "image": "https://images.unsplash.com/photo-1559496417-e7f25cb247f3?w=400&h=300&fit=crop",
+    "badge": "Exclusive"
+  },
+  {
+    "id": 26,
+    "name": "Cold Pressed Juices",
+    "price": 12.5,
+    "vendor": "Juice Bar",
+    "rating": 4.6,
+    "deliveryTime": "20-30 min",
+    "image": "https://images.unsplash.com/photo-1603569283847-aa295f0d016a?w=400&h=300&fit=crop",
+    "badge": "Healthy"
+  },
+  {
+    "id": 27,
+    "name": "Craft Beer Selection",
+    "price": 16.99,
+    "vendor": "Brew Masters",
+    "rating": 4.7,
+    "deliveryTime": "25-40 min",
+    "image": "https://images.unsplash.com/photo-1535958636474-b021ee887b13?w=400&h=300&fit=crop",
+    "badge": "Local"
+  },
+  {
+    "id": 28,
+    "name": "Premium Wine Collection",
+    "price": 29.99,
+    "vendor": "Vino Delight",
+    "rating": 4.8,
+    "deliveryTime": "30-45 min",
+    "image": "https://images.unsplash.com/photo-1559496417-e7f25cb247f3?w=400&h=300&fit=crop",
+    "badge": "Exclusive"
+  },
+  {
+    "id": 29,
+    "name": "Cold Pressed Juices",
+    "price": 12.5,
+    "vendor": "Juice Bar",
+    "rating": 4.6,
+    "deliveryTime": "20-30 min",
+    "image": "https://images.unsplash.com/photo-1603569283847-aa295f0d016a?w=400&h=300&fit=crop",
+    "badge": "Healthy"
+  }
+]

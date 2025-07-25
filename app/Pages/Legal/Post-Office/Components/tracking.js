@@ -1,8 +1,9 @@
 "use client"
+import React from "react";
 import Button from "@/app/Components/UI/Button";
 import { Search } from "lucide-react";
 
-export default function Tracking({ trackingItems, trackingStatus }) {
+const Tracking = ({ trackingItems, trackingStatus }) => {
   return (
     <>
       {/* Tracking form section */}
@@ -146,3 +147,6 @@ export default function Tracking({ trackingItems, trackingStatus }) {
     </>
   );
 }
+
+
+export default Tracking;

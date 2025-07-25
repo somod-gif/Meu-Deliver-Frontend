@@ -24,12 +24,6 @@
     "description": "Find health products and prescription medicines."
   },
   {
-    "id": "post_office",
-    "name": "Post Office",
-    "icon": "🏤",
-    "description": "Send parcels and access postal services."
-  },
-  {
     "id": "restaurant",
     "name": "Restaurant",
     "icon": "🍽️",

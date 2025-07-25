@@ -5,6 +5,7 @@ import AuthContextProvider from "./hooks/authContext";
 import LayoutContent from "./layoutContent";
 import { ThemeProvider } from './Context/ThemeProvider';
 import { CartProvider } from './Context/CartContext';
+import ErrorBoundary from "./errorBoundary";
 
 export const metadata = {
   title: 'MeuDeliver - Angola\'s All-in-One Delivery',
@@ -15,6 +16,7 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <body>
+        <ErrorBoundary>
         <ThemeProvider>
           <AuthContextProvider>
             <CartProvider>
@@ -22,6 +24,7 @@ export default function RootLayout({ children }) {
             </CartProvider>
           </AuthContextProvider>
         </ThemeProvider>
+        </ErrorBoundary>
       </body>
     </html>
   );

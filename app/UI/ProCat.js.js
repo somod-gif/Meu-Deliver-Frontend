@@ -30,7 +30,6 @@ export default function CategoriesAndProducts() {
             url:"/Products/products.json"
           }
         ]);
-        console.log(response)
         const [categories, productsByCategory] = response;
 
         setCategories(categories.data || []);
@@ -102,7 +101,6 @@ export default function CategoriesAndProducts() {
           allProducts={allProducts}
           handleViewAllProducts={handleViewAllProducts}
           router={router}
-          ANGOLA_RATE={ANGOLA_RATE}
         />
       </Suspense>
       

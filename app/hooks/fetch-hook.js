@@ -7,7 +7,7 @@ const cache = new Map();
 const DEFAULT_CONFIG = {
   timeout: 30000, // 30 seconds
   retries: 3,
-  retryDelay: 1000,
+  retryDelay: 50000,
   cache: false,
   cacheTime: 5 * 60 * 1000, // 5 minutes
   showToast: true,
