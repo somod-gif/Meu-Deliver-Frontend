@@ -1,4 +1,3 @@
-// app/Portal/Vendor/Dashboard/settings/page.js
 'use client';
 import ProfileForm from './components/ProfileForm';
 
@@ -24,6 +23,12 @@ export default function SettingsPage() {
     isActive: true
   };
 
+  const vendorConfig = {
+    fields: ['cuisineType'],
+    cuisineTypes: ['Italian', 'Mexican', 'Chinese', 'Indian', 'American'],
+    storeTypes: ['Restaurant', 'Cafe', 'Bakery', 'Food Truck']
+  };
+
   const handleSave = (updatedData) => {
     console.log("Saving settings:", updatedData);
     // In a real app, you would send this to your API
@@ -40,6 +45,7 @@ export default function SettingsPage() {
             <h2 className="text-lg font-semibold text-black mb-4">Profile Information</h2>
             <ProfileForm 
               initialData={vendorData} 
+              vendorConfig={vendorConfig}
               onSave={handleSave} 
             />
           </div>
