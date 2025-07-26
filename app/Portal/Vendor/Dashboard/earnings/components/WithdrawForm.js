@@ -2,13 +2,16 @@
 'use client';
 import { useState } from 'react';
 
-export default function WithdrawForm({ availableBalance }) {
+export default function WithdrawForm({ availableBalance = 0 }) { // Add default value
   const [amount, setAmount] = useState('');
   const [bankAccount, setBankAccount] = useState('primary');
   const [isSubmitting, setIsSubmitting] = useState(false);
 
+  // Ensure availableBalance is a number
+  const balance = Number(availableBalance) || 0;
+
   const bankAccounts = [
-    { id: 'primary', name: 'Primary Bank (****4532)', balance: availableBalance },
+    { id: 'primary', name: 'Primary Bank (****4532)', balance: balance },
     { id: 'secondary', name: 'Secondary Bank (****6718)', balance: 0 }
   ];
 
@@ -17,7 +20,7 @@ export default function WithdrawForm({ availableBalance }) {
     setIsSubmitting(true);
     // Simulate API call
     setTimeout(() => {
-      alert(`Withdrawal request for $${amount} submitted successfully!`);
+      alert(`Withdrawal request for AOA ${amount} submitted successfully!`);
       setAmount('');
       setIsSubmitting(false);
     }, 1500);
@@ -31,23 +34,23 @@ export default function WithdrawForm({ availableBalance }) {
         </label>
         <div className="mt-1 relative rounded-md shadow-sm">
           <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-            <span className="text-gray-500 sm:text-sm">$</span>
+            <span className="text-gray-500 sm:text-sm">AOA </span>
           </div>
           <input
             type="number"
             name="amount"
             id="amount"
             min="10"
-            max={availableBalance}
+            max={balance}
             value={amount}
             onChange={(e) => setAmount(e.target.value)}
             className="focus:ring-[#00b1a5] focus:border-[#00b1a5] block w-full pl-7 pr-12 py-2 border border-gray-300 rounded-md"
-            placeholder="0.00"
+            placeholder=""
             required
           />
           <div className="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none">
             <span className="text-gray-500 sm:text-sm">
-              Max: ${availableBalance.toFixed(2)}
+              Max: AOA {balance.toFixed(2)}
             </span>
           </div>
         </div>
@@ -75,9 +78,9 @@ export default function WithdrawForm({ availableBalance }) {
       <div className="pt-2">
         <button
           type="submit"
-          disabled={isSubmitting || availableBalance <= 0}
+          disabled={isSubmitting || balance <= 0}
           className={`w-full justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white ${
-            availableBalance <= 0 ? 'bg-gray-400 cursor-not-allowed' : 
+            balance <= 0 ? 'bg-gray-400 cursor-not-allowed' : 
             isSubmitting ? 'bg-[#00897b]' : 'bg-[#00b1a5] hover:bg-[#00897b]'
           } focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#00b1a5]`}
         >
@@ -87,7 +90,7 @@ export default function WithdrawForm({ availableBalance }) {
 
       <div className="text-xs text-gray-500 pt-2">
         <p>Withdrawals typically take 2-3 business days to process.</p>
-        <p>Minimum withdrawal amount: $10.00</p>
+        <p>Minimum withdrawal amount: AOA 10.00</p>
       </div>
     </form>
   );
