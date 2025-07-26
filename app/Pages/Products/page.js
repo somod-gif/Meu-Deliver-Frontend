@@ -1,7 +1,6 @@
 // app/Pages/Products/page.js
-// ModernProductsPage.js
 "use client";
-import React, { useState, useEffect, useCallback } from "react";
+import React, { useState, useEffect, useCallback, Suspense } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { Search, Filter, Grid, List, Zap } from "lucide-react";
 import { batchRequests, get } from "../../hooks/fetch-hook";
@@ -9,7 +8,16 @@ import Header from "@/app/Components/UI/header";
 import ProductList from "./Components/productList";
 import LoadingErrorHandler from "@/app/Components/UI/LoadingErrorHandler";
 
+// Wrap the main component with Suspense
 export default function ModernProductsPage() {
+  return (
+    <Suspense fallback={<div className="min-h-screen flex items-center justify-center">Loading...</div>}>
+      <ModernProductsPageContent />
+    </Suspense>
+  );
+}
+
+function ModernProductsPageContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const [activeCategory, setActiveCategory] = useState("All");
@@ -20,10 +28,9 @@ export default function ModernProductsPage() {
   const [favorites, setFavorites] = useState(new Set());
   const [categories, setCategories] = useState([]);
   const [products, setProducts] = useState([]);
-  const [allProducts, setAllProducts] = useState([]); // Store all products for filtering
+  const [allProducts, setAllProducts] = useState([]);
   const [error, setError] = useState(null);
 
-  // Fetch all products and categories
   const handleSearchChange = (e) => {
     setSearchTerm(e.target.value);
   };
@@ -84,7 +91,7 @@ export default function ModernProductsPage() {
         setLoading(false);
       }
     },
-    []
+    [activeCategory]
   );
 
   useEffect(() => {
@@ -106,17 +113,14 @@ export default function ModernProductsPage() {
   const handleSortChange = useCallback((e) => {
     const newSort = e.target.value;
     setSortBy(newSort);
-    
   }, []);
 
-
   const handleFilterClick = () => {
-      fetchFilteredProducts({
-        category: activeCategory,
-        sort: newSort,
-        search: searchTerm,
-      });
-    console.log("Filter clicked", { activeCategory, sortBy, searchTerm });
+    fetchFilteredProducts({
+      category: activeCategory,
+      sort: sortBy,
+      search: searchTerm,
+    });
   };
 
   const toggleFavorite = (productId) => {
@@ -128,22 +132,6 @@ export default function ModernProductsPage() {
     }
     setFavorites(newFavorites);
   };
-
-  // const getBadgeColor = (badge) => {
-  //   switch (badge?.toLowerCase()) {
-  //     case "best seller":
-  //       return "bg-[#00b1a5]";
-  //     case "new":
-  //       return "bg-[#a3d900]";
-  //     case "eco":
-  //     case "organic":
-  //       return "bg-[#c6d90d]";
-  //     case "smart":
-  //       return "bg-[#00b1a5]";
-  //     default:
-  //       return "bg-gray-600";
-  //   }
-  // };
 
   const handleViewProduct = (productId) => {
     router.push(`/Pages/Products/${productId}`);
@@ -179,7 +167,7 @@ export default function ModernProductsPage() {
             </h2>
             <div className="flex overflow-x-auto pb-2 -mx-2 sm:mx-0 sm:flex-wrap sm:gap-3">
               <button
-                onClick={() => setActiveCategory("All")}
+                onClick={() => handleCategoryChange("", "All")}
                 className={`flex items-center px-6 py-3 rounded-2xl font-medium transition-all duration-300 transform hover:scale-105 shrink-0 mx-2 sm:mx-0
                   ${
                     activeCategory === "All"
@@ -211,7 +199,6 @@ export default function ModernProductsPage() {
             </div>
           </div>
 
-          {/* Filter & View */}
           <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-8">
             <div className="flex items-center space-x-4">
               <div className="flex items-center space-x-2 bg-gray-100 rounded-xl p-1">
@@ -230,12 +217,10 @@ export default function ModernProductsPage() {
               </div>
 
               <div className="text-sm text-gray-600">
-                {products.length} product{products.length !== 1 ? "s" : ""}{" "}
-                found
+                {products.length} product{products.length !== 1 ? "s" : ""} found
               </div>
             </div>
 
-            {/* Filter */}
             <div className="flex items-center space-x-4">
               <select
                 value={sortBy}
