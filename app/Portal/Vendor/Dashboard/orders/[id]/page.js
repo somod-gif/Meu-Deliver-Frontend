@@ -1,6 +1,6 @@
 // app/Portal/Vendor/Dashboard/orders/[id]/page.js
 'use client';
-import StatusBadge from '../../components/StatusBadge';
+import StatusBadge from '../components/StatusBadge';
 
 export default function OrderDetails({ params }) {
   // In a real app, you would fetch this data based on params.id
