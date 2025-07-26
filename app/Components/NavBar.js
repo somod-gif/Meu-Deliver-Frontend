@@ -432,12 +432,12 @@ export default function NavBar({ user }) {
 
           {/* Center Nav Buttons - Desktop Only */}
           {!isTablet && (
-            <nav className="flex justify-center gap-3 px-3 py-2">
+            <nav className="flex justify-center gap-2 px-1 py-1">
               {navigation.map((item) => (
                 <Link
                   key={item.key}
                   href={item.href}
-                  className={`inline-flex items-center px-4 py-2 text-sm font-medium rounded-lg transition-all duration-200 ${
+                  className={`inline-flex items-center px-2 py-2 text-sm font-medium rounded-lg transition-all duration-200 ${
                     currentSection === item.key
                       ? "bg-[var(--primary-color)] text-white shadow"
                       : "bg-[var(--button-bg)] text-[var(--text-color)] hover:bg-[var(--button-hover)]"

@@ -1,8 +1,10 @@
+// app/Pages/Products/page.js
+// ModernProductsPage.js
 "use client";
 import React, { useState, useEffect, useCallback } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { Search, Filter, Grid, List, Zap } from "lucide-react";
-import { batchRequests, get } from "@/app/hooks/fetch-hook";
+import { batchRequests, get } from "../../hooks/fetch-hook";
 import Header from "@/app/Components/UI/header";
 import ProductList from "./Components/productList";
 import LoadingErrorHandler from "@/app/Components/UI/LoadingErrorHandler";
@@ -10,7 +12,6 @@ import LoadingErrorHandler from "@/app/Components/UI/LoadingErrorHandler";
 export default function ModernProductsPage() {
   const router = useRouter();
   const searchParams = useSearchParams();
-
   const [activeCategory, setActiveCategory] = useState("All");
   const [viewMode, setViewMode] = useState("grid");
   const [searchTerm, setSearchTerm] = useState("");

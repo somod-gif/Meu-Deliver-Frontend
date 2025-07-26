@@ -1,0 +1,34 @@
+app/
+└── Portal/
+    └── Vendor/
+        └── Dashboard/
+            ├── layout.js              # Main vendor dashboard layout
+            ├── page.js                # Dashboard home (redirect or overview)
+            ├── components/
+            │   ├── SidebarNav.js      # Navigation sidebar
+            │   ├── Header.js          # Top header bar
+            │   ├── StatsCards.js      # Metric cards
+            │   └── RecentOrders.js    # Recent orders preview
+            ├── dashboard/
+            │   └── page.js            # Main dashboard content
+            ├── menu/
+            │   ├── page.js            # Product management
+            │   └── components/
+            │       ├── ProductTable.js
+            │       └── ProductForm.js
+            ├── orders/
+            │   ├── page.js            # Orders list
+            │   ├── [id]/
+            │   │   └── page.js        # Order details
+            │   └── components/
+            │       ├── OrdersTable.js
+            │       └── StatusBadge.js
+            ├── earnings/
+            │   ├── page.js            # Earnings dashboard
+            │   └── components/
+            │       ├── SummaryCard.js
+            │       └── WithdrawForm.js
+            └── settings/
+                ├── page.js            # Settings page
+                └── components/
+                    └── ProfileForm.js
