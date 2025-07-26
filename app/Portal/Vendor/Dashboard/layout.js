@@ -1,6 +1,6 @@
 // app/Portal/Vendor/Dashboard/layout.js
-import SidebarNav from './components/SidebarNav';
-import Header from './components/Header';
+import SidebarNav from './Components/SidebarNav';
+import Header from './Components/Header';
 
 export default function VendorDashboardLayout({ children }) {
   return (

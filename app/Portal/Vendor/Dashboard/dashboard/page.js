@@ -1,6 +1,6 @@
 // app/Portal/Vendor/Dashboard/dashboard/page.js
-import StatsCards from '../components/StatsCards';
-import RecentOrders from '../components/RecentOrders';
+import StatsCards from '../Components/StatsCards';
+import RecentOrders from '../Components/RecentOrders';
 import Link from 'next/link';
 
 export default function VendorDashboard() {
