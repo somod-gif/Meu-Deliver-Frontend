@@ -2,11 +2,54 @@
 import Button from "@/app/Components/UI/Button";
 import { Search } from "lucide-react";
 
-export default function Tracking({ trackingItems, trackingStatus }) {
+const trackingStatus = [
+  {
+    date: "24 Nov 2023",
+    text: "Products delivered",
+    icon: "home",
+  },
+  {
+    date: "Today",
+    text: "Products being delivered",
+    icon: "truck",
+  },
+  {
+    date: "23 Nov 2023, 15:15",
+    text: "Products in the courier's warehouse",
+  },
+  {
+    date: "22 Nov 2023, 12:27",
+    text: "Products delivered to the courier - DHL Express",
+  },
+  {
+    date: "19 Nov 2023, 10:47",
+    text: "Payment accepted - VISA Credit Card",
+  },
+  {
+    date: "19 Nov 2023, 10:45",
+    text: "Order placed - Receipt #647563",
+  },
+];
+const trackingItems = [
+  {
+    id: "BJ8364850",
+    name: "PC system All in One APPLE iMac (2023)...Blue",
+    img: "https://flowbite.s3.amazonaws.com/blocks/e-commerce/imac-front.svg",
+    quantity: 1,
+    subtotal: 149900, // in Kwanza
+  },
+  {
+    id: "BJ8369991",
+    name: "Logitech Wireless Keyboard - INT Layout",
+    img: "https://flowbite.s3.amazonaws.com/blocks/e-commerce/imac-front.svg",
+    quantity: 2,
+    subtotal: 59900,
+  },
+];
+
+export default function Tracking() {
   return (
-    <>
-      {/* Tracking form section */}
-      <section className="w-full bg-teal-50 py-16 px-4 sm:px-6 lg:px-8">
+    <> <section className="w-full bg-teal-50 py-16 px-4 sm:px-6 lg:px-8">
         <div className="max-w-4xl mx-auto text-center mb-10">
           <h2 className="text-3xl font-bold text-teal-800">
             Track Your Shipment
@@ -39,6 +82,8 @@ export default function Tracking({ trackingItems, trackingStatus }) {
           />
         </div>
       </section>
+      {/* Tracking form section */}
+     
 
       {/* Tracking infod sections */}
       <section className="bg-gray-50 py-12">

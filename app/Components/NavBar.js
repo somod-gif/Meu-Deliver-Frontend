@@ -312,11 +312,15 @@ export default function NavBar({ user }) {
       )}
 
       <header className="sticky top-0 z-40 bg-[var(--navbar-bg)] backdrop-blur-sm shadow-sm border-b border-[var(--navbar-border)]">
-        <div className="flex items-center justify-between h-20 px-4 sm:px-6">
+        <div className="flex items-center justify-between h-20 px-2 sm:px-4 lg:px-6 max-w-full overflow-hidden">
           {/* Left Side - Logo & Location */}
-          <div className="flex items-center space-x-4">
-            <Link href="/" className="flex items-center" aria-label="Home">
-              <img
+          <div className="flex items-center space-x-2 md:space-x-4 min-w-0 flex-shrink-0">
+            <Link
+              href="/"
+              className="flex items-center flex-shrink-0"
+              aria-label="Home"
+            >
+               <img
                 src="/images/m_logo.png"
                 alt="Meu Deliver Logo"
                 className=""
@@ -327,39 +331,39 @@ export default function NavBar({ user }) {
 
             {/* Location Selector - Desktop */}
             {!isMobile && (
-              <div className="relative location-dropdown-container">
+              <div className="relative location-dropdown-container min-w-0 flex-shrink">
                 <button
                   onClick={() => setShowLocationDropdown(!showLocationDropdown)}
-                  className="flex items-center space-x-2 px-3 py-2 rounded-lg hover:bg-[var(--button-hover)] transition-colors duration-200 border border-[var(--navbar-border)] min-w-[200px]"
+                  className="flex items-center space-x-2 px-2 md:px-3 py-2 rounded-lg hover:bg-[var(--button-hover)] transition-colors duration-200 border border-[var(--navbar-border)] min-w-[160px] md:min-w-[200px] max-w-[250px] xl:max-w-[300px]"
                   aria-label="Select location"
                 >
-                  <MapPin className="w-5 h-5 text-[var(--primary-color)]" />
-                  <div className="flex-1 text-left">
+                  <MapPin className="w-4 h-4 md:w-5 md:h-5 text-[var(--primary-color)] flex-shrink-0" />
+                  <div className="flex-1 text-left min-w-0">
                     {currentLocation ? (
                       <>
-                        <div className="text-sm font-medium text-[var(--text-color)] truncate">
+                        <div className="text-xs md:text-sm font-medium text-[var(--text-color)] truncate">
                           {currentLocation.shortAddress}
                         </div>
                         <div className="text-xs text-[var(--text-secondary)] truncate">
-                          {currentLocation.address.length > 30
-                            ? `${currentLocation.address.substring(0, 30)}...`
+                          {currentLocation.address.length > 25
+                            ? `${currentLocation.address.substring(0, 25)}...`
                             : currentLocation.address}
                         </div>
                       </>
                     ) : (
-                      <div className="text-sm text-[var(--text-secondary)]">
+                      <div className="text-xs md:text-sm text-[var(--text-secondary)] truncate">
                         Select delivery location
                       </div>
                     )}
                   </div>
                   <ChevronDown
-                    className={`w-4 h-4 text-[var(--text-secondary)] transition-transform duration-200 ${showLocationDropdown ? "rotate-180" : ""}`}
+                    className={`w-3 h-3 md:w-4 md:h-4 text-[var(--text-secondary)] transition-transform duration-200 flex-shrink-0 ${showLocationDropdown ? "rotate-180" : ""}`}
                   />
                 </button>
 
                 {/* Location Dropdown */}
                 {showLocationDropdown && (
-                  <div className="absolute top-full left-0 mt-2 w-80 bg-[var(--dropdown-bg)] rounded-lg shadow-lg border border-[var(--navbar-border)] py-2 z-50">
+                  <div className="absolute top-full left-0 mt-2 w-72 md:w-80 bg-[var(--dropdown-bg)] rounded-lg shadow-lg border border-[var(--navbar-border)] py-2 z-50 max-h-96 overflow-y-auto">
                     {/* Current Location Button */}
                     <button
                       onClick={detectCurrentLocation}
@@ -373,7 +377,7 @@ export default function NavBar({ user }) {
                           <Navigation className="w-5 h-5 text-[var(--primary-color)]" />
                         )}
                       </div>
-                      <div className="flex-1">
+                      <div className="flex-1 min-w-0">
                         <div className="text-sm font-medium text-[var(--primary-color)]">
                           {isDetectingLocation
                             ? "Detecting location..."
@@ -425,34 +429,36 @@ export default function NavBar({ user }) {
 
           {/* Center - Search Bar for Desktop */}
           {!isMobile && (
-            <div className="flex items-center px-3 sm:px-6 py-3">
-              <SearchBar placeholder="Search for products..." />
+            <div className="hidden md:flex items-center px-2 lg:px-6 py-3 flex-1 max-w-md lg:max-w-lg xl:max-w-xl mx-2 lg:mx-4">
+              <div className="w-full">
+                <SearchBar placeholder="Search for products..." />
+              </div>
             </div>
           )}
 
           {/* Center Nav Buttons - Desktop Only */}
           {!isTablet && (
-            <nav className="flex justify-center gap-2 px-1 py-1">
+            <nav className="hidden xl:flex justify-center gap-1 2xl:gap-2 px-1 py-1 flex-shrink-0">
               {navigation.map((item) => (
                 <Link
                   key={item.key}
                   href={item.href}
-                  className={`inline-flex items-center px-2 py-2 text-sm font-medium rounded-lg transition-all duration-200 ${
+                  className={`inline-flex items-center px-2 xl:px-3 py-2 text-xs xl:text-sm font-medium rounded-lg transition-all duration-200 whitespace-nowrap ${
                     currentSection === item.key
                       ? "bg-[var(--primary-color)] text-white shadow"
                       : "bg-[var(--button-bg)] text-[var(--text-color)] hover:bg-[var(--button-hover)]"
                   }`}
                   onClick={() => setCurrentSection(item.key)}
                 >
-                  <item.icon className="w-5 h-5 mr-2" />
-                  <span>{item.name}</span>
+                  <item.icon className="w-4 h-4 xl:w-5 xl:h-5 xl:mr-2" />
+                  <span className="hidden 2xl:inline">{item.name}</span>
                 </Link>
               ))}
             </nav>
           )}
 
           {/* Right Side Controls */}
-          <div className="flex items-center space-x-2">
+          <div className="flex items-center space-x-1 md:space-x-2 flex-shrink-0">
             {/* Google Translate - Desktop */}
             <div className="hidden lg:block relative">
               <GoogleTranslate variant="icon-only" />
@@ -464,16 +470,16 @@ export default function NavBar({ user }) {
               className="hidden lg:block p-2 hover:bg-[var(--button-hover)] rounded-lg transition-colors duration-200 relative"
               aria-label="Shopping cart"
             >
-              <ShoppingBag className="w-6 h-6 text-[var(--text-color)] hover:text-[var(--primary-color)]" />
+              <ShoppingBag className="w-5 h-5 xl:w-6 xl:h-6 text-[var(--text-color)] hover:text-[var(--primary-color)]" />
               {totalQuantity > 0 && (
-                <span className="absolute -top-1 -right-1 bg-[var(--primary-color)] text-white text-xs rounded-full w-5 h-5 flex items-center justify-center font-medium">
+                <span className="absolute -top-1 -right-1 bg-[var(--primary-color)] text-white text-xs rounded-full w-4 h-4 xl:w-5 xl:h-5 flex items-center justify-center font-medium min-w-[16px] xl:min-w-[20px]">
                   {totalQuantity > 99 ? "99+" : totalQuantity}
                 </span>
               )}
             </button>
 
             {/* Mobile Controls */}
-            <div className="lg:hidden flex items-center space-x-2">
+            <div className="lg:hidden flex items-center space-x-1">
               {/* Mobile Google Translate */}
               <div className="relative">
                 <GoogleTranslate variant="icon-only" />
@@ -485,9 +491,9 @@ export default function NavBar({ user }) {
                 className="p-2 hover:bg-[var(--button-hover)] rounded-lg transition-colors duration-200 relative"
                 aria-label="Shopping cart"
               >
-                <ShoppingBag className="w-6 h-6 text-[var(--text-color)] hover:text-[var(--primary-color)]" />
+                <ShoppingBag className="w-5 h-5 md:w-6 md:h-6 text-[var(--text-color)] hover:text-[var(--primary-color)]" />
                 {totalQuantity > 0 && (
-                  <span className="absolute -top-1 -right-1 bg-[var(--primary-color)] text-white text-xs rounded-full w-5 h-5 flex items-center justify-center font-medium">
+                  <span className="absolute -top-1 -right-1 bg-[var(--primary-color)] text-white text-xs rounded-full w-4 h-4 md:w-5 md:h-5 flex items-center justify-center font-medium min-w-[16px] md:min-w-[20px]">
                     {totalQuantity > 99 ? "99+" : totalQuantity}
                   </span>
                 )}
@@ -499,32 +505,34 @@ export default function NavBar({ user }) {
                 className="p-2 rounded-lg hover:bg-[var(--button-hover)] transition-colors duration-200"
                 aria-label="Open menu"
               >
-                <Menu className="w-6 h-6 text-[var(--text-color)]" />
+                <Menu className="w-5 h-5 md:w-6 md:h-6 text-[var(--text-color)]" />
               </button>
             </div>
 
             {/* User Profile - Desktop only */}
             {!loading && isLoggedIn ? (
-              <div className="hidden lg:flex items-center space-x-3 pl-4 border-l border-[var(--navbar-border)]">
+              <div className="hidden lg:flex items-center space-x-2 xl:space-x-3 pl-2 xl:pl-4 border-l border-[var(--navbar-border)]">
                 {user ? (
                   <div className="relative user-dropdown-container">
                     <button
                       onClick={handleUserProfileClick}
-                      className="flex items-center space-x-3 group cursor-pointer p-1 rounded-lg hover:bg-[var(--button-hover)] transition-colors duration-200"
+                      className="flex items-center space-x-2 xl:space-x-3 group cursor-pointer p-1 rounded-lg hover:bg-[var(--button-hover)] transition-colors duration-200"
                       aria-label="User menu"
                     >
-                      <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-[var(--primary-color)] to-[var(--primary-dark)] flex items-center justify-center text-white font-bold shadow-md group-hover:shadow-lg transition-shadow duration-200">
-                        {user.name ? user.name.charAt(0).toUpperCase() : "U"}
+                      <div className="w-8 h-8 xl:w-9 xl:h-9 rounded-xl bg-gradient-to-br from-[var(--primary-color)] to-[var(--primary-dark)] flex items-center justify-center text-white font-bold shadow-md group-hover:shadow-lg transition-shadow duration-200 flex-shrink-0">
+                        <span className="text-sm xl:text-base">
+                          {user.name ? user.name.charAt(0).toUpperCase() : "U"}
+                        </span>
                       </div>
-                      <div className="hidden sm:block text-left">
-                        <p className="text-sm font-medium text-[var(--text-color)] group-hover:text-[var(--primary-color)] transition-colors duration-200">
+                      <div className="hidden xl:block text-left min-w-0 max-w-[120px] 2xl:max-w-[150px]">
+                        <p className="text-sm font-medium text-[var(--text-color)] group-hover:text-[var(--primary-color)] transition-colors duration-200 truncate">
                           {user.name || "User"}
                         </p>
-                        <p className="text-xs text-[var(--text-secondary)]">
+                        <p className="text-xs text-[var(--text-secondary)] truncate">
                           {user.email || "user@example.com"}
                         </p>
                       </div>
-                      <div className="hidden sm:block w-4 h-4 text-[var(--text-secondary)] group-hover:text-[var(--text-color)] transition-colors duration-200">
+                      <div className="hidden xl:block w-4 h-4 text-[var(--text-secondary)] group-hover:text-[var(--text-color)] transition-colors duration-200 flex-shrink-0">
                         <ChevronDown
                           className={`transform transition-transform duration-200 ${showUserDropdown ? "rotate-180" : ""}`}
                         />
@@ -535,10 +543,10 @@ export default function NavBar({ user }) {
                     {showUserDropdown && (
                       <div className="absolute right-0 mt-2 w-48 bg-[var(--dropdown-bg)] rounded-lg shadow-lg border border-[var(--navbar-border)] py-1 z-50">
                         <div className="px-4 py-2 border-b border-[var(--dropdown-border)]">
-                          <p className="text-sm font-medium text-[var(--text-color)]">
+                          <p className="text-sm font-medium text-[var(--text-color)] truncate">
                             {user.name || "User"}
                           </p>
-                          <p className="text-xs text-[var(--text-secondary)]">
+                          <p className="text-xs text-[var(--text-secondary)] truncate">
                             {user.email || "user@example.com"}
                           </p>
                         </div>
@@ -566,31 +574,31 @@ export default function NavBar({ user }) {
                     )}
                   </div>
                 ) : (
-                  <div className="flex items-center space-x-3">
-                    <div className="w-9 h-9 rounded-xl bg-[var(--button-bg)] animate-pulse" />
-                    <div className="hidden sm:block space-y-1">
-                      <div className="w-20 h-3 bg-[var(--button-bg)] rounded animate-pulse"></div>
-                      <div className="w-24 h-2 bg-[var(--button-hover)] rounded animate-pulse"></div>
+                  <div className="flex items-center space-x-2 xl:space-x-3">
+                    <div className="w-8 h-8 xl:w-9 xl:h-9 rounded-xl bg-[var(--button-bg)] animate-pulse flex-shrink-0" />
+                    <div className="hidden xl:block space-y-1 min-w-0">
+                      <div className="w-16 xl:w-20 h-3 bg-[var(--button-bg)] rounded animate-pulse"></div>
+                      <div className="w-20 xl:w-24 h-2 bg-[var(--button-hover)] rounded animate-pulse"></div>
                     </div>
                   </div>
                 )}
               </div>
             ) : (
-              <div className="flex items-center space-x-4">
+              <div className="flex items-center space-x-2 md:space-x-4">
                 {/* Desktop Auth Buttons */}
-                <div className="hidden lg:flex items-center space-x-3">
+                <div className="hidden lg:flex items-center space-x-2 xl:space-x-3">
                   {authLinks.map((link) => (
                     <Link
                       key={link.name}
                       href={link.path}
-                      className={`px-4 py-2 rounded-lg font-medium flex items-center space-x-2 transition-colors duration-200 ${
+                      className={`px-3 xl:px-4 py-2 rounded-lg font-medium flex items-center space-x-1 xl:space-x-2 transition-colors duration-200 text-sm xl:text-base whitespace-nowrap ${
                         link.style === "primary"
                           ? "bg-[var(--primary-color)] text-white hover:bg-[var(--primary-dark)]"
                           : "border border-[var(--navbar-border)] text-[var(--text-color)] hover:bg-[var(--button-hover)]"
                       }`}
                     >
-                      <link.icon className="w-5 h-5" />
-                      <span>{link.name}</span>
+                      <link.icon className="w-4 h-4 xl:w-5 xl:h-5 flex-shrink-0" />
+                      <span className="hidden xl:inline">{link.name}</span>
                     </Link>
                   ))}
                 </div>
@@ -601,23 +609,23 @@ export default function NavBar({ user }) {
 
         {/* Mobile Location Bar */}
         {isMobile && (
-          <div className="px-4 pb-3 border-t border-[var(--navbar-border)]">
+          <div className="px-2 sm:px-4 pb-3 border-t border-[var(--navbar-border)]">
             <div className="relative location-dropdown-container">
               <button
                 onClick={() => setShowLocationDropdown(!showLocationDropdown)}
-                className="flex items-center space-x-2 w-full px-3 py-2 rounded-lg hover:bg-[var(--button-hover)] transition-colors duration-200 border border-[var(--navbar-border)]"
+                className="flex items-center space-x-2 w-full px-3 py-2 rounded-lg hover:bg-[var(--button-hover)] transition-colors duration-200 border border-[var(--navbar-border)] min-h-[48px]"
                 aria-label="Select location"
               >
-                <MapPin className="w-5 h-5 text-[var(--primary-color)]" />
-                <div className="flex-1 text-left">
+                <MapPin className="w-5 h-5 text-[var(--primary-color)] flex-shrink-0" />
+                <div className="flex-1 text-left min-w-0">
                   {currentLocation ? (
                     <>
                       <div className="text-sm font-medium text-[var(--text-color)] truncate">
                         {currentLocation.shortAddress}
                       </div>
                       <div className="text-xs text-[var(--text-secondary)] truncate">
-                        {currentLocation.address.length > 40
-                          ? `${currentLocation.address.substring(0, 40)}...`
+                        {currentLocation.address.length > 35
+                          ? `${currentLocation.address.substring(0, 35)}...`
                           : currentLocation.address}
                       </div>
                     </>
@@ -628,13 +636,13 @@ export default function NavBar({ user }) {
                   )}
                 </div>
                 <ChevronDown
-                  className={`w-4 h-4 text-[var(--text-secondary)] transition-transform duration-200 ${showLocationDropdown ? "rotate-180" : ""}`}
+                  className={`w-4 h-4 text-[var(--text-secondary)] transition-transform duration-200 flex-shrink-0 ${showLocationDropdown ? "rotate-180" : ""}`}
                 />
               </button>
 
               {/* Mobile Location Dropdown */}
               {showLocationDropdown && (
-                <div className="absolute top-full left-0 right-0 mt-2 bg-[var(--dropdown-bg)] rounded-lg shadow-lg border border-[var(--navbar-border)] py-2 z-50">
+                <div className="absolute top-full left-0 right-0 mt-2 bg-[var(--dropdown-bg)] rounded-lg shadow-lg border border-[var(--navbar-border)] py-2 z-50 max-h-80 overflow-y-auto">
                   {/* Current Location Button */}
                   <button
                     onClick={detectCurrentLocation}
@@ -648,7 +656,7 @@ export default function NavBar({ user }) {
                         <Navigation className="w-5 h-5 text-[var(--primary-color)]" />
                       )}
                     </div>
-                    <div className="flex-1">
+                    <div className="flex-1 min-w-0">
                       <div className="text-sm font-medium text-[var(--primary-color)]">
                         {isDetectingLocation
                           ? "Detecting location..."
